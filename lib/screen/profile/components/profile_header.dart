@@ -1,0 +1,96 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_hotelapp/common/styles/styles.dart';
+
+class ProfileHeader extends StatelessWidget {
+  final String name, email, image;
+
+  const ProfileHeader(
+      {Key key,
+      @required this.name,
+      @required this.email,
+      @required this.image})
+      : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 310,
+      child: Stack(
+        children: [
+          ClipPath(
+            clipper: HeaderClipper(),
+            child: Container(
+              height: 220,
+              color: Colors.green,
+            ),
+          ),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(bottom: 10),
+                  height: 128.0,
+                  width: 128.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.white,
+                      width: 4.0, // border thickness
+                    ),
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage(image),
+                    ),
+                  ),
+                ),
+                Text(name, style: kBodyTextStyle),
+                SizedBox(height: 10),
+                Text(
+                  email,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xFF8492A2),
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+/// custom header shape
+/// ClipPath 能夠使用 clipper 切割 child
+class HeaderClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var path = Path();
+
+    double height = size.height;
+    double width = size.width;
+
+    path.lineTo(0, size.height - 20);
+
+    var firstControlPoint = Offset(width / 4, height);
+    var firstEndPoint = Offset(width / 2.25, height - 30);
+
+    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
+        firstEndPoint.dx, firstEndPoint.dy);
+
+    var secondControlPoint = Offset(width / 4 * 3, height - 80);
+    var secondEndPoint = Offset(width, height - 40);
+
+    path.quadraticBezierTo(secondControlPoint.dx, secondControlPoint.dy,
+        secondEndPoint.dx, secondEndPoint.dy);
+
+    path.lineTo(size.width, size.height - 40);
+    path.lineTo(size.width, 0);
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => true;
+}

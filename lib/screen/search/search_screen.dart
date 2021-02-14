@@ -26,14 +26,18 @@ class _SearchScreenState extends State<SearchScreen>
           )
         ],
       ),
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SearchBox(),
-            ],
-          ),
+      body: _body(),
+    );
+  }
+
+  Widget _body() {
+    return SingleChildScrollView(
+      child: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SearchBox(),
+          ],
         ),
       ),
     );

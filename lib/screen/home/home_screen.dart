@@ -28,44 +28,44 @@ class _HomeScreenState extends State<HomeScreen>
           ),
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // 使用 Expanded 讓 listview 佔 column 餘下剩餘的空間
-          Expanded(
-            child: _introCardBuild(),
-          ),
-        ],
-      ),
+      body: _body(),
     );
   }
 
-  AnimationLimiter _introCardBuild() {
-    return AnimationLimiter(
-      child: ListView.builder(
-        addAutomaticKeepAlives: false, // 本體已被包裹在 autoKeepAlive, 故禁用
-        // shrinkWrap: true, // 確定 listview 高度
-        // physics: NeverScrollableScrollPhysics(),
-        itemCount: demoIntroCardData.length,
-        itemBuilder: (context, index) {
-          return AnimationConfiguration.staggeredList(
-            position: index,
-            duration: Duration(milliseconds: 375),
-            child: SlideAnimation(
-              verticalOffset: 50.0,
-              child: FadeInAnimation(
-                child: IntroCard(
-                  sort: demoIntroCardData[index]["sort"],
-                  title: demoIntroCardData[index]["title"],
-                  text: demoIntroCardData[index]["text"],
-                  image: demoIntroCardData[index]["image"],
-                ),
-              ),
+  Widget _body() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        // 使用 Expanded 讓 listview 佔 column 餘下剩餘的空間
+        Expanded(
+          child: AnimationLimiter(
+            child: ListView.builder(
+              addAutomaticKeepAlives: false, // 本體已被包裹在 autoKeepAlive, 故禁用
+              // shrinkWrap: true, // 確定 listview 高度
+              // physics: NeverScrollableScrollPhysics(),
+              itemCount: demoIntroCardData.length,
+              itemBuilder: (context, index) {
+                return AnimationConfiguration.staggeredList(
+                  position: index,
+                  duration: Duration(milliseconds: 375),
+                  child: SlideAnimation(
+                    verticalOffset: 50.0,
+                    child: FadeInAnimation(
+                      child: IntroCard(
+                        sort: demoIntroCardData[index]["sort"],
+                        title: demoIntroCardData[index]["title"],
+                        text: demoIntroCardData[index]["text"],
+                        image: demoIntroCardData[index]["image"],
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
-          );
-        },
-      ),
+          ),
+        ),
+      ],
     );
   }
 }

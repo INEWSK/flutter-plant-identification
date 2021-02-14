@@ -96,75 +96,85 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: SingleChildScrollView(
-          child: Column(
-        children: [
-          ListTile(
-            title: Text('Dark Mode'),
-            onTap: () {
-              _selectThemeDialog(context);
-            },
-          ),
-          ListTile(
-            title: Text('Language'),
-            onTap: () {
-              _selectLanguageDialog(context);
-            },
-          ),
-          ListTile(
-            title: Text('Rate Us'),
-            onTap: () {},
-          ),
-          ListTile(
-            title: Text('Terms & Conditions'),
-            onTap: () {
-              Navigator.pushNamed(context, '/agreement');
-            },
-          ),
-          ListTile(
-            title: Text('Switch Account'),
-            onTap: () {
-              Navigator.pushNamed(context, '/signIn');
-            },
-          ),
-          ListTile(
-            title: Text('More Info'),
-            onTap: () {
-              showAboutDialog(
-                context: context,
-                applicationIcon: _appIcon(),
-                applicationName: 'Flora',
-                applicationVersion: '1.0a',
-                applicationLegalese: '@2020 st.vtc stu',
-              );
-            },
-          ),
-          Consumer<AuthProvider>(
-            builder: (_, user, __) {
-              if (user.status == Status.Authenticated) {
-                return ListTile(
-                  title: Text('Sign Out'),
-                  onTap: () async {
-                    bool signout = await _confirmSignOutDialog(context);
-                    if (signout) {
-                      final authProvider =
-                          Provider.of<AuthProvider>(context, listen: false);
-                      // call sign out method
-                      authProvider.signOut();
+      body: _body(context),
+    );
+  }
 
-                      Navigator.of(context).pop(
-                        Toast.show('Sign Out Successful'),
-                      );
-                    }
-                  },
-                );
-              } else {
-                return Container();
-              }
-            },
-          ),
-        ],
-      )),
+  Widget _body(BuildContext context) {
+    return SingleChildScrollView(
+      child: Consumer<AuthProvider>(
+        builder: (_, user, __) {
+          return Column(
+            children: [
+              ListTile(
+                title: Text('Dark Mode'),
+                onTap: () {
+                  _selectThemeDialog(context);
+                },
+              ),
+              ListTile(
+                title: Text('Language'),
+                onTap: () {
+                  _selectLanguageDialog(context);
+                },
+              ),
+              ListTile(
+                title: Text('Rate Us'),
+                onTap: () {},
+              ),
+              ListTile(
+                title: Text('Terms & Conditions'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/agreement');
+                },
+              ),
+              ListTile(
+                title: user.status == Status.Authenticated
+                    ? Text('Switch Account')
+                    : Text('Sign In'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/signIn');
+                },
+              ),
+              ListTile(
+                title: Text('More Info'),
+                onTap: () {
+                  showAboutDialog(
+                    context: context,
+                    applicationIcon: _appIcon(),
+                    applicationName: 'Flora',
+                    applicationVersion: '1.0a',
+                    applicationLegalese: '@2020 st.vtc stu',
+                  );
+                },
+              ),
+              Builder(
+                builder: (context) {
+                  return user.status == Status.Authenticated
+                      ? ListTile(
+                          title: Text('Sign Out'),
+                          onTap: () async {
+                            bool signout = await _confirmSignOutDialog(context);
+                            if (signout) {
+                              final authProvider = Provider.of<AuthProvider>(
+                                  context,
+                                  listen: false);
+                              // call sign out method
+                              authProvider.signOut();
+
+                              Navigator.of(context).pop(
+                                Toast.show('Sign Out Successful'),
+                              );
+                            }
+                          },
+                        )
+                      : Container();
+                },
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }

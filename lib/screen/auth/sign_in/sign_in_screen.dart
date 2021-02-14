@@ -12,25 +12,29 @@ class SignInScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              WelcomeText(
-                  title: 'Welcome',
-                  text:
-                      'Enter your Phone number or Email address \nand Password for Sign In ;)'),
-              SignInForm(),
-              SizedBox(height: 20),
-              OrDivider(),
-              SizedBox(height: 20),
-              CreateAccountButton(),
-              SizedBox(height: 20),
-              SocialAuthButton(),
-            ],
-          ),
+      body: _body(),
+    );
+  }
+
+  Widget _body() {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            WelcomeText(
+                title: 'Welcome',
+                text:
+                    'Enter your Phone number or Email address \nand Password for Sign In ;)'),
+            SignInForm(),
+            SizedBox(height: 20),
+            OrDivider(),
+            SizedBox(height: 20),
+            CreateAccountButton(),
+            SizedBox(height: 20),
+            SocialAuthButton(),
+          ],
         ),
       ),
     );

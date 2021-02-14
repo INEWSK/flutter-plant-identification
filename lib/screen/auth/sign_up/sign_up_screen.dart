@@ -10,21 +10,25 @@ class SignUpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              WelcomeText(
-                title: 'Create Account',
-                text: 'Enter your Email and Password for sign up.',
-              ),
-              SignUpForm(),
-              SizedBox(height: 20),
-              SignInButton(),
-            ],
-          ),
+      body: _body(),
+    );
+  }
+
+  Widget _body() {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            WelcomeText(
+              title: 'Create Account',
+              text: 'Enter your Email and Password for sign up.',
+            ),
+            SignUpForm(),
+            SizedBox(height: 20),
+            SignInButton(),
+          ],
         ),
       ),
     );

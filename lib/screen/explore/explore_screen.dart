@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'components/google_maps.dart';
+import 'components/location_error_page.dart';
 
 class ExploreScreen extends StatefulWidget {
   @override
@@ -69,47 +70,16 @@ class _ExploreScreenState extends State<ExploreScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: permitted
-          ? GoogleMaps()
-          : Stack(
-              fit: StackFit.expand,
-              children: [
-                Image.asset(
-                  "assets/images/location_error.png",
-                  fit: BoxFit.cover,
-                ),
-                Positioned(
-                  bottom: size.height * 0.15,
-                  left: size.width * 0.3,
-                  right: size.width * 0.3,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          offset: Offset(0, 13),
-                          blurRadius: 25,
-                          color: Color(0xFFD27E4A).withOpacity(0.17),
-                        ),
-                      ],
-                    ),
-                    child: FlatButton(
-                      color: Color(0xFFFF9858),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(45)),
-                      onPressed: () {
-                        _requestPermission();
-                      },
-                      child: Text(
-                        "Enable".toUpperCase(),
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
+      body: _body(),
     );
+  }
+
+  Widget _body() {
+    return permitted
+        ? GoogleMaps()
+        : LocationErrorPage(
+            press: _requestPermission,
+          );
   }
 }

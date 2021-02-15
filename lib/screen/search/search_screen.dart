@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hotelapp/screen/detail/detail_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'components/search_box.dart';
@@ -37,6 +38,15 @@ class _SearchScreenState extends State<SearchScreen>
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SearchBox(),
+            RaisedButton(
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DetailScreen(),
+                ),
+              ),
+              child: Text('Go to Detail'),
+            )
           ],
         ),
       ),

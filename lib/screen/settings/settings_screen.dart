@@ -39,15 +39,24 @@ class SettingsScreen extends StatelessWidget {
             children: [
               SimpleDialogOption(
                 onPressed: () => Navigator.pop(context, 1),
-                child: Text('Light Mode'),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 6.0),
+                  child: Text('Light Mode'),
+                ),
               ),
               SimpleDialogOption(
                 onPressed: () => Navigator.pop(context, 2),
-                child: Text('Dark Mode'),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 6.0),
+                  child: Text('Dark Mode'),
+                ),
               ),
               SimpleDialogOption(
                 onPressed: () => Navigator.pop(context, 0),
-                child: Text('System Mode'),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 6.0),
+                  child: Text('System Mode'),
+                ),
               ),
             ],
           );
@@ -70,11 +79,17 @@ class SettingsScreen extends StatelessWidget {
             children: [
               SimpleDialogOption(
                 onPressed: () => Navigator.pop(context, 1),
-                child: Text('Traditional Chinese'),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 6.0),
+                  child: Text('Traditional Chinese'),
+                ),
               ),
               SimpleDialogOption(
                 onPressed: () => Navigator.pop(context, 2),
-                child: Text('English'),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 6.0),
+                  child: Text('English'),
+                ),
               )
             ],
           );
@@ -87,8 +102,8 @@ class SettingsScreen extends StatelessWidget {
   SvgPicture _appIcon() {
     return SvgPicture.asset(
       'assets/icons/logo.svg',
-      height: 48.0,
-      width: 48.0,
+      height: 100.0,
+      width: 100.0,
     );
   }
 
@@ -118,6 +133,7 @@ class SettingsScreen extends StatelessWidget {
                   _selectLanguageDialog(context);
                 },
               ),
+              Divider(height: 20),
               ListTile(
                 title: Text('Rate Us'),
                 onTap: () {},
@@ -129,14 +145,6 @@ class SettingsScreen extends StatelessWidget {
                 },
               ),
               ListTile(
-                title: user.status == Status.Authenticated
-                    ? Text('Switch Account')
-                    : Text('Sign In'),
-                onTap: () {
-                  Navigator.pushNamed(context, '/signIn');
-                },
-              ),
-              ListTile(
                 title: Text('More Info'),
                 onTap: () {
                   showAboutDialog(
@@ -144,8 +152,18 @@ class SettingsScreen extends StatelessWidget {
                     applicationIcon: _appIcon(),
                     applicationName: 'Flora',
                     applicationVersion: '1.0a',
-                    applicationLegalese: '@2020 st.vtc stu',
+                    applicationLegalese:
+                        'Copyright(c) 2020 by st.vtc AIMAD stu',
                   );
+                },
+              ),
+              Divider(height: 20),
+              ListTile(
+                title: user.status == Status.Authenticated
+                    ? Text('Switch Account')
+                    : Text('Sign In'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/signIn');
                 },
               ),
               Builder(

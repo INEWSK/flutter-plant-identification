@@ -56,8 +56,10 @@ class GoogleMapsProvider extends ChangeNotifier {
       if (!opened) {
         log('Failed to open App Setting Page');
       }
-    } else if (!status.isGranted) {
-      status = await Permission.location.request();
+    } else {
+      if (!status.isGranted) {
+        status = await Permission.location.request();
+      }
     }
 
     // 如果已經在設定中賦予權限了則跳轉到地圖

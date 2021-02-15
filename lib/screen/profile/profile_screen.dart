@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_hotelapp/common/styles/styles.dart';
+import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/provider/auth_provider.dart';
+import 'package:flutter_hotelapp/screen/auth/widgets/primary_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
@@ -30,7 +34,7 @@ class _ProfileScreenState extends State<ProfileScreen>
           Consumer<AuthProvider>(builder: (_, user, __) {
             return ProfileHeader(
               email: '${user.email}',
-              image: 'assets/images/avatar.png',
+              image: 'assets/images/no_picture_avatar.png',
               name: '${user.username}',
             );
           }),
@@ -63,10 +67,68 @@ class _ProfileScreenState extends State<ProfileScreen>
             // dense: true,
             leading: SvgPicture.asset('assets/icons/profile/contact.svg'),
             title: Text('Contact Us'),
-            onTap: () {},
+            onTap: () async {
+              contactBottomSheet(context);
+            },
           ),
         ],
       ),
+    );
+  }
+
+  contactBottomSheet(BuildContext context) {
+    return showModalBottomSheet(
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+      context: context,
+      builder: (BuildContext context) {
+        return FractionallySizedBox(
+          // percentage layout
+          // 85% height of mediaQuery size
+          heightFactor: 0.85,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.all(kDefaultPadding),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Contact us'.toUpperCase(),
+                    style: kH2TextStyle,
+                  ),
+                  TextField(
+                    controller: TextEditingController(text: 'contact@flora.me'),
+                    enabled: false,
+                    decoration: (InputDecoration(
+                        labelText: 'Recipient:'.toUpperCase())),
+                  ),
+                  TextField(
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: (InputDecoration(
+                        labelText: 'Your email:'.toUpperCase())),
+                  ),
+                  TextField(
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: (InputDecoration(
+                      labelText: 'Topic:'.toUpperCase(),
+                    )),
+                  ),
+                  SizedBox(height: 10),
+                  TextField(
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 9,
+                    decoration:
+                        InputDecoration(hintText: 'Content here'.toUpperCase()),
+                  ),
+                  SizedBox(height: 20),
+                  PrimaryButton(
+                      text: 'send', press: () => Navigator.pop(context)),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

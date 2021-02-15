@@ -23,11 +23,6 @@ class _GoogleMapsState extends State<GoogleMaps> {
   final LatLng _center = const LatLng(22.3939351, 114.1561875);
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   void dispose() {
     super.dispose();
     _mapController?.dispose();

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hotelapp/screen/explore/provider/google_maps_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'components/google_maps.dart';
 import 'components/location_error_page.dart';
+import 'provider/google_maps_provider.dart';
 
 class ExploreScreen extends StatefulWidget {
   @override
@@ -46,9 +46,8 @@ class _ExploreScreenState extends State<ExploreScreen>
 }
 
 class Loading extends StatelessWidget {
-  determindPermission(context) async {
-    Provider.of<GoogleMapsProvider>(context).determindPermission();
-  }
+  determindPermission(context) async =>
+      Provider.of<GoogleMapsProvider>(context).determindPermission();
 
   @override
   Widget build(BuildContext context) {

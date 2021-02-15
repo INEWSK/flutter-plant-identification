@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_hotelapp/screen/explore/provider/google_maps_provider.dart';
+import 'package:provider/provider.dart';
 
 import 'components/google_maps.dart';
 import 'components/location_error_page.dart';
@@ -14,58 +15,7 @@ class _ExploreScreenState extends State<ExploreScreen>
   @override
   bool get wantKeepAlive => true;
 
-  bool permitted = false;
-  PermissionStatus status;
-
-  @override
-  void initState() {
-    super.initState();
-    _determindPermission();
-  }
-
-  // 檢測權限
-  void _determindPermission() async {
-    // 權限狀態
-    status = await Permission.location.status;
-
-    if (!status.isGranted && !status.isPermanentlyDenied) {
-      debugPrint('定位權限未授權或曾被拒絕');
-      // 要求授權
-      status = await Permission.location.request();
-    }
-
-    if (status.isPermanentlyDenied) {
-      debugPrint('定位權限被永久拒絕');
-      // 自行按 BUTTON 到 APP 設定開啓權限
-    }
-
-    // 如果授權了跳轉到地圖
-    if (status.isGranted) {
-      debugPrint('權限授權成功');
-      setState(() {
-        permitted = true;
-      });
-    }
-  }
-
-  void _requestPermission() async {
-    // 重新獲取 status 狀態用作判斷當前權限狀態
-    status = await Permission.location.status;
-
-    // 如果依舊是永久拒絕則跳轉設定
-    if (status.isPermanentlyDenied) {
-      await openAppSettings();
-    } else {
-      status = await Permission.location.request();
-    }
-
-    // 如果已經在設定中賦予權限了則跳轉到地圖
-    if (status.isGranted) {
-      setState(() {
-        permitted = true;
-      });
-    }
-  }
+  final provider = GoogleMapsProvider();
 
   @override
   Widget build(BuildContext context) {
@@ -76,10 +26,37 @@ class _ExploreScreenState extends State<ExploreScreen>
   }
 
   Widget _body() {
-    return permitted
-        ? GoogleMaps()
-        : LocationErrorPage(
-            press: _requestPermission,
-          );
+    return ChangeNotifierProvider(
+      create: (_) => provider,
+      child: Consumer<GoogleMapsProvider>(
+        builder: (_, location, __) {
+          switch (location.status) {
+            case Status.Unauthorized:
+              return LocationErrorPage(press: location.requestPermission);
+              break;
+            case Status.Authorization:
+              return GoogleMaps();
+            default:
+              return Loading();
+          }
+        },
+      ),
+    );
+  }
+}
+
+class Loading extends StatelessWidget {
+  determindPermission(context) async {
+    Provider.of<GoogleMapsProvider>(context).determindPermission();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    determindPermission(context);
+    return Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
   }
 }

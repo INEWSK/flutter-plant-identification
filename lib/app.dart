@@ -42,11 +42,9 @@ class MyApp extends StatelessWidget {
             navigatorObservers: [BotToastNavigatorObserver()],
             home: home ??
                 Builder(builder: (_) {
-                  if (user.status == Status.Uninitialized) {
-                    return Loading();
-                  } else {
-                    return MainScreen();
-                  }
+                  return user.status == Status.Uninitialized
+                      ? Loading()
+                      : MainScreen();
                 }),
           );
         },

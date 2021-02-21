@@ -17,14 +17,15 @@ class IntroCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var brightness = MediaQuery.of(context).platformBrightness;
     return Container(
       margin: EdgeInsets.symmetric(
         horizontal: kDefaultPadding / 1.5, // 13.4
         vertical: kDefaultPadding / 4, // 5
       ),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-          color: Colors.white,
+          borderRadius: BorderRadius.circular(8.0),
+          color: brightness == Brightness.dark ? Colors.black54 : Colors.white,
           boxShadow: [
             BoxShadow(
               offset: Offset(1.0, 2.0), // 阴影 x y 轴位置偏移量
@@ -44,7 +45,7 @@ class IntroCard extends StatelessWidget {
     );
   }
 
-  Positioned _image() {
+  Widget _image() {
     return Positioned(
       right: 15.0,
       child: SvgPicture.asset(
@@ -55,7 +56,7 @@ class IntroCard extends StatelessWidget {
     );
   }
 
-  Container _text(BuildContext context) {
+  Widget _text(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: 20.0,
@@ -80,8 +81,10 @@ class IntroCard extends StatelessWidget {
               child: Text(
                 sort,
                 maxLines: 1,
-                style: kBodyTextStyle.copyWith(
-                    fontSize: 10.0, color: Colors.white),
+                style: TextStyle(
+                  fontSize: 10.0,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
@@ -98,8 +101,7 @@ class IntroCard extends StatelessWidget {
               text,
               maxLines: 4,
               overflow: TextOverflow.ellipsis, // 省略號
-              style: kBodyTextStyle.copyWith(
-                  fontSize: 12.0, color: Colors.black54),
+              style: kBodyTextStyle.copyWith(fontSize: 12.0),
             ),
           ),
         ],

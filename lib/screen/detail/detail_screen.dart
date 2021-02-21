@@ -41,16 +41,14 @@ class DetailScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 4.0),
                     child: Text(
                       'Scientific Name:',
-                      style: kH2TextStyle.copyWith(
-                          fontSize: 14.0, color: Colors.grey),
+                      style: kSubHeadTextStyle,
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 4.0),
                     child: Text(
                       'Bauhinia blakeana',
-                      style: kH2TextStyle.copyWith(
-                          fontSize: 14.0, color: Colors.green),
+                      style: kBodyTextStyle.copyWith(color: Colors.green),
                     ),
                   ),
                 ]),
@@ -59,8 +57,7 @@ class DetailScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 4.0),
                     child: Text(
                       'Common Name:',
-                      style: kH2TextStyle.copyWith(
-                          fontSize: 14.0, color: Colors.grey),
+                      style: kSubHeadTextStyle,
                     ),
                   ),
                   Container(
@@ -80,8 +77,7 @@ class DetailScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 4.0),
                     child: Text(
                       'Name in Chinese:',
-                      style: kH2TextStyle.copyWith(
-                          fontSize: 14.0, color: Colors.grey),
+                      style: kSubHeadTextStyle,
                     ),
                   ),
                   Padding(
@@ -94,7 +90,7 @@ class DetailScreen extends StatelessWidget {
             SizedBox(height: 20),
             Text(
               'Bauhinia blakeana was first discovered in Hong Kong at the end of the 19th century by the fathers of the French Mission at Pok Fu Lam and named after Sir Henry Blake, a former Governor of Hong Kong. It was selected to be Hong Kong’s emblem in 1965.With the establishment of the Hong Kong Special Administrative Region on 1st July 1997, the flower was adopted as a logo on the regional flag.',
-              style: kBodyTextStyle.copyWith(fontWeight: FontWeight.w500),
+              style: kBodyTextStyle,
               maxLines: 4,
               overflow: TextOverflow.ellipsis,
             ),
@@ -177,10 +173,7 @@ class SectionCell extends StatelessWidget {
               ),
               TextSpan(
                 text: title,
-                style: kH1TextStyle.copyWith(
-                  fontSize: 14.0,
-                  color: Colors.grey,
-                ),
+                style: kSubHeadTextStyle,
               ),
             ],
           ),
@@ -189,7 +182,7 @@ class SectionCell extends StatelessWidget {
         desc != null
             ? Text(
                 desc,
-                style: kBodyTextStyle.copyWith(fontWeight: FontWeight.w500),
+                style: kBodyTextStyle,
                 // maxLines: 4,
                 // overflow: TextOverflow.ellipsis,
               )
@@ -235,7 +228,7 @@ class CharacteristicTable extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: Text(
               'Family:',
-              style: kH2TextStyle.copyWith(fontSize: 14.0, color: Colors.grey),
+              style: kSubHeadTextStyle,
             ),
           ),
           Padding(
@@ -251,7 +244,7 @@ class CharacteristicTable extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: Text(
               'Height:',
-              style: kH2TextStyle.copyWith(fontSize: 14.0, color: Colors.grey),
+              style: kSubHeadTextStyle,
             ),
           ),
           Container(
@@ -270,7 +263,7 @@ class CharacteristicTable extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: Text(
               'Nature of Leaf:',
-              style: kH2TextStyle.copyWith(fontSize: 14.0, color: Colors.grey),
+              style: kSubHeadTextStyle,
             ),
           ),
           Padding(
@@ -286,7 +279,7 @@ class CharacteristicTable extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: Text(
               'Branch:',
-              style: kH2TextStyle.copyWith(fontSize: 14.0, color: Colors.grey),
+              style: kSubHeadTextStyle,
             ),
           ),
           Container(
@@ -305,7 +298,7 @@ class CharacteristicTable extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: Text(
               'Bark:',
-              style: kH2TextStyle.copyWith(fontSize: 14.0, color: Colors.grey),
+              style: kSubHeadTextStyle,
             ),
           ),
           Padding(

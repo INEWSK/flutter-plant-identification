@@ -21,7 +21,6 @@ class FQAScreen extends StatelessWidget {
           ),
           child: Text(
             'Dear Flora user, our FAQ section can help you find the answer you want faster',
-            style: kSubHeadTextStyle.copyWith(fontSize: 16.0),
           ),
         ),
         QuestionCell(

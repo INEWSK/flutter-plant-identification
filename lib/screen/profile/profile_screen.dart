@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_hotelapp/common/styles/styles.dart';
-import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/provider/auth_provider.dart';
-import 'package:flutter_hotelapp/screen/auth/widgets/primary_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'components/profile_header.dart';
 
@@ -67,68 +64,48 @@ class _ProfileScreenState extends State<ProfileScreen>
             // dense: true,
             leading: SvgPicture.asset('assets/icons/profile/contact.svg'),
             title: Text('Contact Us'),
-            onTap: () async {
-              contactBottomSheet(context);
-            },
+            onTap: () async => _confirmToEmailDialog(context),
           ),
         ],
       ),
     );
   }
 
-  contactBottomSheet(BuildContext context) {
-    return showModalBottomSheet(
-      isScrollControlled: true,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+  Future<void> _confirmToEmailDialog(BuildContext context) {
+    return showDialog(
       context: context,
-      builder: (BuildContext context) {
-        return FractionallySizedBox(
-          // percentage layout
-          // 85% height of mediaQuery size
-          heightFactor: 0.85,
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.all(kDefaultPadding),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Contact us'.toUpperCase(),
-                    style: kH2TextStyle,
-                  ),
-                  TextField(
-                    controller: TextEditingController(text: 'contact@flora.me'),
-                    enabled: false,
-                    decoration: (InputDecoration(
-                        labelText: 'Recipient:'.toUpperCase())),
-                  ),
-                  TextField(
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: (InputDecoration(
-                        labelText: 'Your email:'.toUpperCase())),
-                  ),
-                  TextField(
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: (InputDecoration(
-                      labelText: 'Topic:'.toUpperCase(),
-                    )),
-                  ),
-                  SizedBox(height: 10),
-                  TextField(
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 9,
-                    decoration:
-                        InputDecoration(hintText: 'Content here'.toUpperCase()),
-                  ),
-                  SizedBox(height: 20),
-                  PrimaryButton(
-                      text: 'send', press: () => Navigator.pop(context)),
-                ],
-              ),
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Contact Us'),
+          content: Text('This will lead you to the email application'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('No'),
             ),
-          ),
+            TextButton(
+              onPressed: () => Navigator.pop(
+                context,
+                _launcherUrl(),
+              ),
+              child: Text('Yes'),
+            ),
+          ],
         );
       },
     );
+  }
+
+  void _launcherUrl() async {
+    final Uri params = Uri(
+        scheme: 'mailto',
+        path: 'me@gmail.com',
+        queryParameters: {'subject': 'This is subject content', 'body': ''});
+    String url = params.toString();
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      print('Could not launch $url');
+    }
   }
 }

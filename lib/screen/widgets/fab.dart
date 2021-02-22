@@ -47,18 +47,8 @@ class FAB extends StatelessWidget {
               // contentPadding: EdgeInsets.all(kDefaultPadding),
               title: Text('Select Image Source'),
               children: [
-                SimpleDialogOption(
-                  onPressed: () {
-                    Navigator.pop(context, ImageSource.gallery);
-                  },
-                  child: Text('Gallery'),
-                ),
-                SimpleDialogOption(
-                  onPressed: () {
-                    Navigator.pop(context, ImageSource.camera);
-                  },
-                  child: Text('Camera'),
-                ),
+                _imageSourceOption(context, 'Gallery', ImageSource.gallery),
+                _imageSourceOption(context, 'Camera', ImageSource.camera),
               ],
             );
           },
@@ -72,6 +62,19 @@ class FAB extends StatelessWidget {
             break;
         }
       },
+    );
+  }
+
+  Widget _imageSourceOption(
+      BuildContext context, String title, ImageSource source) {
+    return SimpleDialogOption(
+      onPressed: () {
+        Navigator.pop(context, source);
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6.0),
+        child: Text(title),
+      ),
     );
   }
 }

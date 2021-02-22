@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/provider/auth_provider.dart';
 import 'package:flutter_hotelapp/provider/theme_provider.dart';
@@ -8,26 +9,34 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatelessWidget {
-  Future<bool> _confirmSignOutDialog(BuildContext context) {
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Logout'),
-          content: Text('Do you want to sign out with this account?'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('No'),
-            ),
-            TextButton(
-              onPressed: () => Navigator.pop(context, true),
-              child: Text('Yes'),
-            ),
-          ],
-        );
-      },
-    );
+  _confirmSignOutDialog(BuildContext context) async {
+    bool signout = await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Logout'),
+            content: Text('Do you want to sign out with this account?'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: Text('No'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: Text('Yes'),
+              ),
+            ],
+          );
+        });
+    if (signout) {
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      // call sign out method
+      authProvider.signOut();
+
+      Navigator.of(context).pop(
+        Toast.show('Sign Out Successful'),
+      );
+    }
   }
 
   Future<void> _selectThemeDialog(BuildContext context) async {
@@ -37,27 +46,9 @@ class SettingsScreen extends StatelessWidget {
           return SimpleDialog(
             title: Text('Select Theme'),
             children: [
-              SimpleDialogOption(
-                onPressed: () => Navigator.pop(context, 1),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 6.0),
-                  child: Text('Light Mode'),
-                ),
-              ),
-              SimpleDialogOption(
-                onPressed: () => Navigator.pop(context, 2),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 6.0),
-                  child: Text('Dark Mode'),
-                ),
-              ),
-              SimpleDialogOption(
-                onPressed: () => Navigator.pop(context, 0),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 6.0),
-                  child: Text('System Mode'),
-                ),
-              ),
+              _themeModeOption(context, 1, 'Light Mode'),
+              _themeModeOption(context, 2, 'Dark Mode'),
+              _themeModeOption(context, 0, 'System Mode'),
             ],
           );
         });
@@ -70,6 +61,16 @@ class SettingsScreen extends StatelessWidget {
     }
   }
 
+  Widget _themeModeOption(BuildContext context, int i, String title) {
+    return SimpleDialogOption(
+      onPressed: () => Navigator.pop(context, i),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6.0),
+        child: Text(title),
+      ),
+    );
+  }
+
   Future<void> _selectLanguageDialog(BuildContext context) async {
     int i = await showDialog(
         context: context,
@@ -77,26 +78,24 @@ class SettingsScreen extends StatelessWidget {
           return SimpleDialog(
             title: Text('Select Language'),
             children: [
-              SimpleDialogOption(
-                onPressed: () => Navigator.pop(context, 1),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 6.0),
-                  child: Text('Traditional Chinese'),
-                ),
-              ),
-              SimpleDialogOption(
-                onPressed: () => Navigator.pop(context, 2),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 6.0),
-                  child: Text('English'),
-                ),
-              )
+              _languageSelect(context, 1, 'Traditional Chinese'),
+              _languageSelect(context, 2, 'English'),
             ],
           );
         });
     if (i != null) {
       log("language selected: ${i == 1 ? "Chinese" : "English"} ");
     }
+  }
+
+  Widget _languageSelect(BuildContext context, int i, String title) {
+    return SimpleDialogOption(
+      onPressed: () => Navigator.pop(context, i),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6.0),
+        child: Text(title),
+      ),
+    );
   }
 
   SvgPicture _appIcon() {
@@ -169,29 +168,31 @@ class SettingsScreen extends StatelessWidget {
               Builder(
                 builder: (context) {
                   return user.status == Status.Authenticated
-                      ? ListTile(
-                          title: Text('Sign Out'),
-                          onTap: () async {
-                            bool signout = await _confirmSignOutDialog(context);
-                            if (signout) {
-                              final authProvider = Provider.of<AuthProvider>(
-                                  context,
-                                  listen: false);
-                              // call sign out method
-                              authProvider.signOut();
-
-                              Navigator.of(context).pop(
-                                Toast.show('Sign Out Successful'),
-                              );
-                            }
-                          },
-                        )
+                      ? _signoutButton(context)
                       : Container();
                 },
               ),
             ],
           );
         },
+      ),
+    );
+  }
+
+  Widget _signoutButton(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: FlatButton(
+          padding: EdgeInsets.symmetric(vertical: 15.0),
+          color: Colors.red,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          ),
+          onPressed: () => _confirmSignOutDialog(context),
+          child: Text('Sign Out', style: kButtonTextStyle),
+        ),
       ),
     );
   }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hotelapp/screen/explore/provider/permission_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'components/google_maps.dart';
 import 'components/location_error_page.dart';
-import 'provider/google_maps_provider.dart';
 
 class ExploreScreen extends StatefulWidget {
   @override
@@ -15,12 +15,13 @@ class _ExploreScreenState extends State<ExploreScreen>
   @override
   bool get wantKeepAlive => true;
 
-  final provider = GoogleMapsProvider();
+  final provider = PermissionProvider();
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: _body(),
     );
   }
@@ -28,7 +29,7 @@ class _ExploreScreenState extends State<ExploreScreen>
   Widget _body() {
     return ChangeNotifierProvider(
       create: (_) => provider,
-      child: Consumer<GoogleMapsProvider>(
+      child: Consumer<PermissionProvider>(
         builder: (_, location, __) {
           switch (location.status) {
             case Status.Unauthorized:
@@ -47,7 +48,7 @@ class _ExploreScreenState extends State<ExploreScreen>
 
 class Loading extends StatelessWidget {
   determindPermission(context) async =>
-      Provider.of<GoogleMapsProvider>(context).determindPermission();
+      Provider.of<PermissionProvider>(context).determindPermission();
 
   @override
   Widget build(BuildContext context) {

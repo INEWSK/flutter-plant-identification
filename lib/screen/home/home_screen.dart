@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen>
         Expanded(
           child: AnimationLimiter(
             child: ListView.builder(
-              addAutomaticKeepAlives: false, // 本體已被包裹在 autoKeepAlive, 故禁用
+              addAutomaticKeepAlives: false, // 本體已被包裹在 autoKeepAlive, 禁用
               // shrinkWrap: true, // 確定 listview 高度
               // physics: NeverScrollableScrollPhysics(),
               itemCount: demoIntroCardData.length,

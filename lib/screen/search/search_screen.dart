@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/screen/detail/detail_screen.dart';
+import 'package:flutter_hotelapp/screen/widgets/search_bar.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
-import 'components/search_box.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -18,12 +18,15 @@ class _SearchScreenState extends State<SearchScreen>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         actions: [
           IconButton(
             tooltip: 'Filter',
             icon: SvgPicture.asset('assets/icons/filter.svg'),
-            onPressed: () {},
+            onPressed: () {
+              showSearch(context: context, delegate: SearchBar());
+            },
           )
         ],
       ),
@@ -35,18 +38,19 @@ class _SearchScreenState extends State<SearchScreen>
     return SingleChildScrollView(
       child: SafeArea(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SearchBox(),
-            RaisedButton(
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DetailScreen(),
+            Center(
+              child: TextButton(
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailScreen(),
+                  ),
                 ),
+                child: Text('Go to Detail Page'),
               ),
-              child: Text('Go to Detail'),
-            )
+            ),
           ],
         ),
       ),

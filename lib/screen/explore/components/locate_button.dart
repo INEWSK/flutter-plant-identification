@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hotelapp/common/utils/device_utils.dart';
 
 class LocateButton extends StatelessWidget {
   final VoidCallback press;
@@ -8,14 +9,15 @@ class LocateButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Align(
-        alignment: Alignment.topRight,
+        alignment:
+            Device.isAndroid ? Alignment.topRight : Alignment.bottomRight,
         child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: FloatingActionButton(
             tooltip: 'Locate',
             heroTag: 'lctbtn',
             onPressed: press,
-            child: Icon(Icons.location_on),
+            child: Icon(Icons.my_location),
           ),
         ),
       ),

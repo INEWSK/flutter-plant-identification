@@ -4,8 +4,10 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hotelapp/common/demo/demo_data.dart';
+import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 
 import 'locate_button.dart';
 
@@ -42,7 +44,7 @@ class _GoogleMapsState extends State<GoogleMaps> {
     }
   }
 
-  _initMarkerIcon(context) async {
+  void _initMarkerIcon(context) async {
     Uint8List _icon =
         await getBytesFromAsset('assets/images/location_marker.png', 100);
 
@@ -77,26 +79,6 @@ class _GoogleMapsState extends State<GoogleMaps> {
     _locatePosition();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    _initMarkerIcon(context);
-    return Stack(
-      children: [
-        GoogleMap(
-          onMapCreated: _onMapCreated,
-          myLocationEnabled: true,
-          myLocationButtonEnabled: false,
-          markers: Set.from(_markers),
-          initialCameraPosition: CameraPosition(target: _center, zoom: 11.0),
-        ),
-        // _locateButton(),
-        LocateButton(
-          press: _locatePosition,
-        )
-      ],
-    );
-  }
-
   // convert image method  for google map marker
   Future<Uint8List> getBytesFromAsset(String path, int width) async {
     ByteData data = await rootBundle.load(path);
@@ -106,5 +88,27 @@ class _GoogleMapsState extends State<GoogleMaps> {
     return (await fi.image.toByteData(format: ui.ImageByteFormat.png))
         .buffer
         .asUint8List();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _initMarkerIcon(context);
+    return Stack(
+      children: [
+        GoogleMap(
+          onMapCreated: _onMapCreated,
+          // mapToolbarEnabled: false, // android only
+          zoomControlsEnabled: false,
+          myLocationEnabled: true,
+          myLocationButtonEnabled: false,
+          markers: Set.from(_markers),
+          initialCameraPosition: CameraPosition(target: _center, zoom: 12.0),
+        ),
+        // _locateButton(),
+        LocateButton(
+          press: _locatePosition,
+        ),
+      ],
+    );
   }
 }

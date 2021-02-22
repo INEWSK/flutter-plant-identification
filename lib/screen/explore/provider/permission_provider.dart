@@ -6,10 +6,10 @@ import 'package:permission_handler/permission_handler.dart';
 
 enum Status { Uninitialized, Authorization, Unauthorized }
 
-class GoogleMapsProvider extends ChangeNotifier {
+class PermissionProvider extends ChangeNotifier {
   Status _status = Status.Uninitialized;
 
-  Status get status => _status;
+  get status => _status;
 
   // 初始化定位權限
   void determindPermission() async {

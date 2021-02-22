@@ -5,7 +5,7 @@ class User {
 
   User(this._email, this._username, this._token);
 
-  String get email => _email;
-  String get username => _username;
-  String get token => _token;
+  get email => _email;
+  get username => _username;
+  get token => _token;
 }

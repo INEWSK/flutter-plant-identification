@@ -1,11 +1,11 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
+import 'package:flutter_hotelapp/screen/view_image/view_image_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-
-import 'view_image.dart';
 
 class FAB extends StatelessWidget {
   final picker = ImagePicker();
@@ -15,14 +15,17 @@ class FAB extends StatelessWidget {
 
     if (pickedFile != null) {
       final image = File(pickedFile.path);
+
+      log('FILE PATH: ${pickedFile.path}');
+
       Navigator.push(
         _,
         MaterialPageRoute(
-          builder: (context) => ViewImage(image: image),
+          builder: (context) => ViewImageScreen(image: image),
         ),
       );
     } else {
-      Toast.show('No Image Select');
+      Toast.show('No Image Selected');
     }
   }
 

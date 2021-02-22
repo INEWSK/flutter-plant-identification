@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hotelapp/screen/detail/detail_sample_screen.dart';
 import 'package:flutter_hotelapp/screen/detail/detail_screen.dart';
+import 'package:flutter_hotelapp/screen/detail/detail_test.dart';
 import 'package:flutter_hotelapp/screen/widgets/search_bar.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -37,21 +38,39 @@ class _SearchScreenState extends State<SearchScreen>
   Widget _body() {
     return SingleChildScrollView(
       child: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: TextButton(
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              TextButton(
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailSampleScreen(),
+                  ),
+                ),
+                child: Text('Detail Page Template'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailTest(),
+                  ),
+                ),
+                child: Text('Detail Page Widget Test'),
+              ),
+              TextButton(
                 onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => DetailScreen(),
                   ),
                 ),
-                child: Text('Go to Detail Page'),
+                child: Text('Fetch Tree Data from Backend'),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

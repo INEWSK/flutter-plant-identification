@@ -1,0 +1,356 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_hotelapp/common/styles/styles.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+class DetailPageWidget extends StatelessWidget {
+  final String commonName;
+  final String scientificName;
+  final String chineseName;
+  final String basicIntro;
+  final String specialFeatures;
+  final String learnMore;
+  final String characteristicsIntro;
+  final String leafIntro;
+  final String flowerIntro;
+  final String fruitIntro;
+
+  const DetailPageWidget(
+      {Key key,
+      @required this.commonName,
+      this.scientificName,
+      this.chineseName,
+      this.basicIntro,
+      this.specialFeatures,
+      this.learnMore,
+      this.characteristicsIntro,
+      this.leafIntro,
+      this.flowerIntro,
+      this.fruitIntro})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var brightness = MediaQuery.of(context).platformBrightness;
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.all(kDefaultPadding),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              commonName,
+              style: kH1TextStyle.copyWith(fontSize: 14.0),
+            ),
+            SizedBox(height: 10),
+            Table(
+              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+              columnWidths: {
+                0: FlexColumnWidth(4),
+                1: FlexColumnWidth(6),
+              },
+              border: TableBorder(
+                  horizontalInside: BorderSide(
+                width: 1.0,
+                color: Colors.grey[300],
+              )),
+              children: [
+                TableRow(children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    child: Text(
+                      'Scientific Name:',
+                      style: kSubHeadTextStyle,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    child: Text(
+                      scientificName ?? '',
+                      style: kBodyTextStyle.copyWith(color: Colors.green),
+                    ),
+                  ),
+                ]),
+                TableRow(children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    child: Text(
+                      'Common Name:',
+                      style: kSubHeadTextStyle,
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    decoration: BoxDecoration(color: Colors.lightGreen[50]),
+                    child: Text(
+                      commonName,
+                      // 解決暗色模式時背景色導致字體看不見問題
+                      style: brightness == Brightness.dark
+                          ? TextStyle(color: Colors.black)
+                          : TextStyle(),
+                    ),
+                  ),
+                ]),
+                TableRow(children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    child: Text(
+                      'Name in Chinese:',
+                      style: kSubHeadTextStyle,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    child: Text(
+                      chineseName ?? '',
+                      style: kBodyTextStyle,
+                    ),
+                  ),
+                ])
+              ],
+            ),
+            SizedBox(height: 20),
+            basicIntro != null
+                ? Text(
+                    basicIntro,
+                    style: kBodyTextStyle,
+                    maxLines: 4,
+                    overflow: TextOverflow.ellipsis,
+                  )
+                : SizedBox(),
+            specialFeatures != null
+                ? SectionCell(
+                    icon: SvgPicture.asset('assets/icons/sp_features.svg'),
+                    title: 'Special Features',
+                    content: specialFeatures,
+                  )
+                : SizedBox(),
+            learnMore != null
+                ? SectionCell(
+                    icon: SvgPicture.asset('assets/icons/information.svg'),
+                    title: 'To Learn More',
+                    content: learnMore,
+                  )
+                : SizedBox(),
+            SectionCell(
+              icon: SvgPicture.asset('assets/icons/characteristics.svg'),
+              title: 'Characteristics',
+            ),
+            CharacteristicTable(
+              family: 'Caesalpiniaceae',
+              height: 'Medium-sized, 10 to 20 metres',
+              nature: 'Evergreen',
+              branch: 'Long and spreading or drooping branches.',
+              bark:
+                  'Bark greyish white or light brown in colour, with inconspicuous lenticels on the surface.',
+            ),
+            leafIntro != null
+                ? SectionCell(
+                    icon: SvgPicture.asset('assets/icons/leaf.svg'),
+                    title: 'Leaf',
+                    content: leafIntro,
+                  )
+                : SizedBox(),
+            flowerIntro != null
+                ? SectionCell(
+                    icon: SvgPicture.asset('assets/icons/flower.svg'),
+                    title: 'Flower',
+                    content: flowerIntro,
+                  )
+                : SizedBox(),
+            fruitIntro != null
+                ? SectionCell(
+                    icon: SvgPicture.asset('assets/icons/fruit.svg'),
+                    title: 'Fruit',
+                    content: fruitIntro,
+                  )
+                : SizedBox(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SectionCell extends StatelessWidget {
+  final SvgPicture icon;
+  final String title;
+  final String content;
+
+  const SectionCell({
+    Key key,
+    @required this.icon,
+    @required this.title,
+    this.content,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SectionDivider(),
+        Text.rich(
+          TextSpan(
+            children: [
+              WidgetSpan(
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: icon,
+                ),
+              ),
+              TextSpan(
+                text: title,
+                style: kSubHeadTextStyle,
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 10),
+        content != null
+            ? Text(
+                content,
+                style: kBodyTextStyle,
+                // maxLines: 4,
+                // overflow: TextOverflow.ellipsis,
+              )
+            : Container(),
+      ],
+    );
+  }
+}
+
+class CharacteristicTable extends StatelessWidget {
+  const CharacteristicTable({
+    Key key,
+    @required this.family,
+    @required this.height,
+    @required this.nature,
+    @required this.branch,
+    @required this.bark,
+  }) : super(key: key);
+
+  final String family;
+  final String height;
+  final String nature;
+  final String branch;
+  final String bark;
+
+  @override
+  Widget build(BuildContext context) {
+    var brightness = MediaQuery.of(context).platformBrightness;
+    return Table(
+      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+      columnWidths: {
+        0: FlexColumnWidth(4),
+        1: FlexColumnWidth(6),
+      },
+      border: TableBorder(
+          horizontalInside: BorderSide(
+        width: 1.0,
+        color: Colors.grey[300],
+      )),
+      children: [
+        TableRow(children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: Text(
+              'Family:',
+              style: kSubHeadTextStyle,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: Text(
+              family,
+              style: kSecondaryBodyTextStyle,
+            ),
+          ),
+        ]),
+        TableRow(children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: Text(
+              'Height:',
+              style: kSubHeadTextStyle,
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            decoration: BoxDecoration(color: Colors.lightGreen[50]),
+            child: Text(
+              height,
+              style: brightness == Brightness.dark
+                  ? kSecondaryBodyTextStyle.copyWith(color: Colors.black)
+                  : kSecondaryBodyTextStyle,
+            ),
+          ),
+        ]),
+        TableRow(children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: Text(
+              'Nature of Leaf:',
+              style: kSubHeadTextStyle,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: Text(
+              nature,
+              style: kSecondaryBodyTextStyle,
+            ),
+          ),
+        ]),
+        TableRow(children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: Text(
+              'Branch:',
+              style: kSubHeadTextStyle,
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            decoration: BoxDecoration(color: Colors.lightGreen[50]),
+            child: Text(
+              branch,
+              style: brightness == Brightness.dark
+                  ? kSecondaryBodyTextStyle.copyWith(color: Colors.black)
+                  : kSecondaryBodyTextStyle,
+            ),
+          ),
+        ]),
+        TableRow(children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: Text(
+              'Bark:',
+              style: kSubHeadTextStyle,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: Text(
+              bark,
+              style: kSecondaryBodyTextStyle,
+            ),
+          ),
+        ]),
+      ],
+    );
+  }
+}
+
+class SectionDivider extends StatelessWidget {
+  const SectionDivider({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: Divider(),
+    );
+  }
+}

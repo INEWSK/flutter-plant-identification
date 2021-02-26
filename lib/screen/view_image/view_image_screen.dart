@@ -49,7 +49,7 @@ class ViewImageScreen extends StatelessWidget {
             child: MaterialButton(
               padding: const EdgeInsets.all(16.0),
               onPressed: () => Navigator.of(context)
-                  .pop(_upload(image)), // TODO: upload image to server
+                  .pop(_upload(image)), // TODO: show loading and result dialog
               color: Colors.green,
               child: Icon(
                 Icons.check,

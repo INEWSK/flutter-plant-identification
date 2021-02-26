@@ -4,8 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
+// TODO: get darkmode
 extension ThemeModeExtension on ThemeMode {
-  String get value => <String>['System', 'Light', 'Dark'][index];
+  get value => <String>['System', 'Light', 'Dark'][index];
 }
 
 class ThemeProvider extends ChangeNotifier {

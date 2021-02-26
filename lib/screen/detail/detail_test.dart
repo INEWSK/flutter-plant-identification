@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-
-import 'components/detail_widget.dart';
+import 'package:flutter_hotelapp/screen/detail/components/detail_widget.dart';
 
 class DetailTest extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: DetailPageWidget(
-        commonName: 'This is common name',
-        scientificName: 'This is scientific name',
-        chineseName: '這是中文名',
+        imageUrl: 'assets/images/image_header.png',
+        commonName: 'test',
+        scientificName: 'test',
+        chineseName: 'null',
+        basicIntro: 'null',
       ),
     );
   }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/screen/detail/detail_sample_screen.dart';
 import 'package:flutter_hotelapp/screen/detail/detail_screen.dart';
-import 'package:flutter_hotelapp/screen/detail/detail_test.dart';
 import 'package:flutter_hotelapp/screen/widgets/search_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import 'components/plant_card.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -40,7 +41,7 @@ class _SearchScreenState extends State<SearchScreen>
       child: SafeArea(
         child: Center(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextButton(
                 onPressed: () => Navigator.push(
@@ -55,19 +56,17 @@ class _SearchScreenState extends State<SearchScreen>
                 onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => DetailTest(),
-                  ),
-                ),
-                child: Text('Detail Page Widget Test'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
                     builder: (context) => DetailScreen(),
                   ),
                 ),
                 child: Text('Fetch Tree Data from Backend'),
+              ),
+              PlantCard(
+                imgSrc: "assets/images/bauhinia_blakeana.jpg",
+                title: "Bauhinia blakeana",
+                sname: "Hong Kong orchid tree",
+                intro: "123",
+                press: () {},
               ),
             ],
           ),

@@ -24,46 +24,50 @@ class IntroCard extends StatelessWidget {
         vertical: kDefaultPadding / 4, // 5
       ),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8.0),
-          color: brightness == Brightness.dark ? Colors.black54 : Colors.white,
-          boxShadow: [
-            BoxShadow(
-              offset: Offset(1.0, 2.0), // 阴影 x y 轴位置偏移量
-              blurRadius: 3.0, // 陰影模糊範圍
-              spreadRadius: 0.0, // 模糊大小
-              color: Color(0xFF203647).withOpacity(0.2),
-            )
-          ]),
+        borderRadius: BorderRadius.circular(8.0),
+        color: brightness == Brightness.dark ? Colors.black54 : Colors.white,
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(1.0, 2.0), // 阴影 x y 轴位置偏移量
+            blurRadius: 3.0, // 陰影模糊範圍
+            spreadRadius: 0.0, // 模糊大小
+            color: Color(0xFF203647).withOpacity(0.2),
+          )
+        ],
+      ),
       child: Stack(
         alignment: Alignment.centerLeft,
         children: [
           /// image
-          _image(),
+          _image(context),
           _text(context),
         ],
       ),
+      height: 152, // 卡片大小
     );
   }
 
-  Widget _image() {
+  Widget _image(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Positioned(
       right: 15.0,
       child: SvgPicture.asset(
         image,
         // restricted width
-        width: 128,
+        width: size.width * 0.3, // 30%
       ),
     );
   }
 
   Widget _text(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: 20.0,
         vertical: 16.0,
       ),
-      height: 152, // 該數值決定容器最終大小
-      width: MediaQuery.of(context).size.width - 170,
+      // height: 152, // 該數值決定容器最終大小
+      width: size.width * 0.65, // 65% of the container
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

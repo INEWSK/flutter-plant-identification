@@ -61,7 +61,9 @@ dev_dependencies:
   build_runner: ^1.11.1
   flutter_launcher_icons: ^0.8.1
   flutter_native_splash: ^0.2.9
+  # freezed: ^0.12.7
   hive_generator: ^0.8.2
+  # json_serializable: ^4.0.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

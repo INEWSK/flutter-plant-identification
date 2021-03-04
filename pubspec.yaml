@@ -50,6 +50,7 @@ dependencies:
   photo_view: ^0.10.3
   provider: ^4.3.3
   shared_preferences: ^0.5.12+4
+  shimmer: ^1.1.2
   sp_util: ^1.0.2
   url_launcher: ^5.7.10
 
@@ -63,7 +64,6 @@ dev_dependencies:
   flutter_native_splash: ^0.2.9
   # freezed: ^0.12.7
   hive_generator: ^0.8.2
-  # json_serializable: ^4.0.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

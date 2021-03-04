@@ -44,9 +44,7 @@ class PlantCard extends StatelessWidget {
       children: [
         FlatButton(
           textColor: Colors.green,
-          onPressed: () {
-            // Perform some action
-          },
+          onPressed: press,
           child: const Text('VIEW MORE'),
         ),
       ],

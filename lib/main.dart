@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_hotelapp/screen/view_image/provider/view_image_provider.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +32,9 @@ void main() {
     final intlProvider = ChangeNotifierProvider(
       create: (_) => IntlProvider(),
     );
+    final imgProvider = ChangeNotifierProvider(
+      create: (_) => ViewImageProvider(),
+    );
 
     runApp(
       MultiProvider(
@@ -38,6 +42,7 @@ void main() {
           authProvider,
           themeProvider,
           intlProvider,
+          imgProvider,
         ],
         child: MyApp(),
       ),

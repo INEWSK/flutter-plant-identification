@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-enum Status { Uninitialized, Authorization, Unauthorized }
+enum Status { Uninitialized, Permitted, Forbidden }
 
 class PermissionProvider extends ChangeNotifier {
   Status _status = Status.Uninitialized;
@@ -32,14 +32,14 @@ class PermissionProvider extends ChangeNotifier {
     if (status.isPermanentlyDenied) {
       // 永久拒絕, 不執行其他動作
       log('定位權限被永久拒絕, 顯示權限請求界面');
-      _status = Status.Unauthorized;
+      _status = Status.Forbidden;
       notifyListeners();
     }
 
     // 權限授權 => 跳轉地圖
     if (status.isGranted) {
       log('權限授權成功, 開始跳轉谷歌地圖');
-      _status = Status.Authorization;
+      _status = Status.Permitted;
       notifyListeners();
     }
   }
@@ -66,7 +66,7 @@ class PermissionProvider extends ChangeNotifier {
 
     // 如果已經在設定中賦予權限了則跳轉到地圖
     if (status.isGranted) {
-      _status = Status.Authorization;
+      _status = Status.Permitted;
       notifyListeners();
     }
   }

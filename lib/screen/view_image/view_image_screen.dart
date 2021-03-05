@@ -1,11 +1,10 @@
-import 'dart:developer';
 import 'dart:io';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
-import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
+import 'package:flutter_hotelapp/screen/view_image/provider/view_image_provider.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:provider/provider.dart';
 
 class ViewImageScreen extends StatelessWidget {
   final File image;
@@ -25,6 +24,9 @@ class ViewImageScreen extends StatelessWidget {
   }
 
   Widget _body(BuildContext context) {
+    //Provider.of 用于用於訪問特定數據且set listen為false不進行UI重構
+    final imgProvider = Provider.of<ViewImageProvider>(context, listen: false);
+
     return Stack(
       children: [
         PhotoView(
@@ -48,8 +50,9 @@ class ViewImageScreen extends StatelessWidget {
             padding: EdgeInsets.all(kDefaultPadding),
             child: MaterialButton(
               padding: const EdgeInsets.all(16.0),
-              onPressed: () => Navigator.of(context)
-                  .pop(_upload(image)), // TODO: show loading and result dialog
+              onPressed: () => Navigator.of(context).pop(
+                imgProvider.upload(image),
+              ), // TODO: show loading and result dialog
               color: Colors.green,
               child: Icon(
                 Icons.check,
@@ -64,28 +67,5 @@ class ViewImageScreen extends StatelessWidget {
         )
       ],
     );
-  }
-
-  // TODO: MVC
-  void _upload(File file) async {
-    // 取檔案路徑最後一個 '/' 餘後的內容作為檔案名字.
-    String fileName = file.path.split('/').last;
-
-    FormData data = FormData.fromMap({
-      "image": await MultipartFile.fromFile(
-        file.path,
-        filename: fileName,
-      )
-    });
-
-    Dio dio = Dio();
-
-    dio
-        .post('http://10.0.2.2:8000/flora/tree-ai/', data: data)
-        .then((response) {
-      String msg = response.toString();
-      log('SERVER RESPONSE: $response');
-      Toast.show(msg);
-    }).catchError((onError) => print(onError));
   }
 }

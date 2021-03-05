@@ -32,11 +32,12 @@ class _ExploreScreenState extends State<ExploreScreen>
       child: Consumer<PermissionProvider>(
         builder: (_, location, __) {
           switch (location.status) {
-            case Status.Unauthorized:
+            case Status.Forbidden:
               return LocationErrorPage(press: location.requestPermission);
               break;
-            case Status.Authorization:
+            case Status.Permitted:
               return GoogleMaps();
+              break;
             default:
               return Loading();
           }

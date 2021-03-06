@@ -20,7 +20,7 @@ class TreeDataProvider extends ChangeNotifier {
   // dio baseoption preset
   Dio dio = Dio(
     BaseOptions(
-      connectTimeout: 10000,
+      connectTimeout: 10000, //10s
       receiveTimeout: 100000,
       headers: {
         HttpHeaders.acceptHeader: "application/json",
@@ -40,11 +40,16 @@ class TreeDataProvider extends ChangeNotifier {
   //使用 dio 從後端獲取花草的數據
   //TODO: network connection detect.
   Future<void> fetchTreeData() async {
-    // loading data
-    _status = Status.Loading;
-    notifyListeners();
+    // 第一次加載頁面時未重構完成就通知再次重構頁面
+    // 出現dirty build情況
+    // 增加條件判斷防止連續兩次通知UI重構
+    if (_status != Status.Uninitialized) {
+      _status = Status.Loading;
+      notifyListeners();
+    }
 
     final url = "$localUrl/flora/tree/";
+
     try {
       final response = await dio.get(url);
 
@@ -54,19 +59,16 @@ class TreeDataProvider extends ChangeNotifier {
       //data loaded;
       _status = Status.Loaded;
       _list = data;
-
       notifyListeners();
     } on DioError catch (e) {
-      //輸出錯誤到控制台
-      log('TreeDataProvider -> ${e.message}');
-      //將錯誤輸入到包裝好的dioException簡化結果再輸出
+      //簡化錯誤結果
       final error = DioExceptions.fromDioError(e);
+      //輸出錯誤到控制台
+      log('TreeDataProvider -> ${error.messge}');
       //返回toast到前端, 這裏之後修改放到UI層面
       Toast.show(error.messge + '.\nPlease try again later');
 
-      //data loaded and it's error status;
       _status = Status.Error;
-
       notifyListeners();
     }
   }

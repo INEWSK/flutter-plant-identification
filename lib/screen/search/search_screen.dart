@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/screen/detail/detail_sample_screen.dart';
 import 'package:flutter_hotelapp/screen/widgets/error_page.dart';
 import 'package:flutter_hotelapp/screen/widgets/search_bar.dart';
+import 'package:flutter_hotelapp/screen/widgets/shimmer_effect.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-
-import 'components/load_tree_data_animation.dart';
 import 'components/plant_card.dart';
 import 'provider/tree_data_provider.dart';
 
@@ -53,13 +52,13 @@ class _SearchScreenState extends State<SearchScreen>
             case Status.Loaded:
               return _buildTreeCard(data);
               break;
+            // TODO: 視情況修改loading effect, 有點唐突
             case Status.Loading:
-              return LoadTreeDataShimmer();
+              return ShimmerEffect();
               break;
             default:
-              // 有 dirty build情況, 以後修改.
               data.fetchTreeData();
-              return LoadTreeDataShimmer();
+              return ShimmerEffect();
           }
         },
       ),
@@ -70,8 +69,6 @@ class _SearchScreenState extends State<SearchScreen>
     return RefreshIndicator(
       onRefresh: () => provider.fetchTreeData(),
       child: ListView.builder(
-        //每個viewbuilder都有shrinkwrap用於確認屏幕可滾動大小
-        //若false則嘗試占用整個父級空間,否則只用子級内容所需大小, 但仍會滾動
         // shrinkWrap: true,
         itemCount: provider.treeData.length,
         itemBuilder: (BuildContext context, int index) {

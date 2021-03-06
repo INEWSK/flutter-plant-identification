@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:shimmer/shimmer.dart';
 
-class LoadTreeDataShimmer extends StatelessWidget {
+class ShimmerEffect extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

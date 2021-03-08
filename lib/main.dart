@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_hotelapp/screen/view_image/provider/view_image_provider.dart';
+import 'package:flutter_hotelapp/provider/api_provider.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
@@ -32,17 +32,17 @@ void main() {
     final intlProvider = ChangeNotifierProvider(
       create: (_) => IntlProvider(),
     );
-    final imgProvider = ChangeNotifierProvider(
-      create: (_) => ViewImageProvider(),
+    final apiProvider = ChangeNotifierProvider(
+      create: (_) => ApiProvider(),
     );
 
     runApp(
       MultiProvider(
         providers: [
-          authProvider,
-          themeProvider,
-          intlProvider,
-          imgProvider,
+          authProvider, // 管理用戶狀態
+          themeProvider, // 管理APP主題界面
+          intlProvider, // 管理APP語言
+          apiProvider, // API CALL
         ],
         child: MyApp(),
       ),

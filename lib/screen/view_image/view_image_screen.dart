@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
-import 'package:flutter_hotelapp/screen/view_image/provider/view_image_provider.dart';
+import 'package:flutter_hotelapp/provider/api_provider.dart';
+import 'package:flutter_hotelapp/screen/auth/widgets/primary_button.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
 
@@ -24,8 +25,8 @@ class ViewImageScreen extends StatelessWidget {
   }
 
   Widget _body(BuildContext context) {
-    //Provider.of 用于用於訪問特定數據且set listen為false不進行UI重構
-    final imgProvider = Provider.of<ViewImageProvider>(context, listen: false);
+    //Provider.of 用于用於訪問特定數據, set listen為false不進行UI重構
+    final apiProvider = Provider.of<ApiProvider>(context, listen: false);
 
     return Stack(
       children: [
@@ -45,26 +46,25 @@ class ViewImageScreen extends StatelessWidget {
           initialScale: PhotoViewComputedScale.contained,
           basePosition: Alignment.center,
         ),
+        // 確認按鈕
         Positioned(
           child: Padding(
-            padding: EdgeInsets.all(kDefaultPadding),
-            child: MaterialButton(
-              padding: const EdgeInsets.all(16.0),
-              onPressed: () => Navigator.of(context).pop(
-                imgProvider.upload(image),
-              ), // TODO: show loading and result dialog
-              color: Colors.green,
-              child: Icon(
-                Icons.check,
-                color: Colors.white,
-              ),
-              shape: CircleBorder(),
+            padding: EdgeInsets.symmetric(
+              vertical: kDefaultPadding,
+              horizontal: kDefaultPadding * 2.5,
+            ),
+            child: PrimaryButton(
+              press: () {
+                //呼叫 api upload image 並關閉當前頁
+                Navigator.of(context).pop(apiProvider.upload(image));
+              },
+              text: 'Upload',
             ),
           ),
           right: 0,
           bottom: 0,
           left: 0,
-        )
+        ),
       ],
     );
   }

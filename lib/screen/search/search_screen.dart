@@ -52,7 +52,6 @@ class _SearchScreenState extends State<SearchScreen>
             case Status.Loaded:
               return _buildTreeCard(data);
               break;
-            // TODO: 視情況修改loading effect, 有點唐突
             case Status.Loading:
               return ShimmerEffect();
               break;

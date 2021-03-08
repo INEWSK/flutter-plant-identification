@@ -40,10 +40,9 @@ class TreeDataProvider extends ChangeNotifier {
   //使用 dio 從後端獲取花草的數據
   //TODO: network connection detect.
   Future<void> fetchTreeData() async {
-    // 第一次加載頁面時未重構完成就通知再次重構頁面
-    // 出現dirty build情況
-    // 增加條件判斷防止連續兩次通知UI重構
-    if (_status != Status.Uninitialized) {
+    /// retry fetch data
+    /// 錯誤頁面下會重新顯示 shimmer effect 當重新加載時
+    if (_status == Status.Error) {
       _status = Status.Loading;
       notifyListeners();
     }
@@ -57,6 +56,7 @@ class TreeDataProvider extends ChangeNotifier {
       var data = treeResponseFromJson(response.data);
 
       //data loaded;
+      log('data loaded');
       _status = Status.Loaded;
       _list = data;
       notifyListeners();

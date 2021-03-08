@@ -32,7 +32,8 @@ class FAB extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      elevation: 0.0,
+      heroTag: 'cameraButton',
+      elevation: 6.0,
       child: IconButton(
         tooltip: 'Camera',
         icon: SvgPicture.asset(

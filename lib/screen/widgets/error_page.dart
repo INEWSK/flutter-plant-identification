@@ -29,10 +29,12 @@ class ErrorPage extends StatelessWidget {
                   ),
                 ],
               ),
-              child: FlatButton(
-                color: Colors.white,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(45)),
+              child: ElevatedButton(
+                //繼承 elevated button 的 style 再改變 style 屬性
+                style: ElevatedButton.styleFrom(primary: Colors.white),
+                // color: Colors.white,
+                // shape: RoundedRectangleBorder(
+                //     borderRadius: BorderRadius.circular(45)),
                 onPressed: press,
                 child: Text(
                   "retry".toUpperCase(),

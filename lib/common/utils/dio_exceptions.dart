@@ -32,27 +32,27 @@ class DioExceptions implements Exception {
 
   DioExceptions.fromDioError(DioError error) {
     switch (error.type) {
-      case DioErrorType.CANCEL:
+      case DioErrorType.cancel:
         _code = CANCEL;
         _message = "Request to API server was cancelled";
         break;
-      case DioErrorType.CONNECT_TIMEOUT:
+      case DioErrorType.connectTimeout:
         _code = CONNECT_TIMEOUT;
         _message = "Connection timeout with API server";
         break;
-      case DioErrorType.DEFAULT:
+      case DioErrorType.other:
         _code = UNKNOWN;
-        _message = "Connection to API server failed due to internet connection";
+        _message = "Connection to API server failed";
         break;
-      case DioErrorType.RECEIVE_TIMEOUT:
+      case DioErrorType.receiveTimeout:
         _code = RECEIVE_TIMEOUT;
         _message = "Receive timeout in connection with API server";
         break;
-      case DioErrorType.RESPONSE:
+      case DioErrorType.response:
         _code = HTTP_ERROR;
         _message = _handleError(error.response.statusCode, error.response.data);
         break;
-      case DioErrorType.SEND_TIMEOUT:
+      case DioErrorType.sendTimeout:
         _code = SEND_TIMEOUT;
         _message = "Send timeout in connection with API server";
         break;

@@ -4,7 +4,7 @@ import 'package:flutter_hotelapp/common/utils/form_field_validator.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/provider/auth_provider.dart';
 import 'package:flutter_hotelapp/screen/auth/widgets/auth_form_field.dart';
-import 'package:flutter_hotelapp/screen/auth/widgets/primary_button.dart';
+import 'package:flutter_hotelapp/screen/widgets/primary_button.dart';
 import 'package:provider/provider.dart';
 
 import 'forgot_button.dart';

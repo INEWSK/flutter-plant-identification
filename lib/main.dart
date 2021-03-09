@@ -4,6 +4,7 @@ import 'package:flutter_hotelapp/provider/api_provider.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:sp_util/sp_util.dart';
 
 import 'app.dart';
 import 'common/utils/device_utils.dart';
@@ -19,8 +20,10 @@ void main() {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]).then((_) async {
-    /// init data store
+    // init data store
     await Hive.initFlutter();
+    // init sp
+    await SpUtil.getInstance();
 
     /// init provider
     final authProvider = ChangeNotifierProvider(

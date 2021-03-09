@@ -12,7 +12,7 @@ class PrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    EdgeInsets verticalPadding = EdgeInsets.symmetric(vertical: 20.0);
+    EdgeInsets verticalPadding = EdgeInsets.symmetric(vertical: 16.0);
 
     return SizedBox(
       width: double.infinity,
@@ -21,16 +21,18 @@ class PrimaryButton extends StatelessWidget {
               padding: verticalPadding,
               color: Colors.green,
               onPressed: press,
-              borderRadius: BorderRadius.all(Radius.circular(50.0)),
+              // borderRadius: BorderRadius.all(Radius.circular(50.0)),
               child: textContext(context),
             )
-          : FlatButton(
-              padding: verticalPadding,
-              color: Colors.green,
-              onPressed: press,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(50.0)),
+          : ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.green,
+                padding: verticalPadding,
               ),
+              onPressed: press,
+              // shape: RoundedRectangleBorder(
+              //   borderRadius: BorderRadius.all(Radius.circular(50.0)),
+              // ),
               child: textContext(context),
             ),
     );

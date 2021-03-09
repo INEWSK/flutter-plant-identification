@@ -29,10 +29,10 @@ class LocationErrorPage extends StatelessWidget {
                 ),
               ],
             ),
-            child: FlatButton(
-              color: Color(0xFFFF9858),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(45)),
+            child: ElevatedButton(
+              // color: Color(0xFFFF9858),
+              // shape: RoundedRectangleBorder(
+              //     borderRadius: BorderRadius.circular(45)),
               onPressed: press,
               child: Text(
                 "Enable".toUpperCase(),

@@ -39,7 +39,7 @@ class SettingsScreen extends StatelessWidget {
     }
   }
 
-  Future<void> _selectThemeDialog(BuildContext context) async {
+  _selectThemeDialog(BuildContext context) async {
     int i = await showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -61,17 +61,7 @@ class SettingsScreen extends StatelessWidget {
     }
   }
 
-  Widget _themeModeOption(BuildContext context, int i, String title) {
-    return SimpleDialogOption(
-      onPressed: () => Navigator.pop(context, i),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 6.0),
-        child: Text(title),
-      ),
-    );
-  }
-
-  Future<void> _selectLanguageDialog(BuildContext context) async {
+  _selectLanguageDialog(BuildContext context) async {
     int i = await showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -86,6 +76,16 @@ class SettingsScreen extends StatelessWidget {
     if (i != null) {
       log("language selected: ${i == 1 ? "Chinese" : "English"} ");
     }
+  }
+
+  Widget _themeModeOption(BuildContext context, int i, String title) {
+    return SimpleDialogOption(
+      onPressed: () => Navigator.pop(context, i),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6.0),
+        child: Text(title),
+      ),
+    );
   }
 
   Widget _languageSelect(BuildContext context, int i, String title) {
@@ -183,13 +183,17 @@ class SettingsScreen extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: FlatButton(
-          padding: EdgeInsets.symmetric(vertical: 15.0),
-          color: Colors.red,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+        padding: const EdgeInsets.all(16.0),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: Colors.red,
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
           ),
+          // padding: EdgeInsets.symmetric(vertical: 15.0),
+          // color: Colors.red,
+          // shape: RoundedRectangleBorder(
+          //   borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          // ),
           onPressed: () => _confirmSignOutDialog(context),
           child: Text('Sign Out', style: kButtonTextStyle),
         ),

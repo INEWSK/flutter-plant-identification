@@ -6,16 +6,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
-import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ApiProvider extends ChangeNotifier {
-  bool _uploading = false;
-
   final key = UniqueKey();
-
-  get uploading => _uploading;
 
   void upload(File file) async {
     final apiUrl = 'http://10.0.2.2:8000/flora/tree-ai/';
@@ -23,8 +18,6 @@ class ApiProvider extends ChangeNotifier {
     // simple loading toast when waiting server response result
     _loadingToast();
 
-    _uploading = true;
-    notifyListeners();
     // 取檔案路徑最後一個 '/' 餘後的內容作為檔案名字.
     String fileName = file.path.split('/').last;
 
@@ -44,17 +37,11 @@ class ApiProvider extends ChangeNotifier {
 
       BotToast.remove(key);
 
-      _uploading = false;
-      notifyListeners();
-
       _resultToast(result);
 
       return result;
     }).catchError((onError) {
       BotToast.remove(key);
-
-      _uploading = false;
-      notifyListeners();
 
       log('upload image go wrong: $onError');
     });

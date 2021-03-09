@@ -1,5 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hotelapp/screen/widgets/circular_indicator.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 
@@ -22,15 +23,15 @@ class MyApp extends StatelessWidget {
     final botToastBuilder = BotToastInit();
     return OKToast(
       child: Consumer3(
-        builder: (_, ThemeProvider provider, AuthProvider user,
+        builder: (_, ThemeProvider themer, AuthProvider user,
             IntlProvider locale, __) {
           return MaterialApp(
             theme: theme ?? lightTheme,
             darkTheme: darkTheme,
-            themeMode: provider.themeMode, // TODO: 持久化
+            themeMode: themer.themeMode, // TODO: 持久化
             routes: Routes.routes,
             builder: (context, child) {
-              /// 文字大小不受手機設定影響(强制放大)
+              /// 文字大小不受手機設定影響(不被强制放大)
               /// https://www.kikt.top/posts/flutter/layout/dynamic-text/
               child = MediaQuery(
                 data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
@@ -43,34 +44,23 @@ class MyApp extends StatelessWidget {
             home: home ??
                 Builder(builder: (_) {
                   return user.status == Status.Uninitialized
-                      ? Loading()
+                      ? _loading(user)
                       : MainScreen();
                 }),
           );
         },
       ),
 
-      /// OKToast widget style
+      /// global OKToast widget style
       backgroundColor: Colors.black54,
       textPadding: kToastPadding,
       radius: 25.0,
       position: ToastPosition.bottom,
     );
   }
-}
 
-class Loading extends StatelessWidget {
-  initAuthProvider(context) async {
-    Provider.of<AuthProvider>(context).initAuthProvider();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    initAuthProvider(context);
-    return Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
+  _loading(AuthProvider user) {
+    user.initAuthProvider();
+    return CircularIndicator();
   }
 }

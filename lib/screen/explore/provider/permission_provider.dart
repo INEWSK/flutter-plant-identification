@@ -14,7 +14,6 @@ class PermissionProvider extends ChangeNotifier {
   // 初始化定位權限
   void determindPermission() async {
     // 權限狀態
-    log('初始化 -> 檢測定位權限');
     PermissionStatus status = await Permission.location.status;
 
     if (!status.isGranted && !status.isPermanentlyDenied) {
@@ -46,21 +45,19 @@ class PermissionProvider extends ChangeNotifier {
 
   // 定位權限請求
   void requestPermission() async {
-    // 檢查權限
-    PermissionStatus status = await Permission.location.status;
+    // 更新權限狀態
+    PermissionStatus status = await Permission.location.request();
+    log('權限狀態: $status');
 
     // 如果依舊是永久拒絕則跳轉 APP 手動設定權限
     // Android 在設定中重新賦予或者取消權限會退出 APP
     // 後續不執行其他動作
-    if (status.isPermanentlyDenied) {
+    if (status.isPermanentlyDenied || status.isDenied) {
       log('定位權限被永久拒絕, 嘗試打開 APP 設定頁面');
+
       bool opened = await openAppSettings();
       if (!opened) {
         log('Failed to open App Setting Page');
-      }
-    } else {
-      if (!status.isGranted) {
-        status = await Permission.location.request();
       }
     }
 

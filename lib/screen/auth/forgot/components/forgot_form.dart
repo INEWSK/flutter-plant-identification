@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/common/utils/form_field_validator.dart';
-import 'package:flutter_hotelapp/screen/auth/widgets/primary_button.dart';
+import 'package:flutter_hotelapp/screen/widgets/primary_button.dart';
 
 class ForgotForm extends StatefulWidget {
   @override

@@ -42,10 +42,14 @@ class PlantCard extends StatelessWidget {
     return ButtonBar(
       alignment: MainAxisAlignment.end,
       children: [
-        FlatButton(
-          textColor: Colors.green,
+        TextButton(
           onPressed: press,
-          child: const Text('VIEW MORE'),
+          child: const Text(
+            'VIEW MORE',
+            style: TextStyle(
+              color: Colors.green,
+            ),
+          ),
         ),
       ],
     );

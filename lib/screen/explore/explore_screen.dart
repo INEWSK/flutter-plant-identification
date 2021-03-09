@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/screen/explore/provider/permission_provider.dart';
+import 'package:flutter_hotelapp/screen/widgets/circular_indicator.dart';
 import 'package:provider/provider.dart';
 
 import 'components/google_maps.dart';
@@ -39,24 +40,10 @@ class _ExploreScreenState extends State<ExploreScreen>
               return GoogleMaps();
               break;
             default:
-              return Loading();
+              location.determindPermission();
+              return CircularIndicator();
           }
         },
-      ),
-    );
-  }
-}
-
-class Loading extends StatelessWidget {
-  determindPermission(context) async =>
-      Provider.of<PermissionProvider>(context).determindPermission();
-
-  @override
-  Widget build(BuildContext context) {
-    determindPermission(context);
-    return Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
       ),
     );
   }

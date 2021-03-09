@@ -19,7 +19,7 @@ const Duration kDefaultDuration = Duration(milliseconds: 375);
 //------ auth text input border style here ------//
 // text field decoration
 const OutlineInputBorder kDefaultOutlineInputBorder = OutlineInputBorder(
-  borderRadius: const BorderRadius.all(Radius.circular(30.0)),
+  borderRadius: const BorderRadius.all(Radius.circular(5.0)),
   borderSide: const BorderSide(
     color: Colors.white70,
   ),

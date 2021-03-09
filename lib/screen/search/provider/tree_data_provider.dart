@@ -38,7 +38,6 @@ class TreeDataProvider extends ChangeNotifier {
   final String localUrl = 'http://10.0.2.2:8000';
 
   //使用 dio 從後端獲取花草的數據
-  //TODO: network connection detect.
   Future<void> fetchTreeData() async {
     /// retry fetch data
     /// 錯誤頁面下會重新顯示 shimmer effect 當重新加載時

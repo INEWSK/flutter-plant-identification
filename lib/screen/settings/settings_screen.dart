@@ -134,10 +134,6 @@ class SettingsScreen extends StatelessWidget {
               ),
               Divider(height: 20),
               ListTile(
-                title: Text('Rate Us'),
-                onTap: () {},
-              ),
-              ListTile(
                 title: Text('Terms & Conditions'),
                 onTap: () {
                   Navigator.pushNamed(context, '/agreement');

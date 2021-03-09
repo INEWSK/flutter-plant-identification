@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             theme: theme ?? lightTheme,
             darkTheme: darkTheme,
-            themeMode: themer.themeMode, // TODO: 持久化
+            themeMode: themer.getThemeMode(), //TODO: 判斷是否強制暗黑模式並通知widget更新對應顏色
             routes: Routes.routes,
             builder: (context, child) {
               /// 文字大小不受手機設定影響(不被强制放大)

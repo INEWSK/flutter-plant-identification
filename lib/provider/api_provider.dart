@@ -12,9 +12,16 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 class ApiProvider extends ChangeNotifier {
   final key = UniqueKey();
 
-  void upload(File file) async {
-    final apiUrl = 'http://10.0.2.2:8000/flora/tree-ai/';
+  Dio dio = Dio(BaseOptions(
+    connectTimeout: 10000, // 10s
+    receiveTimeout: 100000,
+  ));
 
+  final apiUrl = 'http://10.0.2.2:80/flora/tree-ai/';
+  // vtc network
+  final vtcUrl = '192.168.20.81:80/api';
+
+  void upload(File file) async {
     // simple loading toast when waiting server response result
     _loadingToast();
 
@@ -28,22 +35,21 @@ class ApiProvider extends ChangeNotifier {
       )
     });
 
-    Dio dio = Dio();
-
-    dio.post(apiUrl, data: data).then((response) {
+    dio.post(vtcUrl, data: data).then((response) {
       // 結果轉換成 string 並返回
       String result = response.toString();
       log('SERVER RESPONSE: $response');
 
       BotToast.remove(key);
 
-      _resultToast(result);
+      _resultToast(result, 1);
 
       return result;
-    }).catchError((onError) {
+    }).catchError((error) {
       BotToast.remove(key);
 
-      log('upload image go wrong: $onError');
+      log('upload image go wrong: $error');
+      _resultToast(error.toString(), 0);
     });
   }
 
@@ -70,19 +76,21 @@ class ApiProvider extends ChangeNotifier {
     );
   }
 
-  void _resultToast(String text) {
+  void _resultToast(String text, int type) {
     BotToast.showNotification(
       leading: (cancel) => SizedBox.fromSize(
           size: const Size(40, 40),
           child: IconButton(
-            icon: Icon(Ionicons.ios_rose, color: Colors.redAccent),
+            icon: type == 1
+                ? Icon(Ionicons.ios_rose, color: Colors.redAccent)
+                : Icon(FontAwesome.times, color: Colors.redAccent),
             onPressed: cancel,
           )),
       title: (_) => Text(
         text,
         style: kBodyTextStyle,
       ),
-      duration: Duration(seconds: 4),
+      duration: Duration(seconds: 5),
     );
   }
 }

@@ -10,8 +10,6 @@ extension ThemeModeExtension on ThemeMode {
 
 class ThemeProvider extends ChangeNotifier {
   void syncTheme() async {
-    // var box = await Hive.openBox('themeBox');
-    // final String theme = box.get('theme');
     final String theme = SpUtil.getString('theme');
 
     if (theme.isNotEmpty && theme != ThemeMode.system.value) {

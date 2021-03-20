@@ -20,15 +20,17 @@ class AuthProvider extends ChangeNotifier {
   ));
 
   /// getter
-  Status get status => _status;
-  String get token => _token;
-  String get username => _username;
-  String get email => _email;
+  get status => _status;
+  get token => _token;
+  get username => _username;
+  get email => _email;
 
   /// 默認請求地址
   final String baseUrl = 'https://florabackend.azurewebsites.net';
   // 本地測試請求地址
   final String localUrl = 'http://10.0.2.2:8000';
+  // vtc netowrk
+  final String vtcUrl = '192.168.20.81:80/api';
 
   initAuthProvider() async {
     String token = await getToken();
@@ -52,7 +54,7 @@ class AuthProvider extends ChangeNotifier {
     _status = Status.Authenticating;
     notifyListeners();
 
-    final url = "$localUrl/flora/signin/";
+    final url = "$vtcUrl/flora/signin/";
 
     final data = FormData.fromMap({
       'email': email,
@@ -114,7 +116,7 @@ class AuthProvider extends ChangeNotifier {
 
   /// sign up method
   Future<Map> signUp(String email, String password1, String password2) async {
-    final url = "$localUrl/flora/signup/";
+    final url = "$vtcUrl/flora/signup/";
 
     final data = FormData.fromMap({
       'email': email,

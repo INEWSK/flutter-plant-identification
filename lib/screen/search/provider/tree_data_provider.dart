@@ -36,6 +36,8 @@ class TreeDataProvider extends ChangeNotifier {
   final String baseUrl = 'https://florabackend.azurewebsites.net';
   // 本地測試請求地址
   final String localUrl = 'http://10.0.2.2:8000';
+  // vtc 內聯網
+  final String vtcUrl = '192.168.20.81:80/api';
 
   //使用 dio 從後端獲取花草的數據
   Future<void> fetchTreeData() async {
@@ -46,7 +48,7 @@ class TreeDataProvider extends ChangeNotifier {
       notifyListeners();
     }
 
-    final url = "$localUrl/flora/tree/";
+    final url = "$vtcUrl/flora/tree/";
 
     try {
       final response = await dio.get(url);

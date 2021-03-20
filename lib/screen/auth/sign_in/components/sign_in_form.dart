@@ -1,5 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/common/utils/form_field_validator.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/provider/auth_provider.dart';
@@ -71,7 +72,13 @@ class _SignInFormState extends State<SignInForm> {
       Toast.show(message);
       Navigator.pop(context);
     } else {
-      Toast.show(message);
+      BotToast.showNotification(
+        title: (_) => Text(
+          message,
+          style: kBodyTextStyle.copyWith(color: Colors.white),
+        ),
+        backgroundColor: Colors.redAccent,
+      );
     }
   }
 

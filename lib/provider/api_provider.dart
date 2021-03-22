@@ -55,7 +55,7 @@ class ApiProvider extends ChangeNotifier {
 
   void _loadingToast() {
     BotToast.showWidget(
-      // 賦予唯一key用於cancel widget
+      // 賦予唯一key用於cancel
       key: key,
       toastBuilder: (void Function() cancelFunc) => SafeArea(
         child: Padding(

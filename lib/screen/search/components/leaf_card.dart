@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class PlantCard extends StatelessWidget {
+class LeafCard extends StatelessWidget {
   final String title, sname, intro;
   final String imgSrc;
   final Function press;
 
-  const PlantCard({
+  const LeafCard({
     Key key,
     this.title,
     this.sname,

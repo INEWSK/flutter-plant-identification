@@ -7,13 +7,13 @@ import 'components/section_cell.dart';
 class DetailSampleScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var brightness = MediaQuery.of(context).platformBrightness;
     return Scaffold(
-      body: _body(context, brightness),
+      body: _body(context),
     );
   }
 
-  _body(BuildContext context, Brightness brightness) {
+  _body(BuildContext context) {
+    var brightness = MediaQuery.of(context).platformBrightness;
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
       slivers: [

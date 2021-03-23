@@ -15,7 +15,7 @@ class TreeDataProvider extends ChangeNotifier {
   List<TreeData> _list = [];
 
   get status => _status;
-  get treeData => _list;
+  get treeMap => _list;
 
   // dio baseoption preset
   Dio dio = Dio(
@@ -41,14 +41,14 @@ class TreeDataProvider extends ChangeNotifier {
 
   //使用 dio 從後端獲取花草的數據
   Future<void> fetchTreeData() async {
-    /// retry fetch data
-    /// 錯誤頁面下會重新顯示 shimmer effect 當重新加載時
+    // retry fetch data
     if (_status == Status.Error) {
+      // 錯誤頁面下會重新顯示 shimmer effect 當重新加載時
       _status = Status.Loading;
       notifyListeners();
     }
 
-    final url = "$vtcUrl/flora/tree/";
+    final url = "$localUrl/flora/tree";
 
     try {
       final response = await dio.get(url);
@@ -62,7 +62,6 @@ class TreeDataProvider extends ChangeNotifier {
       _list = data;
       notifyListeners();
     } on DioError catch (e) {
-      //簡化錯誤結果
       final error = DioExceptions.fromDioError(e);
       //輸出錯誤到控制台
       log('TreeDataProvider -> ${error.messge}');

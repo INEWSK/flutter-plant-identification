@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hotelapp/screen/detail/detail_sample_screen.dart';
 import 'package:flutter_hotelapp/screen/widgets/error_page.dart';
 import 'package:flutter_hotelapp/screen/widgets/search_bar.dart';
 import 'package:flutter_hotelapp/screen/widgets/shimmer_effect.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'components/plant_card.dart';
+
+import 'components/leaf_card_list.dart';
 import 'provider/tree_data_provider.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -50,7 +50,7 @@ class _SearchScreenState extends State<SearchScreen>
               return ErrorPage(press: data.fetchTreeData);
               break;
             case Status.Loaded:
-              return _buildTreeCard(data);
+              return LeafCardList(provider: data, context: context);
               break;
             case Status.Loading:
               return ShimmerEffect();
@@ -59,30 +59,6 @@ class _SearchScreenState extends State<SearchScreen>
               data.fetchTreeData();
               return ShimmerEffect();
           }
-        },
-      ),
-    );
-  }
-
-  Widget _buildTreeCard(TreeDataProvider provider) {
-    return RefreshIndicator(
-      onRefresh: () => provider.fetchTreeData(),
-      child: ListView.builder(
-        // shrinkWrap: true,
-        itemCount: provider.treeData.length,
-        itemBuilder: (BuildContext context, int index) {
-          return PlantCard(
-            title: provider.treeData[index].commonName,
-            imgSrc: 'assets/images/bauhinia_blakeana.jpg',
-            sname: provider.treeData[index].scientificName,
-            intro: provider.treeData[index].introduction,
-            press: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => DetailSampleScreen(),
-              ),
-            ),
-          );
         },
       ),
     );

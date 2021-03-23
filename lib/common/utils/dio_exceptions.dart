@@ -73,7 +73,7 @@ class DioExceptions implements Exception {
       case 400:
         return 'Bad Request';
       case 404:
-        return error["message"];
+        return error.toString();
       case 500:
         return 'Internal Server Error';
       default:

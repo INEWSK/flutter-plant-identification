@@ -12,10 +12,14 @@ class DetailPageWidget extends StatelessWidget {
   final String basicIntro;
   final String specialFeatures;
   final String learnMore;
-  final String characteristicsIntro;
   final String leafIntro;
   final String flowerIntro;
   final String fruitIntro;
+  final String cFamily;
+  final String cHeight;
+  final String cNatureLeaf;
+  final String cBranch;
+  final String cBark;
 
   const DetailPageWidget(
       {Key key,
@@ -24,12 +28,16 @@ class DetailPageWidget extends StatelessWidget {
       @required this.scientificName,
       @required this.chineseName,
       @required this.basicIntro,
-      this.specialFeatures,
-      this.learnMore,
-      this.characteristicsIntro,
-      this.leafIntro,
-      this.flowerIntro,
-      this.fruitIntro})
+      @required this.specialFeatures,
+      @required this.learnMore,
+      @required this.leafIntro,
+      @required this.flowerIntro,
+      @required this.fruitIntro,
+      this.cFamily,
+      this.cHeight,
+      this.cNatureLeaf,
+      this.cBranch,
+      this.cBark})
       : super(key: key);
 
   @override
@@ -160,12 +168,11 @@ class DetailPageWidget extends StatelessWidget {
                   title: 'Characteristics',
                 ),
                 CharacteristicTable(
-                  family: 'Caesalpiniaceae',
-                  height: 'Medium-sized, 10 to 20 metres',
-                  nature: 'Evergreen',
-                  branch: 'Long and spreading or drooping branches.',
-                  bark:
-                      'Bark greyish white or light brown in colour, with inconspicuous lenticels on the surface.',
+                  family: cFamily ?? '',
+                  height: cHeight ?? '',
+                  nature: cNatureLeaf ?? '',
+                  branch: cBranch ?? '',
+                  bark: cBark ?? '',
                 ),
                 leafIntro != null
                     ? SectionCell(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_hotelapp/provider/api_provider.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +7,7 @@ import 'package:sp_util/sp_util.dart';
 
 import 'app.dart';
 import 'common/utils/device_utils.dart';
+import 'provider/api_provider.dart';
 import 'provider/auth_provider.dart';
 import 'provider/intl_provider.dart';
 import 'provider/theme_provider.dart';

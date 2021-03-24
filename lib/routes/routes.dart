@@ -4,9 +4,11 @@ import 'package:flutter_hotelapp/screen/auth/forgot/email_sent_screen.dart';
 import 'package:flutter_hotelapp/screen/auth/forgot/forgot_screen.dart';
 import 'package:flutter_hotelapp/screen/auth/sign_in/sign_in_screen.dart';
 import 'package:flutter_hotelapp/screen/auth/sign_up/sign_up_screen.dart';
+import 'package:flutter_hotelapp/screen/labor/labor_screen.dart';
 import 'package:flutter_hotelapp/screen/main_screen.dart';
 import 'package:flutter_hotelapp/screen/profile/fqa_screen.dart';
 import 'package:flutter_hotelapp/screen/settings/settings_screen.dart';
+import 'package:flutter_hotelapp/screen/tensorflow/tensorflow_screen.dart';
 
 class Routes {
   // prevent anyone from instantiate this object
@@ -21,6 +23,8 @@ class Routes {
   static const String settings = '/settings';
   static const String agreement = '/agreement';
   static const String fqa = '/fqa';
+  static const String labor = '/labor';
+  static const String tensorflow = '/tensorflow';
 
   static final routes = <String, WidgetBuilder>{
     // intro: (BuildContext context) => OnBoardingScreen(),
@@ -32,5 +36,7 @@ class Routes {
     settings: (BuildContext context) => SettingsScreen(),
     agreement: (BuildContext context) => AgreementScreen(),
     fqa: (BuildContext context) => FQAScreen(),
+    labor: (BuildContext context) => LaborScreen(),
+    tensorflow: (BuildContext context) => TensroFlowScreen(),
   };
 }

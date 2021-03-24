@@ -152,6 +152,10 @@ class SettingsScreen extends StatelessWidget {
                   );
                 },
               ),
+              ListTile(
+                title: Text('Laboratories'),
+                onTap: () => Navigator.pushNamed(context, '/labor'),
+              ),
               Divider(height: 20),
               ListTile(
                 title: user.status == Status.Authenticated

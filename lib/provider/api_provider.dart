@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
+import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -17,9 +18,9 @@ class ApiProvider extends ChangeNotifier {
     receiveTimeout: 100000,
   ));
 
-  final apiUrl = 'http://10.0.2.2:80/flora/tree-ai/';
+  final localUrl = 'http://10.0.2.2:80/flora/tree-ai/';
   // vtc network
-  final vtcUrl = '192.168.20.81:80/api';
+  final vtcUrl = 'http://192.168.20.81:80/';
 
   void upload(File file) async {
     // simple loading toast when waiting server response result
@@ -35,22 +36,50 @@ class ApiProvider extends ChangeNotifier {
       )
     });
 
-    dio.post(vtcUrl, data: data).then((response) {
-      // 結果轉換成 string 並返回
-      String result = response.toString();
-      log('SERVER RESPONSE: $response');
+    // try call vtc network sever
+    try {
+      final vtcNetworkResponse = await dio.get(vtcUrl);
+      // if server work correctly
+      if (vtcNetworkResponse.statusCode == 200) {
+        final apiUrl = "$vtcUrl/api/flora/tree-ai/";
 
-      BotToast.remove(key);
+        await dio.post(apiUrl, data: data).then((response) {
+          // 結果轉換成 string 並返回
+          String result = response.toString();
+          log('SERVER RESPONSE: $response');
 
-      _resultToast(result, 1);
+          BotToast.remove(key);
 
-      return result;
-    }).catchError((error) {
-      BotToast.remove(key);
+          _resultToast(result, 1);
 
-      log('upload image go wrong: $error');
-      _resultToast(error.toString(), 0);
-    });
+          //TODO: 根據伺服器傳回的資料對應相應的data, 用 dialog 顯示
+
+          return result;
+        });
+      } else {
+        log('api call: vtc network something gone wrong');
+      }
+    } on DioError catch (e) {
+      final error = DioExceptions.fromDioError(e);
+
+      print('api provider call error: ${error.messge}');
+      print('api: vtc校內聯網url沒有回應, 嘗試call local url');
+
+      try {
+        await dio.post(localUrl, data: data).then((response) {
+          String result = response.toString(); // 直接string伺服器返回的結果不做過濾
+          log('SERVER RESPONSE: $response');
+
+          BotToast.remove(key);
+
+          _resultToast(result, 1);
+
+          return result;
+        });
+      } on DioError catch (e) {
+        print(e.toString());
+      }
+    }
   }
 
   void _loadingToast() {

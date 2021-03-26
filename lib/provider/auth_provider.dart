@@ -54,7 +54,7 @@ class AuthProvider extends ChangeNotifier {
     _status = Status.Authenticating;
     notifyListeners();
 
-    final url = "$vtcUrl/flora/signin/";
+    final url = "$localUrl/flora/signin/";
 
     final data = FormData.fromMap({
       'email': email,
@@ -116,7 +116,7 @@ class AuthProvider extends ChangeNotifier {
 
   /// sign up method
   Future<Map> signUp(String email, String password1, String password2) async {
-    final url = "$vtcUrl/flora/signup/";
+    final url = "$localUrl/flora/signup/";
 
     final data = FormData.fromMap({
       'email': email,

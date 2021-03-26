@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/provider/auth_provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +17,69 @@ class _ProfileScreenState extends State<ProfileScreen>
   @override
   bool get wantKeepAlive => true;
 
+  Future<void> _confirmToEmailDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Contact Us'),
+          content: Text('This will lead you to the email application'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('No'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(
+                context,
+                _launcherUrl(),
+              ),
+              child: Text('Yes'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _retrainingRequest(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('AI Retraining Request'),
+          content: Text('Send a request to server to train new model'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('No'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(
+                context,
+                Toast.show('Pressed Yes'),
+              ),
+              child: Text('Yes'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _launcherUrl() async {
+    final Uri params = Uri(
+        scheme: 'mailto',
+        path: 'me@flora.com',
+        queryParameters: {'subject': 'This is subject content', 'body': ''});
+    String url = params.toString();
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      print('Could not launch $url');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -28,14 +92,30 @@ class _ProfileScreenState extends State<ProfileScreen>
     return SingleChildScrollView(
       child: Column(
         children: [
-          Consumer<AuthProvider>(builder: (_, user, __) {
-            return ProfileHeader(
-              email: '${user.email}',
-              image: 'assets/images/no_picture_avatar.png',
-              name: '${user.username}',
-            );
-          }),
+          Consumer<AuthProvider>(
+            builder: (_, user, __) {
+              return ProfileHeader(
+                email: '${user.email}',
+                image: 'assets/images/no_picture_avatar.png',
+                name: '${user.username}',
+              );
+            },
+          ),
           SizedBox(height: 10),
+          Consumer<AuthProvider>(
+            builder: (BuildContext context, user, Widget child) {
+              if (user.token != null) {
+                return ListTile(
+                  leading: SvgPicture.asset(
+                      'assets/icons/profile/ai_retraining.svg'),
+                  title: Text('AI Retraining'),
+                  onTap: () async => _retrainingRequest(context),
+                );
+              } else {
+                return Container();
+              }
+            },
+          ),
           ListTile(
             // dense: true,
             leading: SvgPicture.asset('assets/icons/profile/manual.svg'),
@@ -69,43 +149,5 @@ class _ProfileScreenState extends State<ProfileScreen>
         ],
       ),
     );
-  }
-
-  Future<void> _confirmToEmailDialog(BuildContext context) {
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Contact Us'),
-          content: Text('This will lead you to the email application'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('No'),
-            ),
-            TextButton(
-              onPressed: () => Navigator.pop(
-                context,
-                _launcherUrl(),
-              ),
-              child: Text('Yes'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _launcherUrl() async {
-    final Uri params = Uri(
-        scheme: 'mailto',
-        path: 'me@flora.com',
-        queryParameters: {'subject': 'This is subject content', 'body': ''});
-    String url = params.toString();
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      print('Could not launch $url');
-    }
   }
 }

@@ -21,21 +21,22 @@ class _TensroFlowScreenState extends State<TensroFlowScreen> {
   // this function loads the model
   loadTfModel() async {
     final result = await Tflite.loadModel(
-      model: "assets/models/ssd_mobilenet.tflite",
-      labels: "assets/models/labels.txt",
+      model: "assets/models/flora_model.tflite",
+      labels: "assets/models/flora_labels.txt",
     );
     log('RESULT OF MODEL: $result');
   }
 
   // this function detects the objects on the image
   detectObject(File image) async {
-    var recognitions = await Tflite.detectObjectOnImage(
+    var recognitions = await Tflite.runModelOnImage(
         path: image.path, // required
-        model: "SSDMobileNet",
-        imageMean: 127.5,
-        imageStd: 127.5,
-        threshold: 0.4, // defaults to 0.1
-        numResultsPerClass: 10, // defaults to 5
+        // model: "FLORA",
+        imageMean: 117.0,
+        imageStd: 300.0,
+        threshold: 0.1,
+        numResults: 2,
+        // numResultsPerClass: 5, // defaults to 5
         asynch: true // defaults to true
         );
     FileImage(image)

@@ -47,7 +47,7 @@ class _SearchScreenState extends State<SearchScreen>
         builder: (_, data, __) {
           switch (data.status) {
             case Status.Error:
-              return ErrorPage(press: data.fetchTreeData);
+              return ErrorPage(press: data.fetchTreeData());
               break;
             case Status.Loaded:
               return LeafCardList(provider: data, context: context);

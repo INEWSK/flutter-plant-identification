@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/models/tree_data.dart';
+import 'package:flutter_hotelapp/models/tree_data_image.dart';
 import 'package:flutter_hotelapp/screen/detail/detail_screen.dart';
 import 'package:flutter_hotelapp/screen/search/provider/tree_data_provider.dart';
 
@@ -17,19 +18,22 @@ class LeafCardList extends StatefulWidget {
 
 class _LeafCardListState extends State<LeafCardList> {
   @override
+  void initState() {
+    super.initState();
+    widget.provider.fetchImage();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    List<TreeData> data = widget.provider.treeMap;
+    List<TreeData> treeData = widget.provider.treeMap;
     return RefreshIndicator(
       onRefresh: () => widget.provider.fetchTreeData(),
       child: ListView.builder(
-        // shrinkWrap: true,
-        itemCount: data.length,
+        itemCount: treeData.length,
         itemBuilder: (BuildContext context, int index) {
           return LeafCard(
-            title: data[index].commonName,
-            imgSrc: 'assets/images/bauhinia_blakeana.jpg', //api目前沒有提供圖片
-            sname: data[index].scientificName,
-            intro: data[index].introduction,
+            data: treeData[index],
+            // img: treeImage[index],
             press: () => Navigator.push(
               context,
               MaterialPageRoute(

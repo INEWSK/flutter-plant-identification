@@ -7,15 +7,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/models/tree_data.dart';
+import 'package:flutter_hotelapp/models/tree_data_image.dart';
 
 enum Status { Uninitialized, Loading, Loaded, Error }
 
 class TreeDataProvider extends ChangeNotifier {
   Status _status = Status.Uninitialized;
   List<TreeData> _list = [];
+  List<TreeDataImage> _listImg = [];
 
   get status => _status;
   get treeMap => _list;
+  get treeImage => _listImg;
 
   // dio baseoption preset
   Dio dio = Dio(
@@ -40,7 +43,7 @@ class TreeDataProvider extends ChangeNotifier {
   final String vtcUrl = '192.168.20.81:80/api';
 
   //使用 dio 從後端獲取花草的數據
-  Future<void> fetchTreeData() async {
+  fetchTreeData() async {
     // retry fetch data
     if (_status == Status.Error) {
       // 錯誤頁面下會重新顯示 shimmer effect 當重新加載時
@@ -54,12 +57,17 @@ class TreeDataProvider extends ChangeNotifier {
       final response = await dio.get(url);
 
       // 這是呼叫 method 先 decode json 后再轉換為 list<model>
-      var data = treeResponseFromJson(response.data);
+      var data = List<TreeData>.from(
+        json.decode(response.data).map(
+              (x) => TreeData.fromJson(x),
+            ),
+      );
 
       //data loaded;
-      log('data loaded');
-      _status = Status.Loaded;
+      log('tree data loaded');
       _list = data;
+
+      _status = Status.Loaded;
       notifyListeners();
     } on DioError catch (e) {
       final error = DioExceptions.fromDioError(e);
@@ -73,7 +81,31 @@ class TreeDataProvider extends ChangeNotifier {
     }
   }
 
-  //將map type 轉成 list type
-  List<TreeData> treeResponseFromJson(String str) =>
-      List<TreeData>.from(json.decode(str).map((x) => TreeData.fromJson(x)));
+  fetchImage() async {
+    final imgUrl = '$localUrl/flora/tree-image/';
+
+    try {
+      final response = await dio.get(imgUrl);
+
+      var data = List<TreeDataImage>.from(
+        json.decode(response.data).map(
+              (x) => TreeDataImage.fromJson(x),
+            ),
+      );
+
+      _listImg = data;
+
+      //data loaded;
+      log('image data loaded');
+      notifyListeners();
+
+      // _listImg = data;
+    } on DioError catch (e) {
+      final error = DioExceptions.fromDioError(e);
+      //輸出錯誤到控制台
+      log('TreeImage -> ${error.messge}');
+      //返回toast到前端, 這裏之後修改放到UI層面
+      Toast.show(error.messge + '.\nImage load failed');
+    }
+  }
 }

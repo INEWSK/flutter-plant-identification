@@ -7,7 +7,7 @@ import 'package:flutter_hotelapp/common/demo/demo_data.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import 'locate_button.dart';
+import 'google_maps_button.dart';
 
 class GoogleMaps extends StatefulWidget {
   @override
@@ -103,8 +103,9 @@ class _GoogleMapsState extends State<GoogleMaps> {
           initialCameraPosition: CameraPosition(target: _center, zoom: 12.0),
         ),
         // _locateButton(),
-        LocateButton(
-          press: _locatePosition,
+        GoogleMapsButton(
+          locatePress: _locatePosition,
+          arPress: () {},
         ),
       ],
     );

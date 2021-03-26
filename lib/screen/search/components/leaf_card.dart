@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hotelapp/models/tree_data.dart';
 
 class LeafCard extends StatelessWidget {
-  final String title, sname, intro;
-  final String imgSrc;
+  final TreeData data;
   final Function press;
 
   const LeafCard({
     Key key,
-    this.title,
-    this.sname,
-    this.intro,
-    this.imgSrc,
+    this.data,
     this.press,
   }) : super(key: key);
   @override
@@ -22,11 +19,12 @@ class LeafCard extends StatelessWidget {
         children: [
           ListTile(
             leading: CircleAvatar(
-              backgroundImage: AssetImage(imgSrc),
+              backgroundImage:
+                  AssetImage('assets/images/bauhinia_blakeana.jpg'),
             ),
-            title: Text(title),
+            title: Text(data.commonName),
             subtitle: Text(
-              sname,
+              data.scientificName,
               style: TextStyle(color: Colors.black.withOpacity(0.6)),
             ),
           ),
@@ -58,9 +56,9 @@ class LeafCard extends StatelessWidget {
   Widget _intro() {
     return Padding(
       padding: const EdgeInsets.all(15.0),
-      child: intro != null
+      child: data.introduction != null
           ? Text(
-              intro,
+              data.introduction,
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
@@ -73,12 +71,11 @@ class LeafCard extends StatelessWidget {
 
   Widget _image() {
     return ClipRect(
-      // 溢出部分裁切
       child: Align(
         alignment: Alignment.center,
         widthFactor: 1.0,
         heightFactor: 0.6,
-        child: Image.asset(imgSrc),
+        child: Image.asset('assets/images/bauhinia_blakeana.jpg'),
       ),
     );
   }

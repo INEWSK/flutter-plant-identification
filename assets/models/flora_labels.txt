@@ -1,0 +1,55 @@
+Acacia confusa.files
+Albizia lebbek.files
+Araucaria heterophylla.files
+Averrhoa carambola.files
+Bauhinia blakeana.files
+Bauhinia purpurea.files
+Carica papaya.files
+Casuarina equisetifolia.files
+Citrus maxima.files
+Citrus reticulata.files
+Clausena lansium.files
+Cycas revoluta.files
+Dimocarpus longan.files
+Erythrina variegata.files
+Eucalyptus citriodora.files
+Ficus religiosa.files
+Ficus rumphii.files
+Firmiana simplex.files
+Gordonia axillaris.files
+Hyophorbe lagenicaulis.files
+Juniperus chinensis var_ kaizuka.files
+Litchi chinensis.files
+Macaranga tanarius.files
+Murraya paniculata.files
+Nerium oleander.files
+Osmanthus fragrans.files
+Pandanus tectorius.files
+Pinus massoniana.files
+Plumeria rubra var. acutifolia.files
+Podocarpus macrophyllus.files
+Psidium guajava.files
+Ravenala madagascariensis.files
+Rhus succedanea.files
+Salix babylonica.files
+Schefflera actinophylla.files
+Schefflera octophylla.files
+Thevetia peruviana.files
+Thuja orientalis.files
+假檳榔.files
+印度橡樹.files
+垂葉榕.files
+大葉榕.files
+大葉紫薇.files
+散尾葵.files
+日本葵.files
+棕櫚.files
+檜.files
+王棕.files
+白千層.files
+白蘭.files
+短穗魚尾葵.files
+細葉榕.files
+蒲葵.files
+鳳凰木.files
+黃槐.files

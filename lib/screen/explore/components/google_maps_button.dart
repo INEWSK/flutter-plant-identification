@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/utils/device_utils.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 
 class GoogleMapsButton extends StatelessWidget {
   final VoidCallback locatePress;

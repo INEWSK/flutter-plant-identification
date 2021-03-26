@@ -1,9 +1,13 @@
+import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_hotelapp/common/demo/demo_data.dart';
+import 'package:flutter_hotelapp/models/tree_lat_lng.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -17,10 +21,17 @@ class GoogleMaps extends StatefulWidget {
 class _GoogleMapsState extends State<GoogleMaps> {
   GoogleMapController _mapController;
   List<Marker> _markers = [];
+  List<TreeLatLng> _apiMarkerData = [];
   // marker icon
   BitmapDescriptor _markerIcon;
 
   final LatLng _center = const LatLng(22.3939351, 114.1561875);
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchLocationFormApi();
+  }
 
   @override
   void dispose() {
@@ -50,21 +61,61 @@ class _GoogleMapsState extends State<GoogleMaps> {
   }
 
   void _addMarker() {
-    demoMarkersData.forEach((element) {
+    _apiMarkerData.forEach((element) {
       _markers.add(
         Marker(
           markerId: MarkerId(
-            element['id'],
+            element.id.toString(),
           ),
           infoWindow: InfoWindow(
-            title: element['title'],
-            snippet: element['desc'],
+            title: element.tree.toString(),
+            snippet: element.tree.toString(),
           ),
-          position: element['position'],
+          position: LatLng(element.treeLat, element.treeLong),
           icon: _markerIcon,
         ),
       );
     });
+  }
+
+  _fetchLocationFormApi() async {
+    // dio baseoption preset
+    Dio dio = Dio(
+      BaseOptions(
+        connectTimeout: 10000, //10s
+        receiveTimeout: 100000,
+        headers: {
+          HttpHeaders.acceptHeader: "application/json",
+          HttpHeaders.userAgentHeader: "",
+          HttpHeaders.acceptLanguageHeader: 'en-US',
+        },
+        contentType: Headers.jsonContentType,
+        responseType: ResponseType.plain,
+      ),
+    );
+
+    // 本地測試請求地址
+    final String localUrl = 'http://10.0.2.2:8000/flora/tree-location';
+
+    try {
+      final response = await dio.get(localUrl);
+
+      // List<TreeLatLng> data = jsonDecode(response.data);
+
+      var data = List<TreeLatLng>.from(
+        json.decode(response.data).map(
+              (x) => TreeLatLng.fromJson(x),
+            ),
+      );
+
+      setState(() {
+        _apiMarkerData = data;
+      });
+
+      _addMarker();
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   void _onMapCreated(GoogleMapController controller) async {
@@ -72,8 +123,6 @@ class _GoogleMapsState extends State<GoogleMaps> {
     setState(() {
       _mapController = controller;
     });
-
-    _addMarker();
     _locatePosition();
   }
 

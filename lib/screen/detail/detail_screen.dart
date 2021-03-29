@@ -29,9 +29,10 @@ class _DetailScreenState extends State<DetailScreen> {
     return Scaffold(
       body: DetailPageWidget(
         basicIntro: data.introduction ?? noInfo,
-        chineseName: data.chineseName ?? '',
         commonName: data.commonName ?? noInfo,
-        imageUrl: 'assets/images/image_header.png',
+        treeImage: data.treeImages.isNotEmpty
+            ? data.treeImages[0].treeImage
+            : 'http://10.0.2.2:8000/media/images/Bauhinia_blakeana_9hy5snr.jpg',
         scientificName: data.scientificName ?? noInfo,
         specialFeatures: data.specialFeatures ?? noInfo,
         learnMore: data.toLearnMore ?? noInfo,

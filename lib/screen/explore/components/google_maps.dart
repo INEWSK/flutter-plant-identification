@@ -78,6 +78,7 @@ class _GoogleMapsState extends State<GoogleMaps> {
     });
   }
 
+  /// 從 server 抓 tree location 資料
   _fetchLocationFormApi() async {
     // dio baseoption preset
     Dio dio = Dio(

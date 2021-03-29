@@ -4,10 +4,8 @@
 ///否則建議先把返回的數據轉換成模型/實體類再去使用 。
 
 class TreeData {
-  int id;
   String scientificName;
   String commonName;
-  String chineseName;
   String introduction;
   String specialFeatures;
   String toLearnMore;
@@ -20,12 +18,12 @@ class TreeData {
   String flower;
   String fruit;
   String dateCreated;
+  List<TreeImages> treeImages;
+  List<TreeLocations> treeLocations;
 
   TreeData(
-      {this.id,
-      this.scientificName,
+      {this.scientificName,
       this.commonName,
-      this.chineseName,
       this.introduction,
       this.specialFeatures,
       this.toLearnMore,
@@ -37,13 +35,13 @@ class TreeData {
       this.leaf,
       this.flower,
       this.fruit,
-      this.dateCreated});
+      this.dateCreated,
+      this.treeImages,
+      this.treeLocations});
 
   TreeData.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
     scientificName = json['scientific_name'];
     commonName = json['common_name'];
-    chineseName = json['chinese_name'];
     introduction = json['introduction'];
     specialFeatures = json['special_features'];
     toLearnMore = json['to_learn_more'];
@@ -56,14 +54,24 @@ class TreeData {
     flower = json['flower'];
     fruit = json['fruit'];
     dateCreated = json['date_created'];
+    if (json['tree_images'] != null) {
+      treeImages = [];
+      json['tree_images'].forEach((v) {
+        treeImages.add(TreeImages.fromJson(v));
+      });
+    }
+    if (json['tree_locations'] != null) {
+      treeLocations = [];
+      json['tree_locations'].forEach((v) {
+        treeLocations.add(TreeLocations.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
-    data['id'] = this.id;
     data['scientific_name'] = this.scientificName;
     data['common_name'] = this.commonName;
-    data['chinese_name'] = this.chineseName;
     data['introduction'] = this.introduction;
     data['special_features'] = this.specialFeatures;
     data['to_learn_more'] = this.toLearnMore;
@@ -76,6 +84,67 @@ class TreeData {
     data['flower'] = this.flower;
     data['fruit'] = this.fruit;
     data['date_created'] = this.dateCreated;
+    if (this.treeImages != null) {
+      data['tree_images'] = this.treeImages.map((v) => v.toJson()).toList();
+    }
+    if (this.treeLocations != null) {
+      data['tree_locations'] =
+          this.treeLocations.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class TreeImages {
+  int id;
+  String treeImage;
+  String dateCreated;
+  int tree;
+
+  TreeImages({this.id, this.treeImage, this.dateCreated, this.tree});
+
+  TreeImages.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    treeImage = json['tree_image'];
+    dateCreated = json['date_created'];
+    tree = json['tree'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = this.id;
+    data['tree_image'] = this.treeImage;
+    data['date_created'] = this.dateCreated;
+    data['tree'] = this.tree;
+    return data;
+  }
+}
+
+class TreeLocations {
+  int id;
+  double treeLat;
+  double treeLong;
+  String dateCreated;
+  int tree;
+
+  TreeLocations(
+      {this.id, this.treeLat, this.treeLong, this.dateCreated, this.tree});
+
+  TreeLocations.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    treeLat = json['tree_lat'];
+    treeLong = json['tree_long'];
+    dateCreated = json['date_created'];
+    tree = json['tree'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = this.id;
+    data['tree_lat'] = this.treeLat;
+    data['tree_long'] = this.treeLong;
+    data['date_created'] = this.dateCreated;
+    data['tree'] = this.tree;
     return data;
   }
 }

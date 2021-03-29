@@ -19,8 +19,9 @@ class LeafCard extends StatelessWidget {
         children: [
           ListTile(
             leading: CircleAvatar(
-              backgroundImage:
-                  AssetImage('assets/images/bauhinia_blakeana.jpg'),
+              backgroundImage: data.treeImages.isNotEmpty
+                  ? NetworkImage(data.treeImages[0].treeImage)
+                  : AssetImage('assets/images/no-photo.png'),
             ),
             title: Text(data.commonName),
             subtitle: Text(
@@ -75,7 +76,14 @@ class LeafCard extends StatelessWidget {
         alignment: Alignment.center,
         widthFactor: 1.0,
         heightFactor: 0.6,
-        child: Image.asset('assets/images/bauhinia_blakeana.jpg'),
+        child: data.treeImages.isNotEmpty
+            ? Image.network(
+                data.treeImages[0].treeImage,
+                fit: BoxFit.contain,
+              )
+            : Image.asset(
+                'assets/images/nophoto.jpg',
+              ),
       ),
     );
   }

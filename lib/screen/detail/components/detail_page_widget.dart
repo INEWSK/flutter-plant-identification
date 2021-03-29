@@ -5,10 +5,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'section_cell.dart';
 
 class DetailPageWidget extends StatelessWidget {
-  final String imageUrl;
+  final String treeImage;
   final String commonName;
   final String scientificName;
-  final String chineseName;
   final String basicIntro;
   final String specialFeatures;
   final String learnMore;
@@ -23,10 +22,9 @@ class DetailPageWidget extends StatelessWidget {
 
   const DetailPageWidget(
       {Key key,
-      @required this.imageUrl,
+      @required this.treeImage,
       @required this.commonName,
       @required this.scientificName,
-      @required this.chineseName,
       @required this.basicIntro,
       @required this.specialFeatures,
       @required this.learnMore,
@@ -57,10 +55,10 @@ class DetailPageWidget extends StatelessWidget {
               StretchMode.blurBackground,
               StretchMode.fadeTitle
             ],
-            background: Image.asset(
+            background: Image.network(
               // header image
-              imageUrl,
-              fit: BoxFit.fitHeight,
+              treeImage,
+              fit: BoxFit.fitWidth,
             ),
           ),
         ),
@@ -122,22 +120,6 @@ class DetailPageWidget extends StatelessWidget {
                         ),
                       ),
                     ]),
-                    TableRow(children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 4.0),
-                        child: Text(
-                          'Name in Chinese:',
-                          style: kSubHeadTextStyle,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 4.0),
-                        child: Text(
-                          chineseName ?? '',
-                          style: kBodyTextStyle,
-                        ),
-                      ),
-                    ])
                   ],
                 ),
                 SizedBox(height: 20),

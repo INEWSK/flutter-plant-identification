@@ -28,7 +28,7 @@ class TreeDataProvider extends ChangeNotifier {
       headers: {
         HttpHeaders.acceptHeader: "application/json",
         HttpHeaders.userAgentHeader: "",
-        HttpHeaders.acceptLanguageHeader: 'en-US',
+        HttpHeaders.acceptLanguageHeader: 'zh-Hant',
       },
       contentType: Headers.jsonContentType,
       responseType: ResponseType.plain,

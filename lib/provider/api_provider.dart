@@ -3,10 +3,10 @@ import 'dart:io';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
+import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -50,7 +50,7 @@ class ApiProvider extends ChangeNotifier {
 
           BotToast.remove(key);
 
-          _resultToast(result, 1);
+          _resultToast(result, true);
 
           //TODO: 根據伺服器傳回的資料對應相應的data, 用 dialog 顯示
 
@@ -62,22 +62,27 @@ class ApiProvider extends ChangeNotifier {
     } on DioError catch (e) {
       final error = DioExceptions.fromDioError(e);
 
-      print('api provider call error: ${error.messge}');
-      print('api: vtc校內聯網url沒有回應, 嘗試call local url');
+      print('api_provider: provider call error: ${error.messge}');
+      print('vtc校內聯網url沒有回應, 嘗試call local url');
+
+      Toast.show('vtc 校內聯網沒有回應, 呼叫本地 api');
 
       try {
         await dio.post(localUrl, data: data).then((response) {
-          String result = response.toString(); // 直接string伺服器返回的結果不做過濾
+          String result = response.toString(); // 直接string伺服器返回的結果
           log('SERVER RESPONSE: $response');
 
           BotToast.remove(key);
 
-          _resultToast(result, 1);
+          _resultToast(result, true);
 
           return result;
         });
       } on DioError catch (e) {
-        print(e.toString());
+        final error = DioExceptions.fromDioError(e);
+        print(error.messge);
+        _resultToast('Server was fucked up', false);
+        BotToast.remove(key);
       }
     }
   }
@@ -105,12 +110,12 @@ class ApiProvider extends ChangeNotifier {
     );
   }
 
-  void _resultToast(String text, int type) {
+  void _resultToast(String text, bool result) {
     BotToast.showNotification(
       leading: (cancel) => SizedBox.fromSize(
           size: const Size(40, 40),
           child: IconButton(
-            icon: type == 1
+            icon: result == true
                 ? Icon(Ionicons.ios_rose, color: Colors.redAccent)
                 : Icon(FontAwesome.times, color: Colors.redAccent),
             onPressed: cancel,

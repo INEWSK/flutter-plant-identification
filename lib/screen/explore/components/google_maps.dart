@@ -7,6 +7,8 @@ import 'dart:ui' as ui;
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
+import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/models/tree_lat_lng.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -62,16 +64,22 @@ class _GoogleMapsState extends State<GoogleMaps> {
 
   void _addMarker() {
     _apiMarkerData.forEach((element) {
+      List<TreeLocations> location = element.treeLocations;
       _markers.add(
+        // 這裏未做判斷 value range
+        // 會出現 Invalid value: Valid value range is empty: 0
         Marker(
           markerId: MarkerId(
-            element.id.toString(),
+            location[0].id.toString(),
           ),
           infoWindow: InfoWindow(
-            title: element.tree.toString(),
-            snippet: element.tree.toString(),
+            title: element.scientificName,
+            snippet: element.scientificName,
           ),
-          position: LatLng(element.treeLat, element.treeLong),
+          position: LatLng(
+            location[0].treeLat,
+            location[0].treeLong,
+          ),
           icon: _markerIcon,
         ),
       );
@@ -79,6 +87,7 @@ class _GoogleMapsState extends State<GoogleMaps> {
   }
 
   /// 從 server 抓 tree location 資料
+  /// TODO: MVC
   _fetchLocationFormApi() async {
     // dio baseoption preset
     Dio dio = Dio(
@@ -96,14 +105,12 @@ class _GoogleMapsState extends State<GoogleMaps> {
     );
 
     // 本地測試請求地址
-    final String localUrl = 'http://10.0.2.2:8000/flora/tree-location';
+    final String localUrl = 'http://10.0.2.2:8000/flora/tree/';
 
     try {
       final response = await dio.get(localUrl);
 
-      // List<TreeLatLng> data = jsonDecode(response.data);
-
-      var data = List<TreeLatLng>.from(
+      List<TreeLatLng> data = List<TreeLatLng>.from(
         json.decode(response.data).map(
               (x) => TreeLatLng.fromJson(x),
             ),
@@ -114,8 +121,10 @@ class _GoogleMapsState extends State<GoogleMaps> {
       });
 
       _addMarker();
-    } catch (e) {
-      print(e.toString());
+    } on DioError catch (e) {
+      var error = DioExceptions.fromDioError(e);
+      print('GOGO Map Marker API: ${error.messge}');
+      Toast.show('${error.messge}\nLoad Marker Failed', duration: 5000);
     }
   }
 

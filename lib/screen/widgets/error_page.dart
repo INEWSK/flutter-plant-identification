@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ErrorPage extends StatelessWidget {
-  final VoidCallback press;
+  final Function press;
 
   const ErrorPage({Key key, this.press}) : super(key: key);
   @override

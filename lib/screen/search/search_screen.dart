@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/screen/widgets/error_page.dart';
-import 'package:flutter_hotelapp/screen/widgets/search_bar.dart';
 import 'package:flutter_hotelapp/screen/widgets/shimmer_effect.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 import 'components/leaf_card_list.dart';
@@ -24,18 +22,8 @@ class _SearchScreenState extends State<SearchScreen>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
+      appBar: AppBar(),
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            tooltip: 'Filter',
-            icon: SvgPicture.asset('assets/icons/filter.svg'),
-            onPressed: () {
-              showSearch(context: context, delegate: SearchBar());
-            },
-          )
-        ],
-      ),
       body: _body(),
     );
   }
@@ -47,7 +35,7 @@ class _SearchScreenState extends State<SearchScreen>
         builder: (_, data, __) {
           switch (data.status) {
             case Status.Error:
-              return ErrorPage(press: data.fetchTreeData());
+              return ErrorPage(press: () => provider.fetchTreeData());
               break;
             case Status.Loaded:
               return LeafCardList(provider: data, context: context);

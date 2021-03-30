@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/models/tree_data.dart';
 
 class LeafCard extends StatelessWidget {
@@ -26,7 +27,7 @@ class LeafCard extends StatelessWidget {
             title: Text(data.commonName),
             subtitle: Text(
               data.scientificName,
-              style: TextStyle(color: Colors.black.withOpacity(0.6)),
+              style: kSecondaryBodyTextStyle,
             ),
           ),
           _image(),
@@ -58,14 +59,10 @@ class LeafCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: data.introduction != null
-          ? Text(
-              data.introduction,
+          ? Text(data.introduction,
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: Colors.black.withOpacity(0.6),
-              ),
-            )
+              style: kBodyTextStyle)
           : Container(),
     );
   }

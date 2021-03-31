@@ -16,14 +16,12 @@ class LeafCardList extends StatefulWidget {
 }
 
 class _LeafCardListState extends State<LeafCardList> {
-  List<TreeData> _treeData = [];
   List<TreeData> _forDisplay = [];
 
   @override
   void initState() {
     super.initState();
-    _treeData = widget.provider.treeMap;
-    _forDisplay = _treeData;
+    _forDisplay = widget.provider.treeMap;
   }
 
   _searchBar() {
@@ -36,10 +34,10 @@ class _LeafCardListState extends State<LeafCardList> {
         onChanged: (text) {
           text.toLowerCase();
           setState(() {
-            _forDisplay = _treeData.where((element) {
+            _forDisplay = widget.provider.treeMap.where((element) {
               var title = element.commonName.toLowerCase();
               return title.contains(text);
-              // 這裏打少個 list 出大事
+              // 這裏打少個 list 出事
             }).toList();
           });
         },

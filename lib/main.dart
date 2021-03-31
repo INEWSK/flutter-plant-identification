@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
@@ -24,6 +25,8 @@ void main() {
     await Hive.initFlutter();
     // init sp
     await SpUtil.getInstance();
+    // init firebase
+    await Firebase.initializeApp();
 
     /// init provider
     final authProvider = ChangeNotifierProvider(

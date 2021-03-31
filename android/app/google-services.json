@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "261800366970",
+    "firebase_url": "https://fyp-flora.firebaseio.com",
+    "project_id": "fyp-flora",
+    "storage_bucket": "fyp-flora.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:261800366970:android:589af076c6b8e4452b7cc3",
+        "android_client_info": {
+          "package_name": "com.example.flutter_hotelapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "261800366970-tn12sbemi34u3m7oskq88gt3vpm035qj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDqBTyknBgLT_V03ArAp7Lq5rWKjqipuA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "261800366970-tn12sbemi34u3m7oskq88gt3vpm035qj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

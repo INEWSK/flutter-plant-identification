@@ -26,7 +26,7 @@ class GoogleMapsButton extends StatelessWidget {
                 onPressed: locatePress,
                 child: Icon(Icons.my_location),
               ),
-              SizedBox(height: 15.0),
+              SizedBox(height: 16.0),
               FloatingActionButton(
                 tooltip: 'AR',
                 heroTag: 'arbtn',

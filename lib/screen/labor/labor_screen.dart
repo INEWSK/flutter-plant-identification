@@ -11,7 +11,7 @@ class LaborScreen extends StatelessWidget {
     );
   }
 
-  _body(BuildContext context) {
+  Widget _body(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

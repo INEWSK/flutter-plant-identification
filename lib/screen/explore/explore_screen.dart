@@ -32,16 +32,16 @@ class _ExploreScreenState extends State<ExploreScreen>
     return ChangeNotifierProvider(
       create: (_) => provider,
       child: Consumer<PermissionProvider>(
-        builder: (_, location, __) {
-          switch (location.status) {
+        builder: (_, permit, __) {
+          switch (permit.status) {
             case Status.Forbidden:
-              return LocationErrorPage(press: location.requestPermission);
+              return LocationErrorPage(press: permit.requestPermission);
               break;
             case Status.Permitted:
               return GoogleMaps();
               break;
             default:
-              location.determindPermission();
+              permit.detectPermisstion();
               return CircularIndicator();
           }
         },

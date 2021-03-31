@@ -12,7 +12,7 @@ class PermissionProvider extends ChangeNotifier {
   get status => _status;
 
   // 初始化定位權限
-  void determindPermission() async {
+  void detectPermisstion() async {
     // 權限狀態
     PermissionStatus status = await Permission.location.status;
 
@@ -25,7 +25,7 @@ class PermissionProvider extends ChangeNotifier {
     if (status.isDenied) {
       log('定位權限或曾被拒絕, 嘗試再次申請定位權限');
       // 再次請求直至被永久拒絕
-      determindPermission();
+      detectPermisstion();
     }
 
     if (status.isPermanentlyDenied) {

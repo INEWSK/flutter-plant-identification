@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/screen/auth/widgets/welcome_text.dart';
+import 'package:flutter_hotelapp/screen/tensorflow/tensorflow_screen.dart';
 
 class LaborScreen extends StatelessWidget {
   @override
@@ -20,8 +21,13 @@ class LaborScreen extends StatelessWidget {
           child: WelcomeText(title: '實驗室', text: '以下功能爲實驗性功能 (測試階段)'),
         ),
         ListTile(
-          title: Text('Tensorflow Lite'),
-          onTap: () => Navigator.pushReplacementNamed(context, '/tensorflow'),
+          title: Text('Realtime Detect (Tensorflow)'),
+          onTap: () => Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) => TensorFlowScreen(),
+            ),
+          ),
         ),
         ListTile(
           title: Text('Firebase ML Kit'),

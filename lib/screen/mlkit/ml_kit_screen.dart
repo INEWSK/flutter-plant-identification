@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
-import 'package:flutter_hotelapp/screen/mlkit/providers/ml_kit_provider.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
+
+import 'providers/ml_kit_provider.dart';
 
 class MLKitScreen extends StatefulWidget {
   @override
@@ -86,7 +87,7 @@ class _MLKitScreenState extends State<MLKitScreen> {
               child: CircularProgressIndicator(),
             ),
             Text(
-                "It won't take long./nPlease make sure that you are using wifi."),
+                "It won't take long. \n Please make sure that you are using wifi."),
           ],
         ),
       ),
@@ -108,7 +109,7 @@ class _MLKitScreenState extends State<MLKitScreen> {
     );
   }
 
-  Widget screenBuild(provider) {
+  Widget screenBuild(MLKitProvider provider) {
     return FutureBuilder(
       future:
           provider.loadModel(), // a previously-obtained Future<String> or null

@@ -1,192 +1,153 @@
-// import 'dart:developer';
-// import 'dart:io';
+import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_hotelapp/models/tree_result.dart';
+import 'package:flutter_hotelapp/screen/tensorflow/helper/app_log_helper.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
-// import 'package:flutter/material.dart';
-// import 'package:image_picker/image_picker.dart';
-// import 'package:tflite/tflite.dart';
+import 'helper/camera_helper.dart';
+import 'helper/tflite_helper.dart';
 
-// class TensroFlowScreen extends StatefulWidget {
-//   @override
-//   _TensroFlowScreenState createState() => _TensroFlowScreenState();
-// }
+class TensorFlowScreen extends StatefulWidget {
+  @override
+  _TensorFlowScreenPageState createState() => _TensorFlowScreenPageState();
+}
 
-// class _TensroFlowScreenState extends State<TensroFlowScreen> {
-//   File _image;
-//   List _recognitions;
-//   bool _busy;
-//   double _imageWidth, _imageHeight;
+class _TensorFlowScreenPageState extends State<TensorFlowScreen>
+    with TickerProviderStateMixin {
+  AnimationController _colorAnimController;
+  Animation _colorTween;
 
-//   final picker = ImagePicker();
+  List<TreeResult> outputs;
 
-//   // this function loads the model
-//   loadTfModel() async {
-//     final result = await Tflite.loadModel(
-//       model: "assets/models/flora_model.tflite",
-//       labels: "assets/models/flora_labels.txt",
-//     );
-//     log('RESULT OF MODEL: $result');
-//   }
+  @override
+  void initState() {
+    super.initState();
 
-//   // this function detects the objects on the image
-//   detectObject(File image) async {
-//     var recognitions = await Tflite.runModelOnImage(
-//         path: image.path, // required
-//         // model: "FLORA",
-//         imageMean: 117.0,
-//         imageStd: 300.0,
-//         threshold: 0.1,
-//         numResults: 2,
-//         // numResultsPerClass: 5, // defaults to 5
-//         asynch: true // defaults to true
-//         );
-//     FileImage(image)
-//         .resolve(ImageConfiguration())
-//         .addListener((ImageStreamListener((ImageInfo info, bool _) {
-//           setState(() {
-//             _imageWidth = info.image.width.toDouble();
-//             _imageHeight = info.image.height.toDouble();
-//           });
-//         })));
-//     setState(() {
-//       _recognitions = recognitions;
-//     });
-//   }
+    //Load TFLite Model
+    TFLiteHelper.loadModel().then((value) {
+      setState(() {
+        TFLiteHelper.modelLoaded = true;
+      });
+    });
 
-//   @override
-//   void initState() {
-//     super.initState();
-//     _busy = true;
-//     loadTfModel().then((val) {
-//       {
-//         setState(() {
-//           _busy = false;
-//         });
-//       }
-//     });
-//   }
+    //Initialize Camera
+    CameraHelper.initializeCamera();
+    //Setup Animation
+    _setupAnimation();
+    //Subscribe to TFLite's Classify events
+    TFLiteHelper.tfLiteResultsController.stream.listen(
+      (value) {
+        value.forEach((element) {
+          _colorAnimController.animateTo(element.confidence,
+              curve: Curves.bounceIn, duration: Duration(milliseconds: 500));
+        });
+        //Set Results
+        outputs = value;
+        //Update results on screen
+        setState(() {
+          //Set bit to false to allow detection again
+          CameraHelper.isDetecting = false;
+        });
+      },
+      onDone: () {},
+      onError: (error) {
+        AppLogHelper.log("listen", error);
+      },
+    );
+  }
 
-//   // display the bounding boxes over the detected objects
-//   List<Widget> renderBoxes(Size screen) {
-//     if (_recognitions == null) return [];
-//     if (_imageWidth == null || _imageHeight == null) return [];
+  @override
+  void dispose() {
+    TFLiteHelper.disposeModel();
+    CameraHelper.camera.dispose();
+    AppLogHelper.log("dispose", "Clear resources.");
+    super.dispose();
+  }
 
-//     double factorX = screen.width;
-//     double factorY = _imageHeight / _imageHeight * screen.width;
+  @override
+  Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Realtime Detect'),
+      ),
+      body: FutureBuilder<void>(
+        future: CameraHelper.initializeControllerFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            // If the Future is complete, display the preview.
+            return Stack(
+              children: <Widget>[
+                CameraPreview(CameraHelper.camera),
+                _buildResultsWidget(width, outputs)
+              ],
+            );
+          } else {
+            // Otherwise, display a loading indicator.
+            return Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
+    );
+  }
 
-//     Color blue = Colors.blue;
+  Widget _buildResultsWidget(double width, List<TreeResult> outputs) {
+    return Positioned.fill(
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: Container(
+          height: 200.0,
+          width: width,
+          color: Colors.white,
+          child: outputs != null && outputs.isNotEmpty
+              ? ListView.builder(
+                  itemCount: outputs.length,
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.all(20.0),
+                  itemBuilder: (BuildContext context, int index) {
+                    return Column(
+                      children: <Widget>[
+                        Text(
+                          outputs[index].label,
+                          style: TextStyle(
+                            color: _colorTween.value,
+                            fontSize: 20.0,
+                          ),
+                        ),
+                        AnimatedBuilder(
+                            animation: _colorAnimController,
+                            builder: (context, child) => LinearPercentIndicator(
+                                  width: width * 0.88,
+                                  lineHeight: 14.0,
+                                  percent: outputs[index].confidence,
+                                  progressColor: _colorTween.value,
+                                )),
+                        Text(
+                          "${(outputs[index].confidence * 100.0).toStringAsFixed(2)} %",
+                          style: TextStyle(
+                            color: _colorTween.value,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                      ],
+                    );
+                  })
+              : Center(
+                  child: Text("Wating for model to detect..",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20.0,
+                      ))),
+        ),
+      ),
+    );
+  }
 
-//     return _recognitions.map((re) {
-//       return Container(
-//         child: Positioned(
-//             left: re["rect"]["x"] * factorX,
-//             top: re["rect"]["y"] * factorY,
-//             width: re["rect"]["w"] * factorX,
-//             height: re["rect"]["h"] * factorY,
-//             child: ((re["confidenceInClass"] > 0.50))
-//                 ? Container(
-//                     decoration: BoxDecoration(
-//                         border: Border.all(
-//                       color: blue,
-//                       width: 3,
-//                     )),
-//                     child: Text(
-//                       "${re["detectedClass"]} ${(re["confidenceInClass"] * 100).toStringAsFixed(0)}%",
-//                       style: TextStyle(
-//                         background: Paint()..color = blue,
-//                         color: Colors.white,
-//                         fontSize: 15,
-//                       ),
-//                     ),
-//                   )
-//                 : Container()),
-//       );
-//     }).toList();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     Size size = MediaQuery.of(context).size;
-
-//     List<Widget> stackChildren = [];
-
-//     stackChildren.add(Positioned(
-//       // using ternary operator
-//       child: _image == null
-//           ? Container(
-//               child: Column(
-//                 mainAxisAlignment: MainAxisAlignment.center,
-//                 children: <Widget>[
-//                   Text("Please Select an Image"),
-//                 ],
-//               ),
-//             )
-//           : // if not null then
-//           Container(child: Image.file(_image)),
-//     ));
-
-//     stackChildren.addAll(renderBoxes(size));
-
-//     if (_busy) {
-//       stackChildren.add(Center(
-//         child: CircularProgressIndicator(),
-//       ));
-//     }
-
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text("Object Detector"),
-//       ),
-//       floatingActionButton: Row(
-//         mainAxisAlignment: MainAxisAlignment.end,
-//         children: <Widget>[
-//           FloatingActionButton(
-//             heroTag: "Fltbtn2",
-//             child: Icon(Icons.camera_alt),
-//             onPressed: getImageFromCamera,
-//           ),
-//           SizedBox(
-//             width: 10,
-//           ),
-//           FloatingActionButton(
-//             heroTag: "Fltbtn1",
-//             child: Icon(Icons.photo),
-//             onPressed: getImageFromGallery,
-//           ),
-//         ],
-//       ),
-//       body: Container(
-//         alignment: Alignment.center,
-//         child: Stack(
-//           children: stackChildren,
-//         ),
-//       ),
-//     );
-//   }
-
-//   // gets image from camera and runs detectObject
-//   Future getImageFromCamera() async {
-//     final pickedFile = await picker.getImage(source: ImageSource.camera);
-
-//     setState(() {
-//       if (pickedFile != null) {
-//         _image = File(pickedFile.path);
-//       } else {
-//         print("No image Selected");
-//       }
-//     });
-//     detectObject(_image);
-//   }
-
-//   // gets image from gallery and runs detectObject
-//   Future getImageFromGallery() async {
-//     final pickedFile = await picker.getImage(source: ImageSource.gallery);
-//     setState(() {
-//       if (pickedFile != null) {
-//         _image = File(pickedFile.path);
-//       } else {
-//         print("No image Selected");
-//       }
-//     });
-//     detectObject(_image);
-//   }
-// }
+  void _setupAnimation() {
+    _colorAnimController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    _colorTween = ColorTween(begin: Colors.green, end: Colors.red)
+        .animate(_colorAnimController);
+  }
+}

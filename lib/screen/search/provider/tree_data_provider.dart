@@ -14,11 +14,9 @@ enum Status { Uninitialized, Loading, Loaded, Error }
 class TreeDataProvider extends ChangeNotifier {
   Status _status = Status.Uninitialized;
   List<TreeData> _list = [];
-  List<TreeDataImage> _listImg = [];
 
-  get status => _status;
-  get treeMap => _list;
-  get treeImage => _listImg;
+  Status get status => _status;
+  List<TreeData> get treeMap => _list;
 
   // dio baseoption preset
   Dio dio = Dio(
@@ -28,7 +26,7 @@ class TreeDataProvider extends ChangeNotifier {
       headers: {
         HttpHeaders.acceptHeader: "application/json",
         HttpHeaders.userAgentHeader: "",
-        HttpHeaders.acceptLanguageHeader: 'zh-Hant',
+        HttpHeaders.acceptLanguageHeader: 'en-US',
       },
       contentType: Headers.jsonContentType,
       responseType: ResponseType.plain,
@@ -81,31 +79,31 @@ class TreeDataProvider extends ChangeNotifier {
     }
   }
 
-  fetchImage() async {
-    final imgUrl = '$localUrl/flora/tree-image/';
+  // fetchImage() async {
+  //   final imgUrl = '$localUrl/flora/tree-image/';
 
-    try {
-      final response = await dio.get(imgUrl);
+  //   try {
+  //     final response = await dio.get(imgUrl);
 
-      var data = List<TreeDataImage>.from(
-        json.decode(response.data).map(
-              (x) => TreeDataImage.fromJson(x),
-            ),
-      );
+  //     var data = List<TreeDataImage>.from(
+  //       json.decode(response.data).map(
+  //             (x) => TreeDataImage.fromJson(x),
+  //           ),
+  //     );
 
-      _listImg = data;
+  //     _listImg = data;
 
-      //data loaded;
-      log('image data loaded');
-      notifyListeners();
+  //     //data loaded;
+  //     log('image data loaded');
+  //     notifyListeners();
 
-      // _listImg = data;
-    } on DioError catch (e) {
-      final error = DioExceptions.fromDioError(e);
-      //輸出錯誤到控制台
-      log('TreeImage -> ${error.messge}');
-      //返回toast到前端, 這裏之後修改放到UI層面
-      Toast.show(error.messge + '.\nImage load failed');
-    }
-  }
+  //     // _listImg = data;
+  //   } on DioError catch (e) {
+  //     final error = DioExceptions.fromDioError(e);
+  //     //輸出錯誤到控制台
+  //     log('TreeImage -> ${error.messge}');
+  //     //返回toast到前端, 這裏之後修改放到UI層面
+  //     Toast.show(error.messge + '.\nImage load failed');
+  //   }
+  // }
 }

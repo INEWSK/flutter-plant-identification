@@ -28,17 +28,17 @@ class _DetailScreenState extends State<DetailScreen> {
 
     return Scaffold(
       body: DetailPageWidget(
-        basicIntro: data.introduction.isEmpty ?? noInfo,
-        commonName: data.commonName.isEmpty ?? noInfo,
+        basicIntro: data.introduction,
+        commonName: data.commonName,
         treeImage: data.treeImages.isNotEmpty
             ? data.treeImages[0].treeImage
             : 'http://10.0.2.2:8000/media/images/Bauhinia_blakeana_9hy5snr.jpg',
-        scientificName: data.scientificName.isEmpty ?? noInfo,
-        specialFeatures: data.specialFeatures.isEmpty ?? noInfo,
-        learnMore: data.toLearnMore.isEmpty ?? noInfo,
-        leafIntro: data.leaf.isEmpty ?? noInfo,
-        flowerIntro: data.flower.isEmpty ?? noInfo,
-        fruitIntro: data.fruit.isEmpty ?? noInfo,
+        scientificName: data.scientificName,
+        specialFeatures: data.specialFeatures,
+        learnMore: data.toLearnMore,
+        leafIntro: data.leaf,
+        flowerIntro: data.flower,
+        fruitIntro: data.fruit,
         cFamily: data.family,
         cHeight: data.height,
         cNatureLeaf: data.natureOfLeaf,

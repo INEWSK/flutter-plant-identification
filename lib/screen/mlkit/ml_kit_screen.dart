@@ -11,7 +11,7 @@ class MLKitScreen extends StatefulWidget {
 }
 
 class _MLKitScreenState extends State<MLKitScreen> {
-  Widget readyScreen(MLKitProvider provider) {
+  Widget _readyScreen(MLKitProvider provider) {
     return Scaffold(
       appBar: AppBar(),
       body: Center(
@@ -66,7 +66,7 @@ class _MLKitScreenState extends State<MLKitScreen> {
     );
   }
 
-  Widget errorScreen() {
+  Widget _errorScreen() {
     return Scaffold(
       appBar: AppBar(),
       body: Center(
@@ -75,7 +75,7 @@ class _MLKitScreenState extends State<MLKitScreen> {
     );
   }
 
-  Widget loadingScreen() {
+  Widget _loadingScreen() {
     return Scaffold(
       body: Center(
         child: Column(
@@ -115,11 +115,11 @@ class _MLKitScreenState extends State<MLKitScreen> {
           provider.loadModel(), // a previously-obtained Future<String> or null
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasData) {
-          return readyScreen(provider);
+          return _readyScreen(provider);
         } else if (snapshot.hasError) {
-          return errorScreen();
+          return _errorScreen();
         } else {
-          return loadingScreen();
+          return _loadingScreen();
         }
       },
     );

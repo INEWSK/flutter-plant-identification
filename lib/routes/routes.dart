@@ -9,7 +9,6 @@ import 'package:flutter_hotelapp/screen/main_screen.dart';
 import 'package:flutter_hotelapp/screen/mlkit/ml_kit_screen.dart';
 import 'package:flutter_hotelapp/screen/profile/fqa_screen.dart';
 import 'package:flutter_hotelapp/screen/settings/settings_screen.dart';
-import 'package:flutter_hotelapp/screen/tensorflow/tensorflow_screen.dart';
 
 class Routes {
   // prevent anyone from instantiate this object
@@ -39,7 +38,6 @@ class Routes {
     agreement: (BuildContext context) => AgreementScreen(),
     fqa: (BuildContext context) => FQAScreen(),
     labor: (BuildContext context) => LaborScreen(),
-    // tensorflow: (BuildContext context) => TensorFlowScreen(),
     mlkit: (BuildContext context) => MLKitScreen(),
   };
 }

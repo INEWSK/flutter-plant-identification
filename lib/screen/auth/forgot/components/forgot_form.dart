@@ -29,7 +29,7 @@ class _ForgotFormState extends State<ForgotForm> {
             style: kSecondaryBodyTextStyle,
             cursorColor: Colors.green,
             keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(
+            decoration: otpInputDecoration.copyWith(
               prefixIcon: Icon(Icons.person),
               hintText: 'Email',
               contentPadding: kTextFieldPadding,

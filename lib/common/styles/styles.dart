@@ -16,7 +16,7 @@ final EdgeInsets kToastPadding = EdgeInsets.symmetric(
 // default animation duration
 const Duration kDefaultDuration = Duration(milliseconds: 375);
 
-//------ auth text input border style here ------//
+//------ text input border style here ------//
 // text field decoration
 const OutlineInputBorder kDefaultOutlineInputBorder = OutlineInputBorder(
   borderRadius: const BorderRadius.all(Radius.circular(5.0)),
@@ -26,9 +26,16 @@ const OutlineInputBorder kDefaultOutlineInputBorder = OutlineInputBorder(
 );
 
 const InputDecoration otpInputDecoration = InputDecoration(
-  contentPadding: EdgeInsets.zero,
+  // contentPadding: EdgeInsets.zero,
   counterText: "",
   errorStyle: TextStyle(height: 0),
+);
+
+const InputDecoration searchInputDecoration = InputDecoration(
+  contentPadding: EdgeInsets.all(10),
+  prefixIcon: Icon(Icons.search),
+  hintText: 'Search...',
+  border: InputBorder.none,
 );
 
 const kErrorBorderSide = BorderSide(color: Colors.red, width: 1.0);

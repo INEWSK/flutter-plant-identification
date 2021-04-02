@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hotelapp/screen/widgets/error_page.dart';
-import 'package:flutter_hotelapp/screen/widgets/shimmer_effect.dart';
 import 'package:provider/provider.dart';
 
+import 'components/error_page.dart';
 import 'components/leaf_card_list.dart';
+import 'components/shimmer_effect.dart';
 import 'provider/tree_data_provider.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -22,7 +22,6 @@ class _SearchScreenState extends State<SearchScreen>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      appBar: AppBar(),
       resizeToAvoidBottomInset: false,
       body: _body(),
     );

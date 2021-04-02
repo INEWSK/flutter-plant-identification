@@ -6,6 +6,7 @@ class ShimmerEffect extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
         child: Shimmer.fromColors(
@@ -65,7 +66,7 @@ class ShimmerEffect extends StatelessWidget {
                 ],
               ),
             ),
-            itemCount: 6,
+            itemCount: 7,
           ),
         ),
       ),

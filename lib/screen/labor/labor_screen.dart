@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/screen/auth/widgets/welcome_text.dart';
-import 'package:flutter_hotelapp/screen/tensorflow/tensorflow_screen.dart';
 
 class LaborScreen extends StatelessWidget {
   @override
@@ -22,12 +21,7 @@ class LaborScreen extends StatelessWidget {
         ),
         ListTile(
           title: Text('Realtime Detect (Tensorflow)'),
-          onTap: () => Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (BuildContext context) => TensorFlowScreen(),
-            ),
-          ),
+          onTap: () {},
         ),
         ListTile(
           title: Text('Firebase ML Kit'),

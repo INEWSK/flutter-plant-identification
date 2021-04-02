@@ -7,7 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/models/tree_data.dart';
-import 'package:flutter_hotelapp/models/tree_data_image.dart';
 
 enum Status { Uninitialized, Loading, Loaded, Error }
 

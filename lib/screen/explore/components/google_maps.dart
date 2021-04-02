@@ -65,24 +65,24 @@ class _GoogleMapsState extends State<GoogleMaps> {
   void _addMarker() {
     _apiMarkerData.forEach((element) {
       List<TreeLocations> location = element.treeLocations;
-      _markers.add(
-        // 這裏未做判斷 value range
-        // 會出現 Invalid value: Valid value range is empty: 0
-        Marker(
-          markerId: MarkerId(
-            location[0].id.toString(),
+      if (element.treeLocations.isNotEmpty) {
+        _markers.add(
+          Marker(
+            markerId: MarkerId(
+              location[0].id.toString(),
+            ),
+            infoWindow: InfoWindow(
+              title: element.scientificName,
+              snippet: element.scientificName,
+            ),
+            position: LatLng(
+              location[0].treeLat,
+              location[0].treeLong,
+            ),
+            icon: _markerIcon,
           ),
-          infoWindow: InfoWindow(
-            title: element.scientificName,
-            snippet: element.scientificName,
-          ),
-          position: LatLng(
-            location[0].treeLat,
-            location[0].treeLong,
-          ),
-          icon: _markerIcon,
-        ),
-      );
+        );
+      }
     });
   }
 

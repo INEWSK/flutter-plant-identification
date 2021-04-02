@@ -24,7 +24,6 @@ dependencies:
   flutter:
     sdk: flutter
   animations: ^1.1.2
-  asuka: ^1.0.4
   bot_toast: ^3.0.5
   camera: ^0.8.1
   connectivity: ^3.0.2

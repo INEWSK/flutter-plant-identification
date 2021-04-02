@@ -4,6 +4,8 @@
 ///否則建議先把返回的數據轉換成模型/實體類再去使用 。
 
 class TreeData {
+  int id;
+  String folderName;
   String scientificName;
   String commonName;
   String introduction;
@@ -21,25 +23,30 @@ class TreeData {
   List<TreeImages> treeImages;
   List<TreeLocations> treeLocations;
 
-  TreeData(
-      {this.scientificName,
-      this.commonName,
-      this.introduction,
-      this.specialFeatures,
-      this.toLearnMore,
-      this.family,
-      this.height,
-      this.natureOfLeaf,
-      this.branch,
-      this.bark,
-      this.leaf,
-      this.flower,
-      this.fruit,
-      this.dateCreated,
-      this.treeImages,
-      this.treeLocations});
+  TreeData({
+    this.id,
+    this.folderName,
+    this.scientificName,
+    this.commonName,
+    this.introduction,
+    this.specialFeatures,
+    this.toLearnMore,
+    this.family,
+    this.height,
+    this.natureOfLeaf,
+    this.branch,
+    this.bark,
+    this.leaf,
+    this.flower,
+    this.fruit,
+    this.dateCreated,
+    this.treeImages,
+    this.treeLocations,
+  });
 
   TreeData.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    folderName = json['folder_name'];
     scientificName = json['scientific_name'];
     commonName = json['common_name'];
     introduction = json['introduction'];
@@ -70,6 +77,8 @@ class TreeData {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = this.id;
+    data['folder_name'] = this.folderName;
     data['scientific_name'] = this.scientificName;
     data['common_name'] = this.commonName;
     data['introduction'] = this.introduction;

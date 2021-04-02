@@ -4,19 +4,19 @@ import 'package:flutter_hotelapp/screen/search/provider/tree_data_provider.dart'
 
 import 'components/detail_page_widget.dart';
 
-///根據傳進的 index 決定顯示什麼 data
+///根據傳進的 treedata 決定顯示什麼 data
 class DetailScreen extends StatefulWidget {
-  final TreeDataProvider data;
-  final int index;
+  final TreeData data;
 
-  const DetailScreen({Key key, this.data, this.index}) : super(key: key);
+  const DetailScreen({
+    Key key,
+    @required this.data,
+  }) : super(key: key);
   @override
   _DetailScreenState createState() => _DetailScreenState();
 }
 
 class _DetailScreenState extends State<DetailScreen> {
-  String noInfo = 'No More Information';
-
   @override
   void initState() {
     super.initState();
@@ -24,7 +24,7 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    TreeData data = widget.data.treeMap[widget.index];
+    TreeData data = widget.data;
 
     return Scaffold(
       body: DetailPageWidget(

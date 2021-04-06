@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hotelapp/screen/explore/provider/permission_provider.dart';
 import 'package:flutter_hotelapp/screen/widgets/circular_indicator.dart';
 import 'package:provider/provider.dart';
 
 import 'components/google_maps.dart';
 import 'components/location_error_page.dart';
+import 'provider/permission_provider.dart';
 
 class ExploreScreen extends StatefulWidget {
   @override

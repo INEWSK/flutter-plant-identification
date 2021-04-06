@@ -1,6 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hotelapp/screen/widgets/circular_indicator.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 
@@ -43,9 +42,9 @@ class MyApp extends StatelessWidget {
             navigatorObservers: [BotToastNavigatorObserver()],
             home: home ??
                 Builder(builder: (_) {
-                  return user.status == Status.Uninitialized
-                      ? _loading(user)
-                      : MainScreen();
+                  if (user.status == Status.Uninitialized)
+                    user.initAuthProvider();
+                  return MainScreen();
                 }),
           );
         },
@@ -57,10 +56,5 @@ class MyApp extends StatelessWidget {
       radius: 25.0,
       position: ToastPosition.bottom,
     );
-  }
-
-  _loading(AuthProvider user) {
-    user.initAuthProvider();
-    return CircularIndicator();
   }
 }

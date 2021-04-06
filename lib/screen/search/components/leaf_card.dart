@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
+import 'package:flutter_hotelapp/common/utils/image_utils.dart';
 import 'package:flutter_hotelapp/models/tree_data.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class LeafCard extends StatelessWidget {
   final TreeData data;
@@ -26,7 +26,7 @@ class LeafCard extends StatelessWidget {
               style: kSecondaryBodyTextStyle,
             ),
           ),
-          _image(),
+          _image(context),
           _intro(),
           _button(),
         ],
@@ -63,18 +63,20 @@ class LeafCard extends StatelessWidget {
     );
   }
 
-  Widget _image() {
-    // 使用 async 解決 Connection closed while receiving data 問題
+  Widget _image(context) {
+    // image provider解決 connection closed 問題
+    var size = MediaQuery.of(context).size;
     return FutureBuilder(
-      future: _treeImage(),
+      future: _imageUrl(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (snapshot.hasData) {
-          return ClipRect(
-            child: Align(
-              alignment: Alignment.center,
-              // widthFactor: ,
-              heightFactor: 0.6,
-              child: snapshot.data,
+          return Container(
+            width: size.width,
+            height: size.height * 0.25,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: ImageUtils.getImageProvider(snapshot.data),
+                  fit: BoxFit.cover),
             ),
           );
         } else {
@@ -89,14 +91,16 @@ class LeafCard extends StatelessWidget {
     );
   }
 
-  _treeImage() async {
-    Image image;
+  _imageUrl() async {
+    String imgUrl;
+
     if (data.treeImages.isNotEmpty) {
-      image = Image.network(data.treeImages[0].treeImage);
-      return image;
+      imgUrl = data.treeImages[0].treeImage;
+
+      return imgUrl;
     } else {
-      image = Image.asset('assets/images/nophoto.jpg');
-      return image;
+      imgUrl = 'assets/images/nophoto.jpg';
+      return imgUrl;
     }
   }
 }

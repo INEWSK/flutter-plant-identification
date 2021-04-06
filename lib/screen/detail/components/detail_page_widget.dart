@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
+import 'package:flutter_hotelapp/common/utils/image_utils.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'section_cell.dart';
@@ -55,10 +56,13 @@ class DetailPageWidget extends StatelessWidget {
               StretchMode.blurBackground,
               StretchMode.fadeTitle
             ],
-            background: Image.network(
-              // header image
-              treeImage,
-              fit: BoxFit.fitWidth,
+            background: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: ImageUtils.getImageProvider(treeImage),
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
           ),
         ),

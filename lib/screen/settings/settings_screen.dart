@@ -140,7 +140,7 @@ class SettingsScreen extends StatelessWidget {
                 },
               ),
               ListTile(
-                title: Text('More Info'),
+                title: Text('About'),
                 onTap: () {
                   showAboutDialog(
                     context: context,

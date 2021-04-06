@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/demo/demo_data.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 import 'components/intro_card.dart';
+import 'provider/home_provider.dart';
 
 /// 使用 AutomaticKeepAliveClientMixin，並重寫 wantKeepAlive 方法，讓狀態不被回收掉
 class HomeScreen extends StatefulWidget {
@@ -33,17 +35,13 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   Widget _body() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        // 使用 Expanded 讓 listview 佔 column 餘下剩餘的空間
-        Expanded(
-          child: AnimationLimiter(
+    return ChangeNotifierProvider(
+      create: (_) => HomeProvider(),
+      child: Consumer(
+        builder: (_, HomeProvider provider, __) {
+          return AnimationLimiter(
             child: ListView.builder(
               addAutomaticKeepAlives: false, // 本體已被包裹在 autoKeepAlive, 禁用
-              // shrinkWrap: true, // 確定 listview 高度
-              // physics: NeverScrollableScrollPhysics(),
               itemCount: demoIntroCardData.length,
               itemBuilder: (context, index) {
                 return AnimationConfiguration.staggeredList(
@@ -63,9 +61,9 @@ class _HomeScreenState extends State<HomeScreen>
                 );
               },
             ),
-          ),
-        ),
-      ],
+          );
+        },
+      ),
     );
   }
 }

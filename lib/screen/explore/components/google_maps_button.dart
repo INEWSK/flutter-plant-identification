@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/utils/device_utils.dart';
 
 class GoogleMapsButton extends StatelessWidget {
-  final VoidCallback locatePress;
-  final VoidCallback arPress;
+  final VoidCallback locate;
+  final VoidCallback refresh;
 
   const GoogleMapsButton({
     Key key,
-    this.locatePress,
-    this.arPress,
+    this.locate,
+    this.refresh,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -23,17 +23,15 @@ class GoogleMapsButton extends StatelessWidget {
               FloatingActionButton(
                 tooltip: 'Locate',
                 heroTag: 'lctbtn',
-                onPressed: locatePress,
+                onPressed: locate,
                 child: Icon(Icons.my_location),
               ),
               SizedBox(height: 16.0),
               FloatingActionButton(
-                tooltip: 'AR',
-                heroTag: 'arbtn',
-                onPressed: arPress,
-                child: Icon(
-                  Icons.remove_red_eye,
-                ),
+                tooltip: 'Referesh',
+                heroTag: 'refreshbtn',
+                onPressed: refresh,
+                child: Icon(Icons.refresh),
               ),
             ],
           ),

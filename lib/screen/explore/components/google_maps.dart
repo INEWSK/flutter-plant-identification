@@ -31,7 +31,7 @@ class _GoogleMapsState extends State<GoogleMaps> {
   @override
   void initState() {
     super.initState();
-    _fetchLocationFormApi();
+    _fetchMarkerFormApi();
   }
 
   @override
@@ -85,9 +85,8 @@ class _GoogleMapsState extends State<GoogleMaps> {
     });
   }
 
-  /// 從 server 抓 tree location 資料
-  /// TODO: MVC
-  _fetchLocationFormApi() async {
+  // TODO: MVC
+  _fetchMarkerFormApi() async {
     // dio baseoption preset
     Dio dio = Dio(
       BaseOptions(
@@ -117,6 +116,7 @@ class _GoogleMapsState extends State<GoogleMaps> {
 
       setState(() {
         _apiMarkerData = data;
+        print('marker reset');
       });
 
       _addMarker();
@@ -125,6 +125,8 @@ class _GoogleMapsState extends State<GoogleMaps> {
       print('GOGO Map Marker API: ${error.messge}');
       Toast.show('${error.messge}\nLoad Marker Failed', duration: 5000);
     }
+
+    dio.close();
   }
 
   void _onMapCreated(GoogleMapController controller) async {
@@ -162,8 +164,8 @@ class _GoogleMapsState extends State<GoogleMaps> {
         ),
         // _locateButton(),
         GoogleMapsButton(
-          locatePress: _locatePosition,
-          arPress: () {},
+          locate: _locatePosition,
+          refresh: _fetchMarkerFormApi,
         ),
       ],
     );

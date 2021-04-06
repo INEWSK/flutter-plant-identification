@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_hotelapp/common/constants/rest_api_service.dart';
 import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/models/tree_data.dart';
@@ -48,10 +49,8 @@ class TreeDataProvider extends ChangeNotifier {
       notifyListeners();
     }
 
-    final url = "$localUrl/flora/tree";
-
     try {
-      final response = await dio.get(url);
+      final response = await dio.get(RestApi.tree);
 
       // 這是呼叫 method 先 decode json 后再轉換為 list<model>
       var data = List<TreeData>.from(
@@ -77,32 +76,4 @@ class TreeDataProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-
-  // fetchImage() async {
-  //   final imgUrl = '$localUrl/flora/tree-image/';
-
-  //   try {
-  //     final response = await dio.get(imgUrl);
-
-  //     var data = List<TreeDataImage>.from(
-  //       json.decode(response.data).map(
-  //             (x) => TreeDataImage.fromJson(x),
-  //           ),
-  //     );
-
-  //     _listImg = data;
-
-  //     //data loaded;
-  //     log('image data loaded');
-  //     notifyListeners();
-
-  //     // _listImg = data;
-  //   } on DioError catch (e) {
-  //     final error = DioExceptions.fromDioError(e);
-  //     //輸出錯誤到控制台
-  //     log('TreeImage -> ${error.messge}');
-  //     //返回toast到前端, 這裏之後修改放到UI層面
-  //     Toast.show(error.messge + '.\nImage load failed');
-  //   }
-  // }
 }

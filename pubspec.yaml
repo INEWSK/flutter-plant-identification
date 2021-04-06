@@ -25,7 +25,9 @@ dependencies:
     sdk: flutter
   animations: ^1.1.2
   bot_toast: ^3.0.5
+  cached_network_image: ^3.0.0
   camera: ^0.8.1
+  common_utils: ^2.0.2
   connectivity: ^3.0.2
   cupertino_icons: ^1.0.2
   dio: ^4.0.0-beta6

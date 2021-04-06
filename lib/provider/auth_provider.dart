@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:flutter_hotelapp/common/constants/rest_api_service.dart';
 import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
 import 'package:flutter_hotelapp/models/user.dart';
 import 'package:hive/hive.dart';
@@ -27,12 +28,12 @@ class AuthProvider extends ChangeNotifier {
   get email => _email;
   get admin => _isAdmin;
 
-  /// 默認請求地址
-  final String baseUrl = 'https://florabackend.azurewebsites.net';
-  // 本地測試請求地址
-  final String localUrl = 'http://10.0.2.2:8000';
-  // vtc netowrk
-  final String vtcUrl = '192.168.20.81:80/api';
+  // /// 默認請求地址
+  // final String baseUrl = 'https://florabackend.azurewebsites.net';
+  // // 本地測試請求地址
+  // final String localUrl = 'http://10.0.2.2:8000';
+  // // vtc netowrk
+  // final String vtcUrl = '192.168.20.81:80/api';
 
   initAuthProvider() async {
     String token = await getToken();
@@ -57,7 +58,7 @@ class AuthProvider extends ChangeNotifier {
     _status = Status.Authenticating;
     notifyListeners();
 
-    final url = "$localUrl/flora/signin/";
+    final url = RestApi.localUrl + "/flora/signin/";
 
     final data = FormData.fromMap({
       'email': email,
@@ -85,7 +86,6 @@ class AuthProvider extends ChangeNotifier {
 
       return result;
     } on DioError catch (e) {
-      /// 感覺這可以進行封裝統一管理 DIO ERROR, 留待日後繼續改進
       /// 這次項目的後台回傳的 status code 默認是 400
       /// UI 設置了 validator 規避了大部分無效 value input
       /// 後端返回是賬號密碼的錯誤
@@ -119,7 +119,7 @@ class AuthProvider extends ChangeNotifier {
 
   /// sign up method
   Future<Map> signUp(String email, String password1, String password2) async {
-    final url = "$localUrl/flora/signup/";
+    final url = RestApi.localUrl + "/flora/signup/";
 
     final data = FormData.fromMap({
       'email': email,

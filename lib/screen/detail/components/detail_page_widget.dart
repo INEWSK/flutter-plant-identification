@@ -41,7 +41,7 @@ class DetailPageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var brightness = MediaQuery.of(context).platformBrightness;
+    var brightness = Theme.of(context).brightness;
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
       slivers: [
@@ -208,7 +208,7 @@ class CharacteristicTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var brightness = MediaQuery.of(context).platformBrightness;
+    var brightness = Theme.of(context).brightness;
     return Table(
       defaultVerticalAlignment: TableCellVerticalAlignment.middle,
       columnWidths: {

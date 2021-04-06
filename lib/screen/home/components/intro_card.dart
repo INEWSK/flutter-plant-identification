@@ -17,7 +17,7 @@ class IntroCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var brightness = MediaQuery.of(context).platformBrightness;
+    var themeData = Theme.of(context).brightness;
     return Container(
       margin: EdgeInsets.symmetric(
         horizontal: kDefaultPadding / 1.5, // 13.4
@@ -25,7 +25,7 @@ class IntroCard extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.0),
-        color: brightness == Brightness.dark ? Colors.black54 : Colors.white,
+        color: themeData == Brightness.dark ? Colors.black54 : Colors.white,
         boxShadow: [
           BoxShadow(
             offset: Offset(1.0, 2.0), // 阴影 x y 轴位置偏移量

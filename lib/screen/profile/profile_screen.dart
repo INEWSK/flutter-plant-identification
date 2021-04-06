@@ -116,7 +116,7 @@ class _ProfileScreenState extends State<ProfileScreen>
           ),
           Consumer<AuthProvider>(
             builder: (BuildContext context, user, Widget child) {
-              if (user.token != null && user.admin == false) {
+              if (user.token != null && user.admin == true) {
                 return ListTile(
                   leading: SvgPicture.asset(
                       'assets/icons/profile/ai_retraining.svg'),

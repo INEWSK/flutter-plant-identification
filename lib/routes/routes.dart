@@ -6,6 +6,7 @@ import 'package:flutter_hotelapp/screen/auth/sign_in/sign_in_screen.dart';
 import 'package:flutter_hotelapp/screen/auth/sign_up/sign_up_screen.dart';
 import 'package:flutter_hotelapp/screen/labor/labor_screen.dart';
 import 'package:flutter_hotelapp/screen/main_screen.dart';
+import 'package:flutter_hotelapp/screen/onboarding/onboarding_screen.dart';
 // import 'package:flutter_hotelapp/screen/mlkit/ml_kit_screen.dart';
 import 'package:flutter_hotelapp/screen/profile/fqa_screen.dart';
 import 'package:flutter_hotelapp/screen/settings/settings_screen.dart';
@@ -28,7 +29,7 @@ class Routes {
   static const String mlkit = '/mlkit';
 
   static final routes = <String, WidgetBuilder>{
-    // intro: (BuildContext context) => OnBoardingScreen(),
+    intro: (BuildContext context) => OnBoardingScreen(),
     main: (BuildContext context) => MainScreen(),
     signIn: (BuildContext context) => SignInScreen(),
     signUp: (BuildContext context) => SignUpScreen(),

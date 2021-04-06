@@ -75,7 +75,7 @@ class DioExceptions implements Exception {
       case 404:
         return error.toString();
       case 500:
-        return 'Internal Server Error';
+        return error.toString();
       default:
         return 'Oops something went wrong';
     }

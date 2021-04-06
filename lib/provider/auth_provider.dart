@@ -13,6 +13,7 @@ class AuthProvider extends ChangeNotifier {
   String _token;
   String _username = 'Guest';
   String _email = '';
+  bool _isAdmin = false;
 
   Dio dio = Dio(BaseOptions(
     connectTimeout: 10000, // 連接服務器超時時間，單位毫秒.
@@ -24,6 +25,7 @@ class AuthProvider extends ChangeNotifier {
   get token => _token;
   get username => _username;
   get email => _email;
+  get admin => _isAdmin;
 
   /// 默認請求地址
   final String baseUrl = 'https://florabackend.azurewebsites.net';
@@ -39,6 +41,7 @@ class AuthProvider extends ChangeNotifier {
       _token = user.token;
       _email = user.email;
       _username = user.username;
+      _isAdmin = user.admin;
       _status = Status.Authenticated;
       log('User Authenticated');
     } else {
@@ -183,15 +186,18 @@ class AuthProvider extends ChangeNotifier {
 
   /// store user data
   Future<void> storeUserData(response) async {
+    response.toString();
     _username = response['username'];
     _email = response['email'];
     _token = response['token'];
+    _isAdmin = response['admin'];
 
     var box = await Hive.openBox('authBox');
 
     box.put('username', _username);
     box.put('email', _email);
     box.put('token', _token);
+    box.put('admin', _isAdmin);
 
     log('HiveBox: Auth data stored: ${box.toMap()}');
   }
@@ -203,8 +209,9 @@ class AuthProvider extends ChangeNotifier {
     final token = box.get('token');
     final username = box.get('username');
     final email = box.get('email');
+    final admin = box.get('admin');
 
-    User user = User(email, username, token);
+    User user = User(email, username, token, admin);
 
     return user;
   }
@@ -223,6 +230,7 @@ class AuthProvider extends ChangeNotifier {
     _token = null;
     _username = 'Guest';
     _email = '';
+    _isAdmin = false;
 
     // 檢查 token 是否過期(not apply yet)
     if (tokenExpired == true) {

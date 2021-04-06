@@ -102,9 +102,21 @@ class _ProfileScreenState extends State<ProfileScreen>
             },
           ),
           SizedBox(height: 10),
+          ListTile(
+            // dense: true,
+            leading: SvgPicture.asset('assets/icons/profile/manual.svg'),
+            title: Text('Manual'),
+            onTap: null,
+          ),
+          ListTile(
+            // dense: true,
+            leading: SvgPicture.asset('assets/icons/profile/favorite.svg'),
+            title: Text('Favorite'),
+            onTap: null,
+          ),
           Consumer<AuthProvider>(
             builder: (BuildContext context, user, Widget child) {
-              if (user.token != null) {
+              if (user.token != null && user.admin == false) {
                 return ListTile(
                   leading: SvgPicture.asset(
                       'assets/icons/profile/ai_retraining.svg'),
@@ -115,18 +127,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                 return Container();
               }
             },
-          ),
-          ListTile(
-            // dense: true,
-            leading: SvgPicture.asset('assets/icons/profile/manual.svg'),
-            title: Text('Manual'),
-            onTap: () {},
-          ),
-          ListTile(
-            // dense: true,
-            leading: SvgPicture.asset('assets/icons/profile/favorite.svg'),
-            title: Text('Favorite'),
-            onTap: () {},
           ),
           ListTile(
             // dense: true,

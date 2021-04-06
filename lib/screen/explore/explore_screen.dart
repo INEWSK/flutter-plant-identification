@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hotelapp/screen/explore/provider/google_maps_provider.dart';
 import 'package:flutter_hotelapp/screen/explore/provider/permission_provider.dart';
 import 'package:flutter_hotelapp/screen/widgets/circular_indicator.dart';
 import 'package:provider/provider.dart';

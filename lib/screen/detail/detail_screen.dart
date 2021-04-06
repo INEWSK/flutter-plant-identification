@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/models/tree_data.dart';
-import 'package:flutter_hotelapp/screen/search/provider/tree_data_provider.dart';
 
 import 'components/detail_page_widget.dart';
 

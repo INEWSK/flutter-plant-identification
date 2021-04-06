@@ -14,11 +14,11 @@ class ApiProvider extends ChangeNotifier {
   final key = UniqueKey();
 
   Dio dio = Dio(BaseOptions(
-    connectTimeout: 10000, // 10s
+    connectTimeout: 5000, // 5s
     receiveTimeout: 100000,
   ));
 
-  final localUrl = 'http://10.0.2.2:80/flora/tree-ai/';
+  final localUrl = 'http://10.0.2.2:8000/flora/tree-ai/';
   // vtc network
   final vtcUrl = 'http://192.168.20.81:80/';
 
@@ -61,9 +61,8 @@ class ApiProvider extends ChangeNotifier {
       }
     } on DioError catch (e) {
       final error = DioExceptions.fromDioError(e);
-
-      print('api_provider: provider call error: ${error.messge}');
-      print('vtc校內聯網url沒有回應, 嘗試call local url');
+      // print('api_provider: provider call error: ${error.messge}');
+      // print('vtc校內聯網url沒有回應, 嘗試call local url');
 
       Toast.show('vtc 校內聯網沒有回應, 呼叫本地 api');
 
@@ -79,9 +78,11 @@ class ApiProvider extends ChangeNotifier {
           return result;
         });
       } on DioError catch (e) {
+        log(e.message);
+
         final error = DioExceptions.fromDioError(e);
         print(error.messge);
-        _resultToast('Server was fucked up', false);
+        _resultToast(error.messge, false);
         BotToast.remove(key);
       }
     }

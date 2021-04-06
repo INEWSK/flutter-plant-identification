@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
@@ -64,24 +63,24 @@ class _GoogleMapsState extends State<GoogleMaps> {
 
   void _addMarker() {
     _apiMarkerData.forEach((element) {
-      List<TreeLocations> location = element.treeLocations;
       if (element.treeLocations.isNotEmpty) {
-        _markers.add(
-          Marker(
+        List<TreeLocations> location = element.treeLocations;
+        location.forEach((loc) {
+          _markers.add(Marker(
             markerId: MarkerId(
-              location[0].id.toString(),
+              loc.id.toString(),
             ),
             infoWindow: InfoWindow(
               title: element.scientificName,
               snippet: element.scientificName,
             ),
             position: LatLng(
-              location[0].treeLat,
-              location[0].treeLong,
+              loc.treeLat,
+              loc.treeLong,
             ),
             icon: _markerIcon,
-          ),
-        );
+          ));
+        });
       }
     });
   }

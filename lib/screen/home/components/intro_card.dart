@@ -28,8 +28,8 @@ class IntroCard extends StatelessWidget {
         color: brightness == Brightness.dark ? Colors.black54 : Colors.white,
         boxShadow: [
           BoxShadow(
-            offset: Offset(1.0, 2.0), // 阴影 x y 轴位置偏移量
-            blurRadius: 3.0, // 陰影模糊範圍
+            offset: Offset(0.0, .8), // 阴影 x y 轴位置偏移量
+            blurRadius: 1.0, // 陰影模糊範圍
             spreadRadius: 0.0, // 模糊大小
             color: Color(0xFF203647).withOpacity(0.2),
           )

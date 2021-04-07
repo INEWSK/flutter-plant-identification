@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // SpUtil.clear();
     final botToastBuilder = BotToastInit();
     return OKToast(
       child: Consumer3(

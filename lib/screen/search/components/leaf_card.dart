@@ -17,23 +17,20 @@ class LeafCard extends StatelessWidget {
     return Card(
       elevation: .5,
       clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: press,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ListTile(
-              title: Text(data.commonName),
-              subtitle: Text(
-                data.scientificName,
-                style: kSecondaryBodyTextStyle,
-              ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ListTile(
+            title: Text(data.commonName),
+            subtitle: Text(
+              data.scientificName,
+              style: kSecondaryBodyTextStyle,
             ),
-            _image(context),
-            _intro(),
-            // _button(),
-          ],
-        ),
+          ),
+          _image(context),
+          _intro(),
+          // _button(),
+        ],
       ),
     );
   }
@@ -56,14 +53,19 @@ class LeafCard extends StatelessWidget {
   }
 
   Widget _intro() {
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: data.introduction != null
-          ? Text(data.introduction,
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-              style: kBodyTextStyle)
-          : Container(),
+    return GestureDetector(
+      onTap: press,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
+        child: data.introduction != null
+            ? Text(
+                data.introduction,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: kBodyTextStyle,
+              )
+            : Container(),
+      ),
     );
   }
 
@@ -80,8 +82,9 @@ class LeafCard extends StatelessWidget {
             height: size.height * 0.25,
             decoration: BoxDecoration(
               image: DecorationImage(
-                  image: ImageUtils.getImageProvider(snapshot.data),
-                  fit: BoxFit.cover),
+                image: ImageUtils.getImageProvider(snapshot.data),
+                fit: BoxFit.cover,
+              ),
             ),
           );
         } else {
@@ -101,7 +104,6 @@ class LeafCard extends StatelessWidget {
 
     if (data.treeImages.isNotEmpty) {
       imgUrl = data.treeImages[0].treeImage;
-
       return imgUrl;
     } else {
       imgUrl = 'assets/images/nophoto.jpg';

@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
-import 'package:flutter_hotelapp/screen/auth/widgets/welcome_text.dart';
 
 import 'components/create_account_button.dart';
 import 'components/or_divider.dart';
 import 'components/sign_in_form.dart';
 import 'components/social_auth_button.dart';
+import '../widgets/auth_background.dart';
+import '../widgets/welcome_text.dart';
 
 class SignInScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: _body(),
+    return Stack(
+      children: [
+        AuthBackground(),
+        Scaffold(
+          backgroundColor:
+              Theme.of(context).scaffoldBackgroundColor.withAlpha(225),
+          appBar: AppBar(),
+          body: _body(),
+        ),
+      ],
     );
   }
 

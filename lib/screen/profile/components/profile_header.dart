@@ -3,18 +3,17 @@ import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/common/utils/image_utils.dart';
 
 class ProfileHeader extends StatelessWidget {
-  final String name, email, image;
+  final String name, email;
+  final ImageProvider image;
   final Function press;
-  final ImageProvider imageProvider;
 
-  const ProfileHeader(
-      {Key key,
-      @required this.name,
-      @required this.email,
-      @required this.image,
-      this.press,
-      this.imageProvider})
-      : super(key: key);
+  const ProfileHeader({
+    Key key,
+    @required this.name,
+    @required this.email,
+    @required this.image,
+    this.press,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -25,7 +24,7 @@ class ProfileHeader extends StatelessWidget {
             clipper: HeaderClipper(),
             child: Container(
               height: 220,
-              color: Colors.green,
+              color: Colors.blueGrey,
             ),
           ),
           Center(
@@ -47,7 +46,7 @@ class ProfileHeader extends StatelessWidget {
                         ),
                         image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: imageProvider ??
+                          image: image ??
                               ImageUtils.getAssetImage('no_picture_avatar'),
                         ),
                       ),

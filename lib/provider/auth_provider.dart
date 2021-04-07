@@ -1,11 +1,17 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_hotelapp/common/constants/rest_api_service.dart';
+import 'package:flutter_hotelapp/common/utils/device_utils.dart';
 import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
+import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/models/user.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:sp_util/sp_util.dart';
 
 enum Status { Uninitialized, Authenticated, Authenticating, Unauthenticated }
 
@@ -14,7 +20,8 @@ class AuthProvider extends ChangeNotifier {
   String _token;
   String _username = 'Guest';
   String _email = '';
-  bool _isAdmin = false;
+  ImageProvider _image;
+  bool _admin = false;
 
   Dio dio = Dio(BaseOptions(
     connectTimeout: 10000, // 連接服務器超時時間，單位毫秒.
@@ -26,14 +33,8 @@ class AuthProvider extends ChangeNotifier {
   get token => _token;
   get username => _username;
   get email => _email;
-  get admin => _isAdmin;
-
-  // /// 默認請求地址
-  // final String baseUrl = 'https://florabackend.azurewebsites.net';
-  // // 本地測試請求地址
-  // final String localUrl = 'http://10.0.2.2:8000';
-  // // vtc netowrk
-  // final String vtcUrl = '192.168.20.81:80/api';
+  get admin => _admin;
+  get image => _image;
 
   initAuthProvider() async {
     String token = await getToken();
@@ -42,14 +43,43 @@ class AuthProvider extends ChangeNotifier {
       _token = user.token;
       _email = user.email;
       _username = user.username;
-      _isAdmin = user.admin;
+      _admin = user.admin;
       _status = Status.Authenticated;
+      initProfilePicture();
       log('User Authenticated');
     } else {
       _status = Status.Unauthenticated;
       log('User Unauthenticated');
     }
     notifyListeners();
+  }
+
+  initProfilePicture() async {
+    try {
+      // 如果登入了查找 app 文件夾是否有現有的頭像
+      if (_status == Status.Authenticated) {
+        // 獲取用戶文件夾
+        final userFolder = await getUserFolder();
+        // 查找名爲 user_profile_picture 的文件是否存在
+        final fileName = 'profile_picture';
+        final imageFile = File('$userFolder/$fileName');
+        // 如果有的話
+        if (await imageFile.exists()) {
+          SpUtil.putString('profilePicture', imageFile.path);
+          print('圖片文件夾: ' + imageFile.path);
+          if (Device.isMobile) {
+            _image = FileImage(imageFile);
+          }
+        } else {
+          _image = null;
+          print('圖片不存在.');
+        }
+      } else {
+        debugPrint('用戶未登入, 使用默認頭像');
+      }
+    } catch (e) {
+      debugPrint('初始化頭像失敗: ' + e.toString());
+    }
   }
 
   /// sign in method
@@ -81,6 +111,8 @@ class AuthProvider extends ChangeNotifier {
       await storeUserData(response.data);
       // 更新狀態
       _status = Status.Authenticated;
+      // 更新用户头像
+      await initProfilePicture();
       // 通知 UI layer 更新 widget
       notifyListeners();
 
@@ -150,7 +182,7 @@ class AuthProvider extends ChangeNotifier {
         /// 針對伺服器預設傳回的結果所包含内容進行指定動作
         /// 在 UI 層做了預先限制, 規避了部分錯誤結果
         if (response.containsKey('email')) {
-          /// 如果與 email 相關: email 已經被注冊
+          ///  email 已經被注冊
           final String message = response['email'][0];
 
           result['message'] = message;
@@ -190,14 +222,14 @@ class AuthProvider extends ChangeNotifier {
     _username = response['username'];
     _email = response['email'];
     _token = response['token'];
-    _isAdmin = response['admin'];
+    _admin = response['admin'];
 
     var box = await Hive.openBox('authBox');
 
     box.put('username', _username);
     box.put('email', _email);
     box.put('token', _token);
-    box.put('admin', _isAdmin);
+    box.put('admin', _admin);
 
     log('HiveBox: Auth data stored: ${box.toMap()}');
   }
@@ -224,13 +256,69 @@ class AuthProvider extends ChangeNotifier {
     return token;
   }
 
+  Future<void> getImage() async {
+    final ImagePicker _picker = ImagePicker();
+    // getting image
+    final pickedFile =
+        await _picker.getImage(source: ImageSource.gallery, maxWidth: 512);
+    try {
+      // check if an image has been picked
+      if (pickedFile != null) {
+        final userFolder = await getUserFolder();
+        // create a file and file name for save
+        final fileName = 'profile_picture';
+        // save the file by copying it to the new location
+        final imageFile =
+            await File(pickedFile.path).copy(userFolder + fileName);
+        print('已選擇的頭像\n' + 'PATH: ' + imageFile.path);
+        // 由於 flutter 的圖片緩存機制, 複寫已存在的圖片不會即時改變
+        // 直至重啓程序, 每次更新頭像需要清除緩存
+        // 詳見 https://github.com/flutter/flutter/issues/24858
+        imageCache.evict(FileImage(imageFile));
+        // 持久化頭像
+        SpUtil.putString('profilePicture', imageFile.path);
+        // check if web platform
+        if (Device.isWeb) {
+          _image = NetworkImage(pickedFile.path);
+        } else {
+          _image = FileImage(imageFile);
+        }
+        notifyListeners();
+      } else {
+        // _imageProvider = null;
+        // debugPrint('FILE PATH: 無文件被選擇');
+      }
+    } catch (e) {
+      Toast.show('沒有權限使用相冊');
+      debugPrint('頭像選擇發生錯誤: ' + e.toString());
+    }
+  }
+
+  Future<String> getUserFolder() async {
+    // get app doc folder
+    final appDirectory = await getApplicationDocumentsDirectory();
+    // create user folder for saving their picture
+    final userFolder = Directory('${appDirectory.path}/$_token/');
+    // if folder already exists
+    if (await userFolder.exists()) {
+      debugPrint('當前用戶文件夾已存在\n' + 'PATH: ' + userFolder.path);
+      return userFolder.path;
+    } else {
+      // if not exists, create new one
+      final newUserFolder = await userFolder.create(recursive: true);
+      debugPrint('創建新的用戶文件夾\n' + 'PATH: ' + newUserFolder.path);
+      return newUserFolder.path;
+    }
+  }
+
   /// sign out method
   void signOut([bool tokenExpired = false]) async {
     _status = Status.Unauthenticated;
     _token = null;
     _username = 'Guest';
     _email = '';
-    _isAdmin = false;
+    _image = null;
+    _admin = false;
 
     // 檢查 token 是否過期(not apply yet)
     if (tokenExpired == true) {
@@ -241,5 +329,7 @@ class AuthProvider extends ChangeNotifier {
     /// clear all auth data value
     var box = await Hive.openBox('authBox');
     box.clear().whenComplete(() => log('HiveBox: Auth data has been clear'));
+    // clear user sp util data
+    SpUtil.remove('profilePicture');
   }
 }

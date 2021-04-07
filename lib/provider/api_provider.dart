@@ -24,7 +24,7 @@ class ApiProvider extends ChangeNotifier {
     _loadingToast();
 
     // 取檔案路徑最後一個 '/' 餘後的內容作為檔案名字.
-    String fileName = file.path.split('/').last;
+    final fileName = file.path.split('/').last;
 
     FormData data = FormData.fromMap({
       "image": await MultipartFile.fromFile(

@@ -57,10 +57,7 @@ class ProfileHeader extends StatelessWidget {
                 SizedBox(height: 10),
                 Text(
                   email,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFF8492A2),
-                  ),
+                  style: kSecondaryBodyTextStyle,
                 )
               ],
             ),

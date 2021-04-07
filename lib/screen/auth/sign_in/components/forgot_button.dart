@@ -7,10 +7,9 @@ class ForgotButton extends StatelessWidget {
       onTap: () => Navigator.pushNamed(context, '/forgot'),
       child: Text(
         'Forgot Password?',
-        style: Theme.of(context)
-            .textTheme
-            .caption
-            .copyWith(fontWeight: FontWeight.w500),
+        style: Theme.of(context).textTheme.button.copyWith(
+              fontSize: 12.0,
+            ),
       ),
     );
   }

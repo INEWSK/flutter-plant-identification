@@ -29,8 +29,8 @@ class MyApp extends StatelessWidget {
             IntlProvider locale, __) {
           return MaterialApp(
             // debugShowCheckedModeBanner: false, // top-right debug flag
-            theme: theme ?? lightTheme,
-            darkTheme: darkTheme,
+            theme: theme ?? lightTheme(context),
+            darkTheme: darkTheme(context),
             themeMode: themer.getThemeMode(),
             // 優雅地管理 route
             routes: Routes.routes,

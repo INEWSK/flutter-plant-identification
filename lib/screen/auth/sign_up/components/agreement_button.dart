@@ -7,10 +7,7 @@ class AgreementButton extends StatelessWidget {
     return Center(
       child: Text.rich(
         TextSpan(
-          style: Theme.of(context)
-              .textTheme
-              .caption
-              .copyWith(fontWeight: FontWeight.w500),
+          style: Theme.of(context).textTheme.button.copyWith(fontSize: 12.0),
           text: 'By Signing up you agree to our ',
           children: [
             TextSpan(

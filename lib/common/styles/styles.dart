@@ -61,7 +61,7 @@ final TextStyle kH3TextStyle = TextStyle(
 );
 
 final TextStyle kSubHeadTextStyle = TextStyle(
-  fontSize: 14.0,
+  fontSize: 16.0,
   fontWeight: FontWeight.w500,
   // height: 1.5,
   color: Colors.grey,
@@ -83,11 +83,12 @@ final TextStyle kBodyTextStyle = TextStyle(
 final TextStyle kSecondaryBodyTextStyle = TextStyle(
   fontSize: 12.0,
   fontWeight: FontWeight.w500,
-  // height: 1.5,
+  height: 1.0,
 );
 
 final TextStyle kButtonTextStyle = TextStyle(
   color: Colors.white,
   fontSize: 14.0,
   fontWeight: FontWeight.bold,
+  letterSpacing: 1.25,
 );

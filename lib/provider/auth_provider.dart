@@ -264,8 +264,8 @@ class AuthProvider extends ChangeNotifier {
     try {
       // check if an image has been picked
       if (pickedFile != null) {
-        final userFolder = await getUserFolder();
         // create a file and file name for save
+        final userFolder = await getUserFolder();
         final fileName = 'profile_picture';
         // save the file by copying it to the new location
         final imageFile =
@@ -298,6 +298,7 @@ class AuthProvider extends ChangeNotifier {
     // get app doc folder
     final appDirectory = await getApplicationDocumentsDirectory();
     // create user folder for saving their picture
+    // 以用戶的token命名
     final userFolder = Directory('${appDirectory.path}/$_token/');
     // if folder already exists
     if (await userFolder.exists()) {
@@ -320,9 +321,10 @@ class AuthProvider extends ChangeNotifier {
     _image = null;
     _admin = false;
 
-    // 檢查 token 是否過期(not apply yet)
+    // 檢查 token 是否過期(function not apply yet)
     if (tokenExpired == true) {
       // Toast.show('Session expired. Please sign in again.');
+      // _status = Status.Unauthenticated;
     }
     notifyListeners();
 

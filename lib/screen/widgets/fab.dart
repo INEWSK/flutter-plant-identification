@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -8,24 +7,27 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 
 class FAB extends StatelessWidget {
-  final picker = ImagePicker();
+  final _picker = ImagePicker();
 
   void _pickImage(source, BuildContext _) async {
-    final pickedFile = await picker.getImage(source: source);
+    try {
+      final pickedFile = await _picker.getImage(source: source);
 
-    if (pickedFile != null) {
-      final image = File(pickedFile.path);
+      if (pickedFile != null) {
+        final image = File(pickedFile.path);
 
-      log('FILE PATH: ${pickedFile.path}');
-
-      Navigator.push(
-        _,
-        MaterialPageRoute(
-          builder: (context) => ViewImageScreen(image: image),
-        ),
-      );
-    } else {
-      Toast.show('No Image Selected');
+        debugPrint('FILE PATH: ${pickedFile.path}');
+        Navigator.push(
+          _,
+          MaterialPageRoute(
+            builder: (context) => ViewImageScreen(image: image),
+          ),
+        );
+      } else {
+        debugPrint('FILE PATH: 無文件被選擇');
+      }
+    } catch (e) {
+      Toast.show('No permission to open albums or cameras');
     }
   }
 

@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
         builder: (_, ThemeProvider themer, AuthProvider user,
             IntlProvider locale, __) {
           return MaterialApp(
+            // debugShowCheckedModeBanner: false, // top-right debug flag
             theme: theme ?? lightTheme,
             darkTheme: darkTheme,
             themeMode: themer.getThemeMode(),
@@ -59,7 +60,7 @@ class MyApp extends StatelessWidget {
         },
       ),
 
-      /// global OKToast widget style
+      /// global Toast widget style
       backgroundColor: Colors.black54,
       textPadding: kToastPadding,
       radius: 25.0,

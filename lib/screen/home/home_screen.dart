@@ -38,28 +38,31 @@ class _HomeScreenState extends State<HomeScreen>
     return ChangeNotifierProvider(
       create: (_) => HomeProvider(),
       child: Consumer(
-        builder: (_, HomeProvider provider, __) {
-          return AnimationLimiter(
-            child: ListView.builder(
-              addAutomaticKeepAlives: false, // 本體已被包裹在 autoKeepAlive, 禁用
-              itemCount: demoIntroCardData.length,
-              itemBuilder: (context, index) {
-                return AnimationConfiguration.staggeredList(
-                  position: index,
-                  duration: Duration(milliseconds: 375),
-                  child: SlideAnimation(
-                    verticalOffset: 50.0,
-                    child: FadeInAnimation(
-                      child: IntroCard(
-                        sort: demoIntroCardData[index]["sort"],
-                        title: demoIntroCardData[index]["title"],
-                        text: demoIntroCardData[index]["text"],
-                        image: demoIntroCardData[index]["image"],
+        builder: (_, HomeProvider home, __) {
+          return RefreshIndicator(
+            onRefresh: () => home.refresh(),
+            child: AnimationLimiter(
+              child: ListView.builder(
+                addAutomaticKeepAlives: false, // 本體已被包裹在 autoKeepAlive, 禁用
+                itemCount: demoIntroCardData.length,
+                itemBuilder: (context, index) {
+                  return AnimationConfiguration.staggeredList(
+                    position: index,
+                    duration: Duration(milliseconds: 375),
+                    child: SlideAnimation(
+                      verticalOffset: 50.0,
+                      child: FadeInAnimation(
+                        child: IntroCard(
+                          sort: demoIntroCardData[index]["sort"],
+                          title: demoIntroCardData[index]["title"],
+                          text: demoIntroCardData[index]["text"],
+                          image: demoIntroCardData[index]["image"],
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           );
         },

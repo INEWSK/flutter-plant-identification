@@ -20,6 +20,10 @@
 
     <!-- permissions options for all the package -->
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>
+    
+    <!-- permission options for viration -->
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
 
    <application
         android:label="Flora"

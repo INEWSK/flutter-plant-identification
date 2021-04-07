@@ -46,12 +46,9 @@ dependencies:
   http_parser: ^4.0.0
   image_picker: ^0.7.2
   intl: ^0.16.1
-  introduction_screen: ^2.1.0
-  material_floating_search_bar: ^0.3.3
   oktoast: ^2.3.2
   path: ^1.7.0
   path_provider: ^2.0.1
-  percent_indicator: ^3.0.1
   permission_handler: ^6.0.1
   photo_view: ^0.10.3
   provider: ^4.3.3
@@ -60,6 +57,7 @@ dependencies:
   sp_util: ^2.0.3
   unicorndial: ^1.1.5
   url_launcher: ^6.0.2
+  vibration: ^1.7.3
 
 dev_dependencies:
   flutter_test:

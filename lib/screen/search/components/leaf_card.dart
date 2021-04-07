@@ -15,21 +15,25 @@ class LeafCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: .5,
       clipBehavior: Clip.antiAlias,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ListTile(
-            title: Text(data.commonName),
-            subtitle: Text(
-              data.scientificName,
-              style: kSecondaryBodyTextStyle,
+      child: InkWell(
+        onTap: press,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ListTile(
+              title: Text(data.commonName),
+              subtitle: Text(
+                data.scientificName,
+                style: kSecondaryBodyTextStyle,
+              ),
             ),
-          ),
-          _image(context),
-          _intro(),
-          _button(),
-        ],
+            _image(context),
+            _intro(),
+            // _button(),
+          ],
+        ),
       ),
     );
   }
@@ -71,6 +75,7 @@ class LeafCard extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (snapshot.hasData) {
           return Container(
+            // clipBehavior: Clip.antiAlias,
             width: size.width,
             height: size.height * 0.25,
             decoration: BoxDecoration(

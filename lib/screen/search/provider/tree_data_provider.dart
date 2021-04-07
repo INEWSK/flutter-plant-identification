@@ -48,15 +48,17 @@ class TreeDataProvider extends ChangeNotifier {
       final response = await dio.get(url);
 
       // 這是呼叫 method 先 decode json 后再轉換為 list<model>
-      var data = List<TreeData>.from(
+      final data = List<TreeData>.from(
         json.decode(response.data).map(
               (x) => TreeData.fromJson(x),
             ),
       );
 
-      //data loaded;
-      log('tree data loaded');
-      _list = data;
+      if (_list != data) {
+        //data loaded;
+        log('tree data loaded');
+        _list = data;
+      }
 
       _status = Status.Loaded;
       notifyListeners();

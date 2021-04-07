@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_hotelapp/common/utils/device_utils.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/provider/auth_provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -17,7 +21,10 @@ class _ProfileScreenState extends State<ProfileScreen>
   @override
   bool get wantKeepAlive => true;
 
-  Future<void> _confirmToEmailDialog(BuildContext context) {
+  final ImagePicker _picker = ImagePicker();
+  ImageProvider _imageProvider;
+
+  Future<void> _toEmailDialog(BuildContext context) {
     return showDialog(
       context: context,
       builder: (context) {
@@ -57,7 +64,6 @@ class _ProfileScreenState extends State<ProfileScreen>
             TextButton(
               onPressed: () => Navigator.pop(
                 context,
-                Toast.show('Pressed Yes'),
               ),
               child: Text('Yes'),
             ),
@@ -80,6 +86,27 @@ class _ProfileScreenState extends State<ProfileScreen>
     }
   }
 
+  Future<void> _getImage() async {
+    final pickedFile =
+        await _picker.getImage(source: ImageSource.gallery, maxWidth: 512);
+    try {
+      if (pickedFile != null) {
+        if (Device.isWeb) {
+          _imageProvider = NetworkImage(pickedFile.path);
+        } else {
+          _imageProvider = FileImage(File(pickedFile.path));
+        }
+      } else {
+        // _imageProvider = null;
+        // debugPrint('FILE PATH: 無文件被選擇');
+      }
+      //用於刷新 widget 顯示頭像
+      setState(() {});
+    } catch (e) {
+      Toast.show('沒有權限使用相冊');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -92,12 +119,14 @@ class _ProfileScreenState extends State<ProfileScreen>
     return SingleChildScrollView(
       child: Column(
         children: [
-          Consumer<AuthProvider>(
-            builder: (_, user, __) {
+          Consumer(
+            builder: (_, AuthProvider user, __) {
               return ProfileHeader(
                 email: '${user.email}',
                 image: 'assets/images/no_picture_avatar.png',
                 name: '${user.username}',
+                press: _getImage,
+                imageProvider: _imageProvider,
               );
             },
           ),
@@ -144,7 +173,7 @@ class _ProfileScreenState extends State<ProfileScreen>
             // dense: true,
             leading: SvgPicture.asset('assets/icons/profile/contact.svg'),
             title: Text('Contact Us'),
-            onTap: () async => _confirmToEmailDialog(context),
+            onTap: () async => _toEmailDialog(context),
           ),
         ],
       ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hotelapp/common/utils/device_utils.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:vibration/vibration.dart';
 
 import 'explore/explore_screen.dart';
 import 'home/home_screen.dart';
@@ -39,7 +41,7 @@ class _MainScreenState extends State<MainScreen> {
     super.dispose();
   }
 
-  void _onTap(int index) {
+  void _onTap(int index) async {
     if (index == 2) {
       return null;
     }
@@ -54,6 +56,11 @@ class _MainScreenState extends State<MainScreen> {
       });
     }
     _pageController.jumpToPage(newIndex);
+
+    //震動反饋
+    if (!Device.isDesktop && await Vibration.hasVibrator()) {
+      Vibration.vibrate(duration: 10); //0.1s
+    }
   }
 
   void onPageChanged(int index) {

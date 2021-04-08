@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/demo/demo_data.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
-import 'package:flutter_hotelapp/screen/widgets/dot_indicator.dart';
-import 'package:flutter_hotelapp/screen/widgets/primary_button.dart';
+import 'package:flutter_hotelapp/screen/common_widgets/dot_indicator.dart';
+import 'package:flutter_hotelapp/screen/common_widgets/primary_button.dart';
 import 'package:sp_util/sp_util.dart';
 import 'components/onboard_content.dart';
 

@@ -145,7 +145,7 @@ class SettingsScreen extends StatelessWidget {
                   showAboutDialog(
                     context: context,
                     applicationIcon: _appIcon(),
-                    applicationName: 'Flora',
+                    applicationName: 'Tree Doctor',
                     applicationVersion: '1.0a',
                     applicationLegalese:
                         'Copyright(c) 2020 by st.vtc AIMAD stu',

@@ -5,31 +5,34 @@ import 'package:flutter_hotelapp/models/tree_data.dart';
 import 'package:flutter_hotelapp/screen/detail/detail_screen.dart';
 
 import '../provider/tree_data_provider.dart';
-import 'leaf_card.dart';
+import 'leaf_list.dart';
 
-class LeafCardList extends StatefulWidget {
+class LeafListBuild extends StatefulWidget {
   final BuildContext context;
   final TreeDataProvider provider;
 
-  const LeafCardList({Key key, this.provider, this.context}) : super(key: key);
+  const LeafListBuild({Key key, this.provider, this.context}) : super(key: key);
 
   @override
-  _LeafCardListState createState() => _LeafCardListState();
+  _LeafListBuildState createState() => _LeafListBuildState();
 }
 
-class _LeafCardListState extends State<LeafCardList> {
+class _LeafListBuildState extends State<LeafListBuild> {
   final _textController = TextEditingController();
   final _focusNode = FocusNode();
 
   List<TreeData> _treeData = [];
+  // for search list display
   List<TreeData> _displayListItem = [];
+
+  bool _clearButton = false;
 
   @override
   void dispose() {
     super.dispose();
+    // 銷毀listener防止內存泄漏
     _focusNode?.dispose();
     _textController?.dispose();
-    _treeData = widget.provider.treeMap;
   }
 
   @override
@@ -37,11 +40,17 @@ class _LeafCardListState extends State<LeafCardList> {
     super.initState();
     _treeData = widget.provider.treeMap;
     _displayListItem = _treeData;
+    _textController.addListener(() {
+      setState(() {
+        // text length > 0 then true
+        _clearButton = _textController.text.length > 0;
+      });
+    });
   }
 
-  void _unfocus() {
-    // text 不爲空和聚焦情況下才進行清除動作
-    if (_textController.text.isNotEmpty && _focusNode.hasFocus) {
+  void _reset() {
+    // text 不爲空進行清除動作
+    if (_textController.text.isNotEmpty) {
       _textController.clear();
       setState(() {
         // display item reset
@@ -59,10 +68,12 @@ class _LeafCardListState extends State<LeafCardList> {
         controller: _textController,
         decoration: searchInputDecoration.copyWith(
           hintStyle: kInputTextStyle,
-          suffixIcon: GestureDetector(
-            child: Icon(Icons.cancel),
-            onTap: () => _unfocus(),
-          ),
+          suffixIcon: (!_clearButton)
+              ? null
+              : GestureDetector(
+                  child: Icon(Icons.cancel),
+                  onTap: () => _reset(),
+                ),
         ),
         onChanged: (text) {
           text.toLowerCase();
@@ -79,7 +90,7 @@ class _LeafCardListState extends State<LeafCardList> {
   }
 
   Widget _listItem(int index, BuildContext context) {
-    return LeafCard(
+    return LeafList(
       data: _displayListItem[index],
       press: () => Navigator.push(
         context,

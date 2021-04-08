@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/provider/api_provider.dart';
-import 'package:flutter_hotelapp/screen/widgets/primary_button.dart';
+import 'package:flutter_hotelapp/screen/common_widgets/primary_button.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
 

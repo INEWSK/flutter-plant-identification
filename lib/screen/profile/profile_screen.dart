@@ -68,7 +68,7 @@ class _ProfileScreenState extends State<ProfileScreen>
   void _launcherUrl() async {
     final Uri params = Uri(
         scheme: 'mailto',
-        path: 'me@flora.com',
+        path: 'me@treedoctor.com',
         queryParameters: {'subject': 'This is subject content', 'body': ''});
     String url = params.toString();
     if (await canLaunch(url)) {

@@ -13,7 +13,7 @@ class AgreementScreen extends StatelessWidget {
 
   _text() {
     return FutureBuilder(
-      future: rootBundle.loadString("assets/md/terms.md"),
+      future: rootBundle.loadString("assets/md/license_agreement.md"),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Markdown(data: snapshot.data);

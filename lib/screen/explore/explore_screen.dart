@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hotelapp/screen/widgets/circular_indicator.dart';
+import 'package:flutter_hotelapp/screen/common_widgets/circular_indicator.dart';
 import 'package:provider/provider.dart';
 
 import 'components/google_maps.dart';

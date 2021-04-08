@@ -6,7 +6,7 @@ import 'dart:ui' as ui;
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_hotelapp/common/constants/rest_api_service.dart';
+import 'package:flutter_hotelapp/common/constants/rest_api.dart';
 import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/models/tree_lat_lng.dart';

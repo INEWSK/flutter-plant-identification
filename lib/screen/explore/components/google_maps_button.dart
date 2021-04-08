@@ -27,12 +27,12 @@ class GoogleMapsButton extends StatelessWidget {
                 child: Icon(Icons.my_location),
               ),
               SizedBox(height: 16.0),
-              FloatingActionButton(
-                tooltip: 'Referesh',
-                heroTag: 'refreshbtn',
-                onPressed: refresh,
-                child: Icon(Icons.refresh),
-              ),
+              // FloatingActionButton(
+              //   tooltip: 'Referesh',
+              //   heroTag: 'refreshbtn',
+              //   onPressed: refresh,
+              //   child: Icon(Icons.refresh),
+              // ),
             ],
           ),
         ),

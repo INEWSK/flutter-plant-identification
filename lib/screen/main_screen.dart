@@ -3,13 +3,13 @@ import 'package:flutter_hotelapp/common/utils/device_utils.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vibration/vibration.dart';
 
+import 'common_widgets/bottom_nav_bar.dart';
+import 'common_widgets/double_back_exit_app.dart';
+import 'common_widgets/fab.dart';
 import 'explore/explore_screen.dart';
 import 'home/home_screen.dart';
 import 'profile/profile_screen.dart';
 import 'search/search_screen.dart';
-import 'widgets/bottom_nav_bar.dart';
-import 'widgets/double_back_exit_app.dart';
-import 'widgets/fab.dart';
 
 class MainScreen extends StatefulWidget {
   @override

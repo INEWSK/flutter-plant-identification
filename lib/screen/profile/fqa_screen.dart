@@ -20,7 +20,7 @@ class FQAScreen extends StatelessWidget {
             vertical: kDefaultPadding / 2,
           ),
           child: Text(
-            'Dear Flora user, our FAQ section can help you find the answer you want faster',
+            'Dear Tree Doctor user, our FAQ section can help you find the answer you want faster',
           ),
         ),
         QuestionCell(
@@ -38,7 +38,7 @@ class FQAScreen extends StatelessWidget {
         ),
         QuestionCell(
           title:
-              'Is it obligatory to give Flora aaccess permission to my gallery and camera?',
+              'Is it obligatory to give Tree Doctor aaccess permission to my gallery and camera?',
           press: () {},
         ),
         QuestionCell(
@@ -48,7 +48,7 @@ class FQAScreen extends StatelessWidget {
         ),
         QuestionCell(
           title:
-              'Should my device have access to the Internet while using Flora?',
+              'Should my device have access to the Internet while using Tree Doctor?',
           press: () {},
         ),
       ],

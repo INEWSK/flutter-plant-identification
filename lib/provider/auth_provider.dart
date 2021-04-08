@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter_hotelapp/common/constants/rest_api_service.dart';
+import 'package:flutter_hotelapp/common/constants/rest_api.dart';
 import 'package:flutter_hotelapp/common/utils/device_utils.dart';
 import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
@@ -45,7 +45,7 @@ class AuthProvider extends ChangeNotifier {
       _username = user.username;
       _admin = user.admin;
       _status = Status.Authenticated;
-      initProfilePicture();
+      updateProfilePicture();
       log('User Authenticated');
     } else {
       _status = Status.Unauthenticated;
@@ -54,7 +54,7 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  initProfilePicture() async {
+  updateProfilePicture() async {
     try {
       // 如果登入了查找 app 文件夾是否有現有的頭像
       if (_status == Status.Authenticated) {
@@ -66,7 +66,7 @@ class AuthProvider extends ChangeNotifier {
         // 如果有的話
         if (await imageFile.exists()) {
           SpUtil.putString('profilePicture', imageFile.path);
-          print('圖片文件夾: ' + imageFile.path);
+          print('獲取頭像文件夾\n' + 'PATH: ' + imageFile.path);
           if (Device.isMobile) {
             _image = FileImage(imageFile);
           }
@@ -78,7 +78,7 @@ class AuthProvider extends ChangeNotifier {
         debugPrint('用戶未登入, 使用默認頭像');
       }
     } catch (e) {
-      debugPrint('初始化頭像失敗: ' + e.toString());
+      debugPrint('初始化頭像失敗\n' + 'REASON: ' + e.toString());
     }
   }
 
@@ -88,7 +88,7 @@ class AuthProvider extends ChangeNotifier {
     _status = Status.Authenticating;
     notifyListeners();
 
-    final url = RestApi.localUrl + "/flora/signin/";
+    final url = '${RestApi.localUrl}/flora/signin/';
 
     final data = FormData.fromMap({
       'email': email,
@@ -112,7 +112,7 @@ class AuthProvider extends ChangeNotifier {
       // 更新狀態
       _status = Status.Authenticated;
       // 更新用户头像
-      await initProfilePicture();
+      await updateProfilePicture();
       // 通知 UI layer 更新 widget
       notifyListeners();
 
@@ -151,7 +151,7 @@ class AuthProvider extends ChangeNotifier {
 
   /// sign up method
   Future<Map> signUp(String email, String password1, String password2) async {
-    final url = RestApi.localUrl + "/flora/signup/";
+    final url = '${RestApi.localUrl}/flora/signup/';
 
     final data = FormData.fromMap({
       'email': email,
@@ -176,11 +176,12 @@ class AuthProvider extends ChangeNotifier {
         return result;
       }
     } on DioError catch (e) {
+      // 伺服器有回應的情況下
       if (e.response != null) {
         final response = e.response.data;
 
         /// 針對伺服器預設傳回的結果所包含内容進行指定動作
-        /// 在 UI 層做了預先限制, 規避了部分錯誤結果
+        /// 在 UI 層做了預先限制, 規避了部分錯誤回應
         if (response.containsKey('email')) {
           ///  email 已經被注冊
           final String message = response['email'][0];
@@ -190,9 +191,8 @@ class AuthProvider extends ChangeNotifier {
           return result;
         }
 
-        /// 踩坑日記: containsKey 打錯 Editor 是不會提示你錯誤的
+        /// 踩坑日記: containsKey 打錯 Editor 是不會提錯誤的
         if (response.containsKey('password1')) {
-          /// 這裏在 UI 層面做了預先的限制, 不允許返回低於8位的密碼以及密碼不匹配
           /// 密碼太常見不予注冊
           final String message = response['password1'][0];
 
@@ -202,7 +202,7 @@ class AuthProvider extends ChangeNotifier {
         }
       }
 
-      /// 無狀態回傳, 查看錯誤原因
+      /// 伺服器無響應, 查看錯誤原因
       final error = DioExceptions.fromDioError(e);
       // 輸出錯誤到主控台
       log(error.toString());
@@ -212,7 +212,7 @@ class AuthProvider extends ChangeNotifier {
       return result;
     }
 
-    // 狀況外, 後端沒有傳回 token
+    // 狀況外
     return result;
   }
 
@@ -269,7 +269,7 @@ class AuthProvider extends ChangeNotifier {
         final fileName = 'profile_picture';
         // save the file by copying it to the new location
         final imageFile =
-            await File(pickedFile.path).copy(userFolder + fileName);
+            await File(pickedFile.path).copy('$userFolder/$fileName');
         print('已選擇的頭像\n' + 'PATH: ' + imageFile.path);
         // 由於 flutter 的圖片緩存機制, 複寫已存在的圖片不會即時改變
         // 直至重啓程序, 每次更新頭像需要清除緩存
@@ -299,10 +299,10 @@ class AuthProvider extends ChangeNotifier {
     final appDirectory = await getApplicationDocumentsDirectory();
     // create user folder for saving their picture
     // 以用戶的token命名
-    final userFolder = Directory('${appDirectory.path}/$_token/');
+    final userFolder = Directory('${appDirectory.path}/$_token');
     // if folder already exists
     if (await userFolder.exists()) {
-      debugPrint('當前用戶文件夾已存在\n' + 'PATH: ' + userFolder.path);
+      debugPrint('用戶文件夾已存在\n' + 'PATH: ' + userFolder.path);
       return userFolder.path;
     } else {
       // if not exists, create new one

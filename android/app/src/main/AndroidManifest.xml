@@ -26,7 +26,7 @@
 
 
    <application
-        android:label="Flora"
+        android:label="Tree Doctor"
         android:icon="@mipmap/launcher_icon"
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">

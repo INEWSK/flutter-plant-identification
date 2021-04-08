@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_hotelapp/common/utils/fluashbar_utils.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/screen/view_image/view_image_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -9,7 +10,7 @@ import 'package:image_picker/image_picker.dart';
 class FAB extends StatelessWidget {
   final _picker = ImagePicker();
 
-  void _pickImage(source, BuildContext _) async {
+  void _pickImage(source, BuildContext context) async {
     try {
       final pickedFile = await _picker.getImage(source: source);
 
@@ -18,7 +19,7 @@ class FAB extends StatelessWidget {
 
         debugPrint('FILE PATH: ${pickedFile.path}');
         Navigator.push(
-          _,
+          context,
           MaterialPageRoute(
             builder: (context) => ViewImageScreen(image: image),
           ),
@@ -27,7 +28,7 @@ class FAB extends StatelessWidget {
         debugPrint('FILE PATH: 無文件被選擇');
       }
     } catch (e) {
-      Toast.show('No permission to open albums or cameras');
+      Flush.error(context, message: '沒有權限打開相冊');
     }
   }
 

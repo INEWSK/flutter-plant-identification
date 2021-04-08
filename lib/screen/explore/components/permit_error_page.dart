@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class LocationErrorPage extends StatelessWidget {
+class PermitErrorPage extends StatelessWidget {
   final VoidCallback press;
 
-  const LocationErrorPage({Key key, @required this.press}) : super(key: key);
+  const PermitErrorPage({Key key, @required this.press}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

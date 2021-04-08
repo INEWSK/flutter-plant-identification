@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'components/error_page.dart';
-import 'components/leaf_list_build.dart';
+import 'components/tree_list_build.dart';
 import 'components/shimmer_effect.dart';
 import 'provider/tree_data_provider.dart';
 
@@ -37,7 +37,7 @@ class _SearchScreenState extends State<SearchScreen>
               return ErrorPage(press: () => provider.fetchTreeData());
               break;
             case Status.Loaded:
-              return LeafListBuild(provider: data, context: context);
+              return TreeListBuild(provider: data, context: context);
               break;
             case Status.Loading:
               return ShimmerEffect();

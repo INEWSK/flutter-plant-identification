@@ -15,13 +15,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.41.2"
-  animations:
+  another_flushbar:
     dependency: "direct main"
     description:
-      name: animations
+      name: another_flushbar
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.2"
+    version: "1.10.17"
   archive:
     dependency: transitive
     description:
@@ -120,20 +120,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.0"
-  camera:
-    dependency: "direct main"
-    description:
-      name: camera
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.8.1"
-  camera_platform_interface:
-    dependency: transitive
-    description:
-      name: camera_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.1"
   characters:
     dependency: transitive
     description:
@@ -218,13 +204,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.0"
-  cross_file:
-    dependency: transitive
-    description:
-      name: cross_file
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.1+1"
   crypto:
     dependency: transitive
     description:
@@ -356,6 +335,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
+  flutter_offline:
+    dependency: "direct main"
+    description:
+      name: flutter_offline
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -765,13 +751,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.8"
-  quiver:
-    dependency: transitive
-    description:
-      name: quiver
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.0"
   rational:
     dependency: transitive
     description:
@@ -1043,6 +1022,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
+  wifi_info_flutter:
+    dependency: transitive
+    description:
+      name: wifi_info_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
+  wifi_info_flutter_platform_interface:
+    dependency: transitive
+    description:
+      name: wifi_info_flutter_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.1"
   win32:
     dependency: transitive
     description:
@@ -1073,4 +1066,4 @@ packages:
     version: "3.1.0"
 sdks:
   dart: ">=2.12.0 <3.0.0"
-  flutter: ">=1.24.0-10.2.pre"
+  flutter: ">=2.0.0"

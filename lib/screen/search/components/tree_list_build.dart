@@ -3,21 +3,22 @@ import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/common/utils/device_utils.dart';
 import 'package:flutter_hotelapp/models/tree_data.dart';
 import 'package:flutter_hotelapp/screen/detail/detail_screen.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 import '../provider/tree_data_provider.dart';
-import 'leaf_list.dart';
+import 'tree_list.dart';
 
-class LeafListBuild extends StatefulWidget {
+class TreeListBuild extends StatefulWidget {
   final BuildContext context;
   final TreeDataProvider provider;
 
-  const LeafListBuild({Key key, this.provider, this.context}) : super(key: key);
+  const TreeListBuild({Key key, this.provider, this.context}) : super(key: key);
 
   @override
-  _LeafListBuildState createState() => _LeafListBuildState();
+  _TreeListBuildState createState() => _TreeListBuildState();
 }
 
-class _LeafListBuildState extends State<LeafListBuild> {
+class _TreeListBuildState extends State<TreeListBuild> {
   final _textController = TextEditingController();
   final _focusNode = FocusNode();
 
@@ -90,7 +91,7 @@ class _LeafListBuildState extends State<LeafListBuild> {
   }
 
   Widget _listItem(int index, BuildContext context) {
-    return LeafList(
+    return TreeList(
       data: _displayListItem[index],
       press: () => Navigator.push(
         context,
@@ -120,7 +121,13 @@ class _LeafListBuildState extends State<LeafListBuild> {
           child: ListView.builder(
             itemCount: _displayListItem.length + 1,
             itemBuilder: (BuildContext context, int index) {
-              return index == 0 ? _searchBar() : _listItem(index - 1, context);
+              return AnimationConfiguration.staggeredList(
+                position: index,
+                child: FadeInAnimation(
+                  child:
+                      index == 0 ? _searchBar() : _listItem(index - 1, context),
+                ),
+              );
             },
           ),
         ),

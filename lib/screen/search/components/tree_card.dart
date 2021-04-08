@@ -3,11 +3,11 @@ import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/common/utils/image_utils.dart';
 import 'package:flutter_hotelapp/models/tree_data.dart';
 
-class LeafCard extends StatelessWidget {
+class TreeCard extends StatelessWidget {
   final TreeData data;
   final Function press;
 
-  const LeafCard({
+  const TreeCard({
     Key key,
     this.data,
     this.press,

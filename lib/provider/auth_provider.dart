@@ -23,10 +23,12 @@ class AuthProvider extends ChangeNotifier {
   ImageProvider _image;
   bool _admin = false;
 
-  Dio dio = Dio(BaseOptions(
-    connectTimeout: 10000, // 連接服務器超時時間，單位毫秒.
-    receiveTimeout: 3000,
-  ));
+  Dio dio = Dio(
+    BaseOptions(
+      connectTimeout: 10000, // 連接服務器超時時間，單位毫秒.
+      receiveTimeout: 3000,
+    ),
+  );
 
   /// getter
   get status => _status;

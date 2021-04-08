@@ -1,8 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hotelapp/common/styles/styles.dart';
+import 'package:flutter_hotelapp/common/utils/fluashbar_utils.dart';
 import 'package:flutter_hotelapp/common/utils/form_field_validator.dart';
-import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/provider/auth_provider.dart';
 import 'package:flutter_hotelapp/screen/auth/widgets/auth_form_field.dart';
 import 'package:flutter_hotelapp/screen/common_widgets/primary_button.dart';
@@ -55,30 +54,23 @@ class _SignInFormState extends State<SignInForm> {
   }
 
   _formSubmit() async {
-    /// start show loading dialog
+    /// 發動全覆蓋魔法卡, 用戶無法進行點擊事件
     BotToast.showLoading(
       backButtonBehavior: BackButtonBehavior.ignore,
     );
 
     final response = await Provider.of<AuthProvider>(context, listen: false)
         .signIn(_email, _password);
-
+    // cancel loading layout when has response
     BotToast.closeAllLoading();
 
     final String message = response['message'];
     final bool success = response['success'];
 
     if (success) {
-      Toast.show(message);
       Navigator.pop(context);
     } else {
-      BotToast.showNotification(
-        title: (_) => Text(
-          message,
-          style: kBodyTextStyle.copyWith(color: Colors.white),
-        ),
-        backgroundColor: Colors.redAccent,
-      );
+      Flush.error(context, message: message);
     }
   }
 

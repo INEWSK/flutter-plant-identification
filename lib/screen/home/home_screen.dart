@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/demo/demo_data.dart';
+import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -48,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen>
                 itemBuilder: (context, index) {
                   return AnimationConfiguration.staggeredList(
                     position: index,
-                    duration: Duration(milliseconds: 375),
+                    duration: kDefaultDuration,
                     child: SlideAnimation(
                       verticalOffset: 50.0,
                       child: FadeInAnimation(

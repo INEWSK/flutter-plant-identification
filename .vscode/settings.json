@@ -1,6 +1,13 @@
 {
     "cSpell.words": [
+        "cupertino",
+        "flushbar",
+        "geolocator",
+        "nullsafety",
+        "oktoast",
+        "spinkit",
         "tensorflow",
-        "tflite"
+        "tflite",
+        "unicorndial"
     ]
 }

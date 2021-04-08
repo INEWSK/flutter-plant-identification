@@ -3,7 +3,7 @@ import 'package:flutter_hotelapp/screen/common_widgets/circular_indicator.dart';
 import 'package:provider/provider.dart';
 
 import 'components/google_maps.dart';
-import 'components/location_error_page.dart';
+import 'components/permit_error_page.dart';
 import 'provider/permission_provider.dart';
 
 class ExploreScreen extends StatefulWidget {
@@ -16,7 +16,10 @@ class _ExploreScreenState extends State<ExploreScreen>
   @override
   bool get wantKeepAlive => true;
 
-  final provider = PermissionProvider();
+  final permitProvider =
+      ChangeNotifierProvider(create: (_) => PermissionProvider());
+  // final googleMapProvider =
+  //     ChangeNotifierProvider(create: (_) => GoogleMapsProvider());
 
   @override
   Widget build(BuildContext context) {
@@ -28,13 +31,16 @@ class _ExploreScreenState extends State<ExploreScreen>
   }
 
   Widget _body() {
-    return ChangeNotifierProvider(
-      create: (_) => provider,
-      child: Consumer<PermissionProvider>(
-        builder: (_, permit, __) {
+    return MultiProvider(
+      providers: [
+        permitProvider,
+        // googleMapProvider,
+      ],
+      child: Consumer(
+        builder: (_, PermissionProvider permit, __) {
           switch (permit.status) {
             case Status.Forbidden:
-              return LocationErrorPage(press: permit.requestPermission);
+              return PermitErrorPage(press: permit.requestPermission);
               break;
             case Status.Permitted:
               return GoogleMaps();

@@ -1,11 +1,11 @@
-class TreeLatLng {
+class TreeData {
   String scientificName;
   String dateCreated;
   List<TreeLocations> treeLocations;
 
-  TreeLatLng({this.scientificName, this.dateCreated, this.treeLocations});
+  TreeData({this.scientificName, this.dateCreated, this.treeLocations});
 
-  TreeLatLng.fromJson(Map<String, dynamic> json) {
+  TreeData.fromJson(Map<String, dynamic> json) {
     scientificName = json['scientific_name'];
     dateCreated = json['date_created'];
     if (json['tree_locations'] != null) {

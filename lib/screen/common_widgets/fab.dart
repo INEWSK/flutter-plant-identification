@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/utils/fluashbar_utils.dart';
-import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/screen/view_image/view_image_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';

@@ -68,6 +68,13 @@ class DioExceptions implements Exception {
   String get messge => _message;
   String get code => _code;
 
+  //HTTP status ranges in a nutshell:
+  //1xx: hold on
+  //2xx: here you go
+  //3xx: go away
+  //4xx: you fuck up
+  //5xx: i fuck up
+
   String _handleError(int statusCode, dynamic error) {
     switch (statusCode) {
       case 400:

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
+import 'package:flutter_hotelapp/common/utils/screen_utils.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class IntroCard extends StatelessWidget {
@@ -48,26 +49,24 @@ class IntroCard extends StatelessWidget {
   }
 
   Widget _image(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return Positioned(
       right: 15.0,
       child: SvgPicture.asset(
         image,
         // restricted width
-        width: size.width * 0.3, // 30%
+        width: Screen.width(context) * 0.3, // 30%
       ),
     );
   }
 
   Widget _text(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: 20.0,
         vertical: 16.0,
       ),
       // height: 152, // 該數值決定容器最終大小
-      width: size.width * 0.65, // 65% of the container
+      width: Screen.width(context) * 0.65, // 65% of the container
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

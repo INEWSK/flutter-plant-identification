@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hotelapp/common/utils/screen_utils.dart';
 
 class ErrorPage extends StatelessWidget {
   final Function press;
@@ -6,7 +7,6 @@ class ErrorPage extends StatelessWidget {
   const ErrorPage({Key key, this.press}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -16,9 +16,9 @@ class ErrorPage extends StatelessWidget {
             fit: BoxFit.cover,
           ),
           Positioned(
-            bottom: size.height * 0.125,
-            left: size.width * 0.3,
-            right: size.width * 0.3,
+            bottom: Screen.height(context) * 0.125,
+            left: Screen.width(context) * 0.3,
+            right: Screen.width(context) * 0.3,
             child: Container(
               decoration: BoxDecoration(
                 boxShadow: [

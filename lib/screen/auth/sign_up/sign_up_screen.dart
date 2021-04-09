@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
-import 'package:flutter_hotelapp/common/themes/themes.dart';
 import 'package:flutter_hotelapp/screen/auth/widgets/auth_background.dart';
 import 'package:flutter_hotelapp/screen/auth/widgets/welcome_text.dart';
 

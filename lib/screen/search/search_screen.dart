@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hotelapp/common/utils/fluashbar_utils.dart';
 import 'package:provider/provider.dart';
 
 import 'components/error_page.dart';
@@ -34,7 +35,16 @@ class _SearchScreenState extends State<SearchScreen>
         builder: (_, data, __) {
           switch (data.status) {
             case Status.Error:
-              return ErrorPage(press: () => provider.fetchTreeData());
+              return ErrorPage(press: () async {
+                final response = await data.fetchTreeData();
+
+                final String result = response['message'];
+                final bool success = response['success'];
+
+                if (!success) {
+                  Flush.error(context, message: result);
+                }
+              });
               break;
             case Status.Loaded:
               return TreeListBuild(provider: data, context: context);

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
 
 class SearchBar extends SearchDelegate {
-  List<String> searchResult = List();
+  List<String> searchResult = [];
 
   @override
   List<Widget> buildActions(BuildContext context) {

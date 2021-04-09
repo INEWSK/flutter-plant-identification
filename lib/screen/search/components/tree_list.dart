@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/common/utils/image_utils.dart';
+import 'package:flutter_hotelapp/common/utils/screen_utils.dart';
 import 'package:flutter_hotelapp/models/tree_data.dart';
 
 class TreeList extends StatelessWidget {
@@ -15,15 +16,14 @@ class TreeList extends StatelessWidget {
 
   Widget _image(context) {
     // image provider解決 connection closed 問題
-    var size = MediaQuery.of(context).size;
     return FutureBuilder(
       future: _imageUrl(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (snapshot.hasData) {
           return Container(
             // clipBehavior: Clip.antiAlias,
-            width: size.width,
-            height: size.height * 0.25,
+            width: Screen.width(context),
+            height: Screen.height(context) * 0.25,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: ImageUtils.getImageProvider(snapshot.data),

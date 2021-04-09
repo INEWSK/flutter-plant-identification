@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hotelapp/common/utils/screen_utils.dart';
 
 class PermitErrorPage extends StatelessWidget {
   final VoidCallback press;
@@ -7,7 +8,6 @@ class PermitErrorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -16,9 +16,9 @@ class PermitErrorPage extends StatelessWidget {
           fit: BoxFit.cover,
         ),
         Positioned(
-          bottom: size.height * 0.15,
-          left: size.width * 0.3,
-          right: size.width * 0.3,
+          bottom: Screen.height(context) * 0.15,
+          left: Screen.width(context) * 0.3,
+          right: Screen.width(context) * 0.3,
           child: Container(
             decoration: BoxDecoration(
               boxShadow: [

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
+import 'package:flutter_hotelapp/common/utils/screen_utils.dart';
 import 'package:flutter_hotelapp/screen/auth/widgets/welcome_text.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -16,7 +17,6 @@ class ForgotScreen extends StatelessWidget {
   }
 
   Widget _body(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Stack(
       children: [
         Positioned(
@@ -24,7 +24,7 @@ class ForgotScreen extends StatelessWidget {
           right: 0,
           child: SvgPicture.asset(
             "assets/svg/forgot_password_gi2d.svg",
-            width: size.width * 0.78, // 78%
+            width: Screen.width(context) * 0.78, // 78%
           ),
         ),
         Padding(

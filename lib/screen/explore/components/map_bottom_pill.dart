@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/models/tree_data.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class MapBottomPill extends StatelessWidget {
   final bool isVisible;

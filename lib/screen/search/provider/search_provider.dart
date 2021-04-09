@@ -9,39 +9,58 @@ import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
 import 'package:flutter_hotelapp/models/tree_data.dart';
 
 enum Status { Uninitialized, Loading, Loaded, Error }
+enum Language { HK, EN, CN }
 
-class TreeDataProvider extends ChangeNotifier {
+class SearchProvider extends ChangeNotifier {
   Status _status = Status.Uninitialized;
-  List<TreeData> _list = [];
+  Language _language = Language.EN;
 
-  Status get status => _status;
-  List<TreeData> get treeMap => _list;
+  List<TreeData> _data = [];
+  List<TreeData> _displayList = [];
 
-  // dio baseoption preset
-  Dio dio = Dio(
-    BaseOptions(
-      connectTimeout: 10000, //10s
-      receiveTimeout: 100000,
-      headers: {
-        HttpHeaders.acceptHeader: "application/json",
-        HttpHeaders.userAgentHeader: "",
-        HttpHeaders.acceptLanguageHeader: 'en-US',
-      },
-      contentType: Headers.jsonContentType,
-      responseType: ResponseType.plain,
-    ),
-  );
+  get status => _status;
+  get displayList => _displayList;
 
-  //使用 dio 從後端獲取花草的數據
-  Future<Map> fetchTreeData() async {
+  void onQueryChanged(String query) async {
+    //根據query查找data相應的字符再傳進display list
+    _displayList = _data.where((element) {
+      var title = element.folderName.toLowerCase();
+      return title.contains(query);
+    }).toList();
+
+    notifyListeners();
+  }
+
+  void clear() {
+    // 將所有 data 再傳進 display list
+    _displayList = _data;
+    notifyListeners();
+  }
+
+  Future<Map> fetchData() async {
+    // dio baseoption preset
+    Dio dio = Dio(
+      BaseOptions(
+        connectTimeout: 5000, //10s
+        receiveTimeout: 10000,
+        headers: {
+          HttpHeaders.acceptLanguageHeader:
+              _language == Language.HK ? 'zh-HK' : 'en-US',
+        },
+        contentType: Headers.jsonContentType,
+        responseType: ResponseType.plain,
+      ),
+    );
+
     final url = '${RestApi.localUrl}/flora/tree/';
-    // retry fetch data
+
+    // 防止初次刷新時候再次通知widget進行更新導致警告
     if (_status == Status.Error) {
-      // 錯誤頁面下會重新顯示 shimmer effect 當重新加載時
       _status = Status.Loading;
       notifyListeners();
     }
 
+    // UI result
     Map<String, dynamic> result = {
       'success': false,
       'message': 'Unknow error',
@@ -51,20 +70,17 @@ class TreeDataProvider extends ChangeNotifier {
       final response = await dio.get(url);
 
       result['success'] = true;
-      result['message'] = 'Data loaded';
+      result['message'] = 'Data Loaded';
 
-      // 這是呼叫 method 先 decode json 后再轉換為 list<model>
       final data = List<TreeData>.from(
         json.decode(response.data).map(
               (x) => TreeData.fromJson(x),
             ),
       );
 
-      if (_list != data) {
-        //data loaded;
-        log('tree data loaded');
-        _list = data;
-      }
+      log('Tree Data Reloaded');
+      _data = data;
+      _displayList = _data;
 
       _status = Status.Loaded;
       // 通知所有 listener 更新
@@ -76,7 +92,7 @@ class TreeDataProvider extends ChangeNotifier {
       //輸出錯誤到控制台
       log('TreeDataProvider -> ${error.messge}');
 
-      /// 直接返回信息 UI 通知刷新失敗
+      /// 返回信息 UI 通知刷新失敗
       result['message'] = error.messge;
 
       _status = Status.Error;

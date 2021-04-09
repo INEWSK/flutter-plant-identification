@@ -10,4 +10,6 @@ class HomeProvider extends ChangeNotifier {
     await Future.delayed(Duration(seconds: 2));
     return true;
   }
+
+  fetchData() async {}
 }

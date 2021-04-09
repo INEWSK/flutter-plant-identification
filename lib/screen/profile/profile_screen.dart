@@ -95,76 +95,67 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   Widget _body(BuildContext context) {
     return SingleChildScrollView(
-      child: AnimationLimiter(
-        child: Column(
-          children: AnimationConfiguration.toStaggeredList(
-            childAnimationBuilder: (widget) => SlideAnimation(
-                child: ScaleAnimation(
-              duration: (kDefaultDuration * 0.5),
-              child: widget,
-            )),
-            children: [
-              Consumer<AuthProvider>(
-                builder: (_, user, __) {
-                  // user.initProfilePicture();
-                  return ProfileHeader(
-                    email: '${user.email}',
-                    name: '${user.username}',
-                    image: user.image,
-                    press: () {
-                      if (user.status == Status.Authenticated) user.getImage();
-                    },
-                  );
+      child: Column(
+        children: [
+          Consumer<AuthProvider>(
+            builder: (_, user, __) {
+              // user.initProfilePicture();
+              return ProfileHeader(
+                email: '${user.email}',
+                name: '${user.username}',
+                image: user.image,
+                press: () {
+                  if (user.status == Status.Authenticated) user.getImage();
                 },
-              ),
-              SizedBox(height: 10),
-              ListTile(
-                // dense: true,
-                leading: SvgPicture.asset('assets/icons/profile/manual.svg'),
-                title: Text('Manual'),
-                onTap: null,
-              ),
-              ListTile(
-                // dense: true,
-                leading: SvgPicture.asset('assets/icons/profile/favorite.svg'),
-                title: Text('Favorite'),
-                onTap: null,
-              ),
-              Consumer<AuthProvider>(
-                builder: (BuildContext context, user, Widget child) {
-                  if (user.admin == true) {
-                    return ListTile(
-                      leading: SvgPicture.asset(
-                          'assets/icons/profile/ai_retraining.svg'),
-                      title: Text('AI Retraining'),
-                      onTap: () async => _retrainingRequest(context),
-                    );
-                  } else {
-                    return Container();
-                  }
-                },
-              ),
-              ListTile(
-                // dense: true,
-                leading: SvgPicture.asset('assets/icons/profile/settings.svg'),
-                title: Text('Settings'),
-                onTap: () => Navigator.pushNamed(context, '/settings'),
-              ),
-              ListTile(
-                // dense: true,
-                leading: SvgPicture.asset('assets/icons/profile/fqa.svg'),
-                title: Text('FQA'),
-                onTap: () => Navigator.pushNamed(context, '/fqa'),
-              ),
-              ListTile(
-                // dense: true,
-                leading: SvgPicture.asset('assets/icons/profile/contact.svg'),
-                title: Text('Contact Us'),
-                onTap: () async => _toEmailDialog(context),
-              ),
-            ],
+              );
+            },
           ),
-        ),
+          SizedBox(height: 10),
+          ListTile(
+            // dense: true,
+            leading: SvgPicture.asset('assets/icons/profile/manual.svg'),
+            title: Text('Manual'),
+            onTap: null,
+          ),
+          ListTile(
+            // dense: true,
+            leading: SvgPicture.asset('assets/icons/profile/favorite.svg'),
+            title: Text('Favorite'),
+            onTap: null,
+          ),
+          Consumer<AuthProvider>(
+            builder: (BuildContext context, user, Widget child) {
+              if (user.admin == true) {
+                return ListTile(
+                  leading: SvgPicture.asset(
+                      'assets/icons/profile/ai_retraining.svg'),
+                  title: Text('AI Retraining'),
+                  onTap: () async => _retrainingRequest(context),
+                );
+              } else {
+                return Container();
+              }
+            },
+          ),
+          ListTile(
+            // dense: true,
+            leading: SvgPicture.asset('assets/icons/profile/settings.svg'),
+            title: Text('Settings'),
+            onTap: () => Navigator.pushNamed(context, '/settings'),
+          ),
+          ListTile(
+            // dense: true,
+            leading: SvgPicture.asset('assets/icons/profile/fqa.svg'),
+            title: Text('FQA'),
+            onTap: () => Navigator.pushNamed(context, '/fqa'),
+          ),
+          ListTile(
+            // dense: true,
+            leading: SvgPicture.asset('assets/icons/profile/contact.svg'),
+            title: Text('Contact Us'),
+            onTap: () async => _toEmailDialog(context),
+          ),
+        ],
       ),
     );
   }

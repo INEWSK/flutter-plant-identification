@@ -58,7 +58,7 @@ class _GoogleMapsState extends State<GoogleMaps> {
                 setState(() {
                   _isVisible = true;
                   // 將 data 傳進 widget
-                  _pillData = data;
+                  if (_pillData != data) _pillData = data;
                 });
               },
               infoWindow: InfoWindow(

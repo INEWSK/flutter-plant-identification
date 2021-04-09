@@ -3,9 +3,9 @@ import 'package:flutter_hotelapp/common/utils/fluashbar_utils.dart';
 import 'package:provider/provider.dart';
 
 import 'components/error_page.dart';
-import 'components/tree_list_build.dart';
+import 'components/tree_list.dart';
 import 'components/shimmer_effect.dart';
-import 'provider/tree_data_provider.dart';
+import 'provider/search_provider.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -17,7 +17,7 @@ class _SearchScreenState extends State<SearchScreen>
   @override
   bool get wantKeepAlive => true;
 
-  final provider = TreeDataProvider();
+  final provider = SearchProvider();
 
   @override
   Widget build(BuildContext context) {
@@ -31,12 +31,12 @@ class _SearchScreenState extends State<SearchScreen>
   Widget _body() {
     return ChangeNotifierProvider(
       create: (_) => provider,
-      child: Consumer<TreeDataProvider>(
-        builder: (_, data, __) {
-          switch (data.status) {
+      child: Consumer(
+        builder: (_, SearchProvider tree, __) {
+          switch (tree.status) {
             case Status.Error:
               return ErrorPage(press: () async {
-                final response = await data.fetchTreeData();
+                final response = await tree.fetchData();
 
                 final String result = response['message'];
                 final bool success = response['success'];
@@ -47,17 +47,28 @@ class _SearchScreenState extends State<SearchScreen>
               });
               break;
             case Status.Loaded:
-              return TreeListBuild(provider: data, context: context);
+              return TreeList();
               break;
             case Status.Loading:
               return ShimmerEffect();
               break;
             default:
-              data.fetchTreeData();
+              _init(tree);
               return ShimmerEffect();
           }
         },
       ),
     );
+  }
+
+  void _init(SearchProvider tree) async {
+    final response = await tree.fetchData();
+
+    final String result = response['message'];
+    final bool success = response['success'];
+
+    if (!success) {
+      Flush.error(context, message: result);
+    }
   }
 }

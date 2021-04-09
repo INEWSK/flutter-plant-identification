@@ -103,7 +103,7 @@ class TreeCard extends StatelessWidget {
     String imgUrl;
 
     if (data.treeImages.isNotEmpty) {
-      imgUrl = data.treeImages[0].treeImage;
+      imgUrl = data.treeImages.first.treeImage;
       return imgUrl;
     } else {
       imgUrl = 'assets/images/nophoto.jpg';

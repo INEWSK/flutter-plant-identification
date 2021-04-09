@@ -23,11 +23,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  # animations: ^1.1.2
   another_flushbar: ^1.10.17
   bot_toast: ^3.0.5
   cached_network_image: ^3.0.0
-  # camera: ^0.8.1
   common_utils: ^2.0.2
   connectivity: ^3.0.2
   cupertino_icons: ^1.0.2
@@ -60,6 +58,7 @@ dependencies:
   unicorndial: ^1.1.5
   url_launcher: ^6.0.2
   vibration: ^1.7.3
+  wave: ^0.2.0
 
 dev_dependencies:
   flutter_test:

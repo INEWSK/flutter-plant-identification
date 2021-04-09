@@ -16,7 +16,7 @@ class ApiProvider extends ChangeNotifier {
 
   Dio dio = Dio(BaseOptions(
     connectTimeout: 5000, // 5s
-    receiveTimeout: 100000,
+    receiveTimeout: 10000, // 10s
   ));
 
   void upload(File file) async {

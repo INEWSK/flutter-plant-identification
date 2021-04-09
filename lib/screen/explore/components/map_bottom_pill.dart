@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
+import 'package:flutter_hotelapp/common/utils/image_utils.dart';
 import 'package:flutter_hotelapp/models/tree_data.dart';
 
 class MapBottomPill extends StatelessWidget {
@@ -15,62 +16,93 @@ class MapBottomPill extends StatelessWidget {
       right: 0,
       bottom: isVisible ? 55 : -220,
       duration: kDefaultDuration,
-      // curves 動畫演示詳見 https://api.flutter.dev/flutter/animation/Curves-class.html
       curve: Curves.easeInExpo,
-      child: Container(
-        margin: const EdgeInsets.all(8.0),
-        padding: EdgeInsets.all(kDefaultPadding / 1.5),
-        decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            borderRadius: BorderRadius.circular(5.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.2),
-                blurRadius: 5,
-                offset: Offset.zero,
-              ),
-            ]),
-        child: Row(
-          children: [
-            Stack(
-              clipBehavior: Clip.none,
-              children: [
-                ClipOval(
-                  child: Image.asset(
-                    'assets/images/no_picture_avatar.png',
-                    width: 64,
-                    height: 64,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(width: 20),
-            // 此 widget 儘可能佔用所有橫向空間 (擠壓 Icon 至右側)
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(data == null ? 'Title' : data.commonName,
-                      style: kSubHeadTextStyle),
-                  Text(data == null ? 'Subtitle' : data.scientificName,
-                      style: kBodyTextStyle),
-                  Text(
-                    data == null
-                        ? 'LatLng'
-                        : 'Location: ${data.treeLocations[0].treeLat.toString()}, ${data.treeLocations[0].treeLong.toString()}',
-                    style: kSecondaryBodyTextStyle.copyWith(height: 1.5),
-                  )
-                ],
-              ),
-            ),
-            Image.asset(
-              'assets/images/location_marker.png',
-              width: 36,
-            ),
-          ],
+      child: Card(
+        child: ListTile(
+          leading: CircleAvatar(
+            child: _image(),
+            backgroundColor: Colors.transparent,
+          ),
+          title: Text(
+            data == null ? 'Title' : data.commonName,
+          ),
+          subtitle: Text(
+            data == null ? 'Subtitle' : data.scientificName,
+          ),
+          trailing: Image.asset(
+            'assets/images/location_marker.png',
+            width: 32,
+          ),
         ),
       ),
     );
+  }
+
+  _image() {
+    // image provider解決 connection closed 問題
+    return FutureBuilder(
+      future: _getImage(),
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        if (snapshot.hasData) {
+          final response = snapshot.data;
+
+          final ImageType imageType = response['imageType'];
+          final String imageUrl = response['imageUrl'];
+
+          if (imageType == ImageType.network) {
+            return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(5.0),
+                ),
+                image: DecorationImage(
+                  image: ImageUtils.getImageProvider(imageUrl),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            );
+          } else {
+            return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(5.0),
+                ),
+                image: DecorationImage(
+                  image: ImageUtils.getAssetImage(imageUrl,
+                      format: ImageFormat.png),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            );
+          }
+        } else {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  Future<Map> _getImage() async {
+    Map<String, dynamic> result = {
+      'imageType': ImageType.local,
+      'imageUrl': 'no-photo',
+    };
+
+    if (data != null) {
+      if (data.treeImages.isNotEmpty) {
+        result['imageType'] = ImageType.network;
+        result['imageUrl'] = data.treeImages.first.treeImage;
+        return result;
+      } else {
+        return result;
+      }
+    } else {
+      return result;
+    }
   }
 }

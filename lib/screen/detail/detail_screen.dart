@@ -30,7 +30,7 @@ class _DetailScreenState extends State<DetailScreen> {
         basicIntro: data.introduction,
         commonName: data.commonName,
         treeImage: data.treeImages.isNotEmpty
-            ? data.treeImages[0].treeImage
+            ? data.treeImages.first.treeImage
             : 'http://10.0.2.2:8000/media/images/Bauhinia_blakeana_9hy5snr.jpg',
         scientificName: data.scientificName,
         specialFeatures: data.specialFeatures,

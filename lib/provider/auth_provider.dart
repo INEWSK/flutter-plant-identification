@@ -68,19 +68,19 @@ class AuthProvider extends ChangeNotifier {
         // 如果有的話
         if (await imageFile.exists()) {
           SpUtil.putString('profilePicture', imageFile.path);
-          print('獲取頭像文件夾\n' + 'PATH: ' + imageFile.path);
+          print('獲取頭像\n' + 'PATH: ' + imageFile.path);
           if (Device.isMobile) {
             _image = FileImage(imageFile);
           }
         } else {
           _image = null;
-          print('圖片不存在.');
+          print('頭像不存在');
         }
       } else {
         debugPrint('用戶未登入, 使用默認頭像');
       }
     } catch (e) {
-      debugPrint('初始化頭像失敗\n' + 'REASON: ' + e.toString());
+      print('初始化頭像失敗\n' + 'REASON: ' + e.toString());
     }
   }
 
@@ -272,7 +272,6 @@ class AuthProvider extends ChangeNotifier {
         // save the file by copying it to the new location
         final imageFile =
             await File(pickedFile.path).copy('$userFolder/$fileName');
-        print('已選擇的頭像\n' + 'PATH: ' + imageFile.path);
         // 由於 flutter 的圖片緩存機制, 複寫已存在的圖片不會即時改變
         // 直至重啓程序, 每次更新頭像需要清除緩存
         // 詳見 https://github.com/flutter/flutter/issues/24858
@@ -304,12 +303,12 @@ class AuthProvider extends ChangeNotifier {
     final userFolder = Directory('${appDirectory.path}/$_token');
     // if folder already exists
     if (await userFolder.exists()) {
-      debugPrint('用戶文件夾已存在\n' + 'PATH: ' + userFolder.path);
+      debugPrint('當前用戶文件夾已存在');
       return userFolder.path;
     } else {
       // if not exists, create new one
       final newUserFolder = await userFolder.create(recursive: true);
-      debugPrint('創建新的用戶文件夾\n' + 'PATH: ' + newUserFolder.path);
+      debugPrint('創建新的用戶文件夾\n' + '路徑: ' + newUserFolder.path);
       return newUserFolder.path;
     }
   }

@@ -48,7 +48,7 @@ class _GoogleMapsState extends State<GoogleMaps> {
   void _setMarker(List<TreeData> treeData) {
     treeData.forEach((data) {
       if (data.treeLocations.isNotEmpty) {
-        List<TreeLocations> locations = data.treeLocations;
+        List<TreeLocation> locations = data.treeLocations;
         locations.forEach((loc) {
           _markers.add(
             Marker(
@@ -119,7 +119,7 @@ class _GoogleMapsState extends State<GoogleMaps> {
   }
 
   // convert image method  for google map marker
-  Future<Uint8List> _getBytesFromAsset(String path, int width) async {
+  Future<Uint8List> _getBytesFromAsset(String path, {int width = 100}) async {
     ByteData data = await rootBundle.load(path);
     ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
         targetWidth: width);
@@ -131,7 +131,7 @@ class _GoogleMapsState extends State<GoogleMaps> {
 
   void _initMarkerIcon(context) async {
     Uint8List _icon =
-        await _getBytesFromAsset('assets/images/location_marker.png', 100);
+        await _getBytesFromAsset('assets/images/location_marker.png');
 
     _markerIcon = BitmapDescriptor.fromBytes(_icon);
   }

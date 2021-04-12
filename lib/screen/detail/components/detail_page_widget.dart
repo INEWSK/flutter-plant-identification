@@ -21,23 +21,23 @@ class DetailPageWidget extends StatelessWidget {
   final String cBranch;
   final String cBark;
 
-  const DetailPageWidget(
-      {Key key,
-      @required this.treeImage,
-      @required this.commonName,
-      @required this.scientificName,
-      @required this.basicIntro,
-      @required this.specialFeatures,
-      @required this.learnMore,
-      @required this.leafIntro,
-      @required this.flowerIntro,
-      @required this.fruitIntro,
-      this.cFamily,
-      this.cHeight,
-      this.cNatureLeaf,
-      this.cBranch,
-      this.cBark})
-      : super(key: key);
+  const DetailPageWidget({
+    Key key,
+    @required this.treeImage,
+    @required this.commonName,
+    @required this.scientificName,
+    @required this.basicIntro,
+    @required this.specialFeatures,
+    @required this.learnMore,
+    @required this.leafIntro,
+    @required this.flowerIntro,
+    @required this.fruitIntro,
+    this.cFamily,
+    this.cHeight,
+    this.cNatureLeaf,
+    this.cBranch,
+    this.cBark,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

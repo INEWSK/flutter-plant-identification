@@ -5,13 +5,15 @@ import 'package:flutter_hotelapp/common/utils/screen_utils.dart';
 import 'package:flutter_hotelapp/models/tree_data.dart';
 
 class TreeCard extends StatelessWidget {
+  final String tag;
   final TreeData data;
   final Function press;
 
   const TreeCard({
     Key key,
-    this.data,
-    this.press,
+    this.tag,
+    @required this.data,
+    @required this.press,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {

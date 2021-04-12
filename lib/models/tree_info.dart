@@ -1,64 +1,68 @@
+import 'dart:convert';
+
+List<TreeInfo> treeInfoFromJson(String str) =>
+    List<TreeInfo>.from(json.decode(str).map((x) => TreeInfo.fromJson(x)));
+
+String treeInfoToJson(List<TreeInfo> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
 class TreeInfo {
+  TreeInfo({
+    this.infoType,
+    this.title,
+    this.content,
+    this.dateCreated,
+    this.infoImages,
+  });
+
   String infoType;
   String title;
   String content;
-  String dateCreated;
-  List<InfoImages> infoImages;
+  DateTime dateCreated;
+  List<InfoImage> infoImages;
 
-  TreeInfo(
-      {this.infoType,
-      this.title,
-      this.content,
-      this.dateCreated,
-      this.infoImages});
+  factory TreeInfo.fromJson(Map<String, dynamic> json) => TreeInfo(
+        infoType: json["info_type"],
+        title: json["title"],
+        content: json["content"],
+        dateCreated: DateTime.parse(json["date_created"]),
+        infoImages: List<InfoImage>.from(
+            json["info_images"].map((x) => InfoImage.fromJson(x))),
+      );
 
-  TreeInfo.fromJson(Map<String, dynamic> json) {
-    infoType = json['info_type'];
-    title = json['title'];
-    content = json['content'];
-    dateCreated = json['date_created'];
-    if (json['info_images'] != null) {
-      infoImages = [];
-      json['info_images'].forEach((v) {
-        infoImages.add(InfoImages.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['info_type'] = this.infoType;
-    data['title'] = this.title;
-    data['content'] = this.content;
-    data['date_created'] = this.dateCreated;
-    if (this.infoImages != null) {
-      data['info_images'] = this.infoImages.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+        "info_type": infoType,
+        "title": title,
+        "content": content,
+        "date_created": dateCreated.toIso8601String(),
+        "info_images": List<dynamic>.from(infoImages.map((x) => x.toJson())),
+      };
 }
 
-class InfoImages {
+class InfoImage {
+  InfoImage({
+    this.id,
+    this.infoImage,
+    this.dateCreated,
+    this.info,
+  });
+
   int id;
   String infoImage;
-  String dateCreated;
+  DateTime dateCreated;
   int info;
 
-  InfoImages({this.id, this.infoImage, this.dateCreated, this.info});
+  factory InfoImage.fromJson(Map<String, dynamic> json) => InfoImage(
+        id: json["id"],
+        infoImage: json["info_image"],
+        dateCreated: DateTime.parse(json["date_created"]),
+        info: json["info"],
+      );
 
-  InfoImages.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    infoImage = json['info_image'];
-    dateCreated = json['date_created'];
-    info = json['info'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['info_image'] = this.infoImage;
-    data['date_created'] = this.dateCreated;
-    data['info'] = this.info;
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "info_image": infoImage,
+        "date_created": dateCreated.toIso8601String(),
+        "info": info,
+      };
 }

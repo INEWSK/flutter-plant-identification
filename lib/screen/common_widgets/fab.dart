@@ -7,9 +7,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 
 class FAB extends StatelessWidget {
-  final _picker = ImagePicker();
-
   void _pickImage(source, BuildContext context) async {
+    final _picker = ImagePicker();
+
     try {
       final pickedFile = await _picker.getImage(source: source);
 

@@ -6,9 +6,11 @@ class ProfileHeader extends StatelessWidget {
   final String name, email;
   final ImageProvider image;
   final Function press;
+  final bool logged;
 
   const ProfileHeader({
     Key key,
+    @required this.logged,
     @required this.name,
     @required this.email,
     @required this.image,
@@ -35,7 +37,7 @@ class ProfileHeader extends StatelessWidget {
                   child: GestureDetector(
                     onTap: press ?? () {},
                     child: Container(
-                      margin: EdgeInsets.only(bottom: 10),
+                      margin: const EdgeInsets.only(bottom: 15.0),
                       height: 128.0,
                       width: 128.0,
                       decoration: BoxDecoration(
@@ -53,7 +55,7 @@ class ProfileHeader extends StatelessWidget {
                     ),
                   ),
                 ),
-                Text(name, style: kBodyTextStyle),
+                Text(name ?? 'Login', style: kBodyTextStyle),
                 SizedBox(height: 10),
                 Text(
                   email,

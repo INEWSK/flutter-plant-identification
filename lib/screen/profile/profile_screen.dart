@@ -1,11 +1,12 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hotelapp/common/styles/styles.dart';
+import 'package:flutter_hotelapp/common/constants/rest_api.dart';
+import 'package:flutter_hotelapp/common/utils/fluashbar_utils.dart';
+import 'package:flutter_hotelapp/common/utils/loading_utils.dart';
 import 'package:flutter_hotelapp/provider/auth_provider.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import 'components/profile_header.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -43,8 +44,8 @@ class _ProfileScreenState extends State<ProfileScreen>
     );
   }
 
-  Future<void> _retrainingRequest(BuildContext context) {
-    return showDialog(
+  Future<void> _retrainingRequest(BuildContext context) async {
+    final result = await showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
@@ -52,19 +53,22 @@ class _ProfileScreenState extends State<ProfileScreen>
           content: Text('Send a request to server to train new model'),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => Navigator.pop(context, false),
               child: Text('No'),
             ),
             TextButton(
-              onPressed: () => Navigator.pop(
-                context,
-              ),
+              onPressed: () async => _requestRetrain(),
               child: Text('Yes'),
             ),
           ],
         );
       },
     );
+    if (result) {
+      Flush.notification(context, message: 'AI Retrain Sent');
+    } else {
+      Flush.error(context, message: 'Cancel');
+    }
   }
 
   void _launcherUrl() async {
@@ -101,11 +105,16 @@ class _ProfileScreenState extends State<ProfileScreen>
             builder: (_, user, __) {
               // user.initProfilePicture();
               return ProfileHeader(
-                email: '${user.email}',
-                name: '${user.username}',
+                logged: user.token != null ? true : false,
+                email: user.email,
+                name: user.username,
                 image: user.image,
                 press: () {
-                  if (user.status == Status.Authenticated) user.getImage();
+                  if (user.status == Status.Authenticated) {
+                    user.getImage();
+                  } else {
+                    Navigator.pushNamed(context, '/signIn');
+                  }
                 },
               );
             },
@@ -130,7 +139,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                   leading: SvgPicture.asset(
                       'assets/icons/profile/ai_retraining.svg'),
                   title: Text('AI Retraining'),
-                  onTap: () async => _retrainingRequest(context),
+                  onTap: () {},
                 );
               } else {
                 return Container();
@@ -158,5 +167,27 @@ class _ProfileScreenState extends State<ProfileScreen>
         ],
       ),
     );
+  }
+
+  _requestRetrain() async {
+    Dio dio = Dio();
+
+    final path = '${RestApi.localUrl}/flora/tree-ai-retrain/';
+
+    final formData = FormData.fromMap({'choice': ''});
+
+    LoadingUtils.show();
+
+    try {
+      final response = await dio.post(path, data: formData);
+      final result = response.data;
+
+      LoadingUtils.cancel();
+
+      print(result);
+    } on DioError catch (e) {
+      print(e.message);
+      LoadingUtils.cancel();
+    }
   }
 }

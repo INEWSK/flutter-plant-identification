@@ -3,21 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 // ------------------ LIGHT THEME DATA ------------------ //
 
-// final lightTheme = ThemeData(
-//   appBarTheme: appBarTheme.copyWith(
-//     color: Colors.transparent, // transparent appbar
-//     iconTheme: IconThemeData(color: Colors.black54),
-//   ),
-//   brightness: Brightness.light,
-
-//   primaryColor: Colors.green,
-//   accentColor: Color(0xFF27A09E),
-
-//   fontFamily: "Poppins",
-//   // 自適應各平台的視覺密度
-//   visualDensity: VisualDensity.adaptivePlatformDensity,
-// );
-
 ThemeData lightTheme(BuildContext context) {
   return ThemeData.light().copyWith(
     appBarTheme: appBarTheme.copyWith(
@@ -45,14 +30,6 @@ ThemeData lightTheme(BuildContext context) {
 
 // ------------------ DARK THEME DATA ------------------ //
 
-// final darkTheme = ThemeData(
-//   appBarTheme: appBarTheme,
-//   brightness: Brightness.dark,
-//   fontFamily: "Poppins",
-//   visualDensity: VisualDensity.adaptivePlatformDensity,
-// );
-//
-//
 ThemeData darkTheme(BuildContext context) {
   return ThemeData.dark().copyWith(
     appBarTheme: appBarTheme.copyWith(

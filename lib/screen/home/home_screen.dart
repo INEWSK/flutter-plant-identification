@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/demo/demo_data.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
+import 'package:flutter_hotelapp/models/tree_info.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -39,30 +41,77 @@ class _HomeScreenState extends State<HomeScreen>
     return ChangeNotifierProvider(
       create: (_) => HomeProvider(),
       child: Consumer(
-        builder: (_, HomeProvider home, __) {
-          return RefreshIndicator(
-            onRefresh: () => home.refresh(),
-            child: AnimationLimiter(
-              child: ListView.builder(
-                addAutomaticKeepAlives: false, // 本體已被包裹在 autoKeepAlive, 禁用
-                itemCount: demoIntroCardData.length,
-                itemBuilder: (context, index) {
-                  return AnimationConfiguration.staggeredList(
-                    position: index,
-                    duration: kDefaultDuration,
-                    child: SlideAnimation(
-                      verticalOffset: 50.0,
-                      child: FadeInAnimation(
-                        child: IntroCard(
-                          sort: demoIntroCardData[index]["sort"],
-                          title: demoIntroCardData[index]["title"],
-                          text: demoIntroCardData[index]["text"],
-                          image: demoIntroCardData[index]["image"],
-                        ),
-                      ),
-                    ),
-                  );
-                },
+        builder: (_, HomeProvider provider, __) {
+          return FutureBuilder(
+            future: provider.fetchData(),
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasData) {
+                  final List<TreeInfo> data = snapshot.data;
+                  return _buildList(provider, data);
+                } else {
+                  // demo local data
+                  return _demoList();
+                }
+              } else {
+                return Center(
+                  child: SpinKitFadingCube(color: Colors.teal),
+                );
+              }
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildList(HomeProvider home, List<TreeInfo> data) {
+    return RefreshIndicator(
+      onRefresh: () => home.refresh(),
+      child: AnimationLimiter(
+        child: ListView.builder(
+          addAutomaticKeepAlives: false, // 本體已被包裹在 autoKeepAlive, 禁用
+          itemCount: data.length,
+          itemBuilder: (context, index) {
+            return AnimationConfiguration.staggeredList(
+              position: index,
+              duration: kDefaultDuration,
+              child: SlideAnimation(
+                verticalOffset: 50.0,
+                child: FadeInAnimation(
+                  child: IntroCard(
+                    sort: data[index].infoType,
+                    title: data[index].title,
+                    text: data[index].content,
+                    image: demoIntroCardData[index]["image"],
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _demoList() {
+    return AnimationLimiter(
+      child: ListView.builder(
+        addAutomaticKeepAlives: false, // 本體已被包裹在 autoKeepAlive, 禁用
+        itemCount: demoIntroCardData.length,
+        itemBuilder: (context, index) {
+          return AnimationConfiguration.staggeredList(
+            position: index,
+            duration: kDefaultDuration,
+            child: SlideAnimation(
+              verticalOffset: 50.0,
+              child: FadeInAnimation(
+                child: IntroCard(
+                  sort: demoIntroCardData[index]["sort"],
+                  title: demoIntroCardData[index]["title"],
+                  text: demoIntroCardData[index]["text"],
+                  image: demoIntroCardData[index]["image"],
+                ),
               ),
             ),
           );

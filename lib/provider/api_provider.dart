@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:bot_toast/bot_toast.dart';
@@ -7,16 +6,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/constants/rest_api.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
-import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
+enum Language { HK, EN, CN }
+
 class ApiProvider extends ChangeNotifier {
   final key = UniqueKey();
+  Language _language = Language.EN;
 
   Dio dio = Dio(BaseOptions(
+    baseUrl: RestApi.localUrl,
     connectTimeout: 5000, // 5s
     receiveTimeout: 10000, // 10s
+    // contentType 爲 json 則 response 自動轉化爲 json 對象
+    contentType: Headers.jsonContentType,
+    // responseType: ResponseType.plain,
   ));
 
   void upload(File file) async {
@@ -33,54 +38,27 @@ class ApiProvider extends ChangeNotifier {
       )
     });
 
-    // try call vtc network sever
     try {
-      final vtcNetworkResponse = await dio.get(RestApi.vtcUrl);
-      // if server work correctly
-      if (vtcNetworkResponse.statusCode == 200) {
-        final url = RestApi.vtcUrl + '/flora/tree-ai/';
-        // post request
-        await dio.post(url, data: data).then((response) {
-          // convert reponse body to string
-          String result = response.toString();
-          log('SERVER RESPONSE: $response');
-          // remove loading toast
-          BotToast.remove(key);
-          _resultToast(result, true);
-          //TODO: 根據伺服器傳回的資料對應相應的data, 用 dialog 顯示
-          return result;
-        });
-      } else {
-        // something wrong, please check vtc server
-        log('vtc api call: something gone wrong');
-      }
+      final url = '/flora/tree-ai/';
+
+      await dio
+          .post(url,
+              data: data,
+              options: Options(headers: {
+                HttpHeaders.acceptLanguageHeader:
+                    _language == Language.HK ? 'zh-HK' : 'en-US'
+              }))
+          .then((response) {
+        final result = response.toString();
+        BotToast.remove(key);
+
+        _resultToast(result, false);
+      });
     } on DioError catch (e) {
       final error = DioExceptions.fromDioError(e);
-      print('api_provider: provider call error: ${error.messge}');
-      Toast.show('vtc 校內聯網沒有回應, 呼叫本地 api');
-
-      final localUrl = RestApi.localUrl + '/flora/tree-ai/';
-      // vtc network was fxxk, try to call local api
-      try {
-        await dio.post(localUrl, data: data).then((response) {
-          String result = response.toString(); // 直接string伺服器返回的結果
-          log('SERVER RESPONSE: $response');
-
-          BotToast.remove(key);
-
-          _resultToast(result, true);
-
-          return result;
-        });
-      } on DioError catch (e) {
-        // if local api mess up too, then
-        final error = DioExceptions.fromDioError(e);
-
-        print(error.messge);
-        _resultToast(error.messge, false);
-
-        BotToast.remove(key);
-      }
+      print('API CALL ERROR: ${error.messge}');
+      BotToast.remove(key);
+      _resultToast(error.messge, true);
     }
   }
 
@@ -107,18 +85,18 @@ class ApiProvider extends ChangeNotifier {
     );
   }
 
-  void _resultToast(String text, bool result) {
+  void _resultToast(String result, bool isError) {
     BotToast.showNotification(
       leading: (cancel) => SizedBox.fromSize(
           size: const Size(40, 40),
           child: IconButton(
-            icon: result == true
+            icon: isError == false
                 ? Icon(Ionicons.ios_rose, color: Colors.redAccent)
                 : Icon(FontAwesome.times, color: Colors.redAccent),
             onPressed: cancel,
           )),
       title: (_) => Text(
-        text,
+        result,
         style: kBodyTextStyle,
       ),
       duration: Duration(seconds: 5),

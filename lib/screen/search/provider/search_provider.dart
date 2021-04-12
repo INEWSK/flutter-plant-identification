@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -13,7 +12,7 @@ enum Language { HK, EN, CN }
 
 class SearchProvider extends ChangeNotifier {
   Status _status = Status.Uninitialized;
-  Language _language = Language.EN;
+  Language _language = Language.HK;
 
   List<TreeData> _data = [];
   List<TreeData> _displayList = [];
@@ -47,7 +46,8 @@ class SearchProvider extends ChangeNotifier {
           HttpHeaders.acceptLanguageHeader:
               _language == Language.HK ? 'zh-HK' : 'en-US',
         },
-        contentType: Headers.jsonContentType,
+        // contentType: Headers.jsonContentType,
+        // 要求 response 傳回字符串而不要轉化爲 list
         responseType: ResponseType.plain,
       ),
     );
@@ -72,11 +72,7 @@ class SearchProvider extends ChangeNotifier {
       result['success'] = true;
       result['message'] = 'Data Loaded';
 
-      final data = List<TreeData>.from(
-        json.decode(response.data).map(
-              (x) => TreeData.fromJson(x),
-            ),
-      );
+      final data = treeDataFromJson(response.data);
 
       log('Tree Data Reloaded');
       _data = data;

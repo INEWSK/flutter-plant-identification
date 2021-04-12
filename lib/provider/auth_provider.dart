@@ -18,14 +18,14 @@ enum Status { Uninitialized, Authenticated, Authenticating, Unauthenticated }
 class AuthProvider extends ChangeNotifier {
   Status _status = Status.Uninitialized;
   String _token;
-  String _username = 'Guest';
+  String _username;
   String _email = '';
   ImageProvider _image;
   bool _admin = false;
 
   Dio dio = Dio(
     BaseOptions(
-      connectTimeout: 10000, // 連接服務器超時時間，單位毫秒.
+      connectTimeout: 10000, // 連接服務器超時時間
       receiveTimeout: 3000,
     ),
   );
@@ -92,7 +92,7 @@ class AuthProvider extends ChangeNotifier {
 
     final url = '${RestApi.localUrl}/flora/signin/';
 
-    final data = FormData.fromMap({
+    final formData = FormData.fromMap({
       'email': email,
       'password': password,
     });
@@ -104,13 +104,14 @@ class AuthProvider extends ChangeNotifier {
     };
 
     try {
-      final response = await dio.post(url, data: data);
+      final response = await dio.post(url, data: formData);
+      final data = response.data;
 
       /// Dio http 除了 200 狀態應該都直接 catch Exceptions
       result['success'] = true;
       result['message'] = 'Login Successfully';
       // 儲存用戶信息在本地
-      await storeUserData(response.data);
+      await storeUserData(data);
       // 更新狀態
       _status = Status.Authenticated;
       // 更新用户头像
@@ -120,13 +121,13 @@ class AuthProvider extends ChangeNotifier {
 
       return result;
     } on DioError catch (e) {
-      /// 這次項目的後台回傳的 status code 默認是 400
-      /// UI 設置了 validator 規避了大部分無效 value input
-      /// 後端返回是賬號密碼的錯誤
+      // 這次項目的後台回傳的 status code 默認是 400
+      // UI 設置了 validator 規避了大部分無效 value input
+      // 後端返回是賬號密碼的錯誤
       if (e.response != null) {
-        /// BE 統一返回 non_field_errors
-        /// 不論密碼錯誤還是賬號不存在.
-        /// 直接返回信息 UI layer 通知無效電郵或密碼
+        // BE 統一返回 non_field_errors
+        // 不論密碼錯誤還是賬號不存在.
+        // 直接返回信息 UI layer 通知無效電郵或密碼
         result['message'] = 'Invalid Email or Password.';
         // Listener
         _status = Status.Unauthenticated;
@@ -134,13 +135,12 @@ class AuthProvider extends ChangeNotifier {
 
         return result;
       }
-
-      /// 從封裝好的 DIO EXCEPTIONS 返回並查看的錯誤原因
-      /// 這裏的錯誤往往是後端不能正確傳回狀態的,
-      /// 譬如: 連接超時/沒有聯網
+      // 從封裝好的 DIO EXCEPTIONS 返回並查看的錯誤原因
+      // 這裏的錯誤往往是後端不能正確傳回狀態的,
+      // 譬如: 連接超時/沒有聯網
       final error = DioExceptions.fromDioError(e);
       // 輸出錯誤到主控台
-      log(error.toString());
+      debugPrint(error.messge);
       // 返回錯誤信息給 UI layer
       result['message'] = error.messge;
       // LISTENER
@@ -153,9 +153,9 @@ class AuthProvider extends ChangeNotifier {
 
   /// sign up method
   Future<Map> signUp(String email, String password1, String password2) async {
-    final url = '${RestApi.localUrl}/flora/signup/';
+    final url = '/flora/signup/';
 
-    final data = FormData.fromMap({
+    final formData = FormData.fromMap({
       'email': email,
       'password1': password1,
       'password2': password2,
@@ -167,9 +167,10 @@ class AuthProvider extends ChangeNotifier {
     };
 
     try {
-      final response = await dio.post(url, data: data);
+      final response = await dio.post(url, data: formData);
+      final data = response.data;
       // 後端有正確返回 token
-      if (response.data['token'] != null) {
+      if (data['token'] != null) {
         // notify UI layout
         print(response.data);
         result['success'] = true;
@@ -183,10 +184,10 @@ class AuthProvider extends ChangeNotifier {
         final response = e.response.data;
 
         /// 針對伺服器預設傳回的結果所包含内容進行指定動作
-        /// 在 UI 層做了預先限制, 規避了部分錯誤回應
+        /// 部分錯誤在 UI 層做了預先規避
         if (response.containsKey('email')) {
           ///  email 已經被注冊
-          final String message = response['email'][0];
+          final message = response['email'].first;
 
           result['message'] = message;
 
@@ -196,7 +197,7 @@ class AuthProvider extends ChangeNotifier {
         /// 踩坑日記: containsKey 打錯 Editor 是不會提錯誤的
         if (response.containsKey('password1')) {
           /// 密碼太常見不予注冊
-          final String message = response['password1'][0];
+          final message = response['password1'].first;
 
           result['message'] = message;
 
@@ -207,7 +208,7 @@ class AuthProvider extends ChangeNotifier {
       /// 伺服器無響應, 查看錯誤原因
       final error = DioExceptions.fromDioError(e);
       // 輸出錯誤到主控台
-      log(error.toString());
+      debugPrint(error.messge);
       // UI message
       result['message'] = error.messge;
 
@@ -219,12 +220,11 @@ class AuthProvider extends ChangeNotifier {
   }
 
   /// store user data
-  Future<void> storeUserData(response) async {
-    response.toString();
-    _username = response['username'];
-    _email = response['email'];
-    _token = response['token'];
-    _admin = response['admin'];
+  Future<void> storeUserData(data) async {
+    _username = data['username'];
+    _email = data['email'];
+    _token = data['token'];
+    _admin = data['admin'];
 
     var box = await Hive.openBox('authBox');
 
@@ -245,7 +245,12 @@ class AuthProvider extends ChangeNotifier {
     final email = box.get('email');
     final admin = box.get('admin');
 
-    User user = User(email, username, token, admin);
+    User user = User(
+      username: username,
+      email: email,
+      token: token,
+      admin: admin,
+    );
 
     return user;
   }
@@ -299,11 +304,10 @@ class AuthProvider extends ChangeNotifier {
     // get app doc folder
     final appDirectory = await getApplicationDocumentsDirectory();
     // create user folder for saving their picture
-    // 以用戶的token命名
+    // 文件夾以用戶的token命名
     final userFolder = Directory('${appDirectory.path}/$_token');
     // if folder already exists
     if (await userFolder.exists()) {
-      debugPrint('當前用戶文件夾已存在');
       return userFolder.path;
     } else {
       // if not exists, create new one
@@ -317,7 +321,7 @@ class AuthProvider extends ChangeNotifier {
   void signOut([bool tokenExpired = false]) async {
     _status = Status.Unauthenticated;
     _token = null;
-    _username = 'Guest';
+    _username = null;
     _email = '';
     _image = null;
     _admin = false;

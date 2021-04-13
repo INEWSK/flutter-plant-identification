@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hotelapp/common/constants/rest_api.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
@@ -112,17 +113,35 @@ class ApiProvider extends ChangeNotifier {
       return 'Processing';
     }
 
+    backgroundService(true);
+
     _training = true;
     notifyListeners();
 
     print('request AI retraining method');
 
     final result =
-        await Future.delayed(const Duration(seconds: 30), () => 'AI訓練完畢');
+        await Future.delayed(const Duration(seconds: 20), () => 'AI訓練完畢');
+
+    print(result);
+
+    backgroundService(false);
 
     _training = false;
-    print(result);
     notifyListeners();
     return result;
+  }
+
+  void backgroundService(bool on) async {
+    if (Platform.isAndroid) {
+      var methodChannel = MethodChannel("com.example.flutter_hotelapp");
+      if (on) {
+        String data = await methodChannel.invokeMethod("startService");
+        print("data: $data");
+      } else {
+        String data = await methodChannel.invokeMethod("stopService");
+        print("data: $data");
+      }
+    }
   }
 }

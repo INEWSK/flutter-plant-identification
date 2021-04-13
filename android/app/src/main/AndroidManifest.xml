@@ -26,10 +26,14 @@
 
 
    <application
+        android:name=".MyApplication"
         android:label="Tree Doctor"
         android:icon="@mipmap/launcher_icon"
         android:requestLegacyExternalStorage="true"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+       android:allowBackup="true"
+       android:fullBackupContent="true">
+       <service android:name=".MyService" android:exported="true" android:enabled="true"/>
         <!-- google map API -->
         <meta-data
           android:name="com.google.android.geo.API_KEY"

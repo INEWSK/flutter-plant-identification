@@ -1,8 +1,4 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hotelapp/common/constants/rest_api.dart';
-import 'package:flutter_hotelapp/common/utils/fluashbar_utils.dart';
-import 'package:flutter_hotelapp/common/utils/loading_utils.dart';
 import 'package:flutter_hotelapp/provider/api_provider.dart';
 import 'package:flutter_hotelapp/provider/auth_provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';

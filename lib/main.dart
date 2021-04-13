@@ -5,6 +5,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:sp_util/sp_util.dart';
+import 'package:workmanager/workmanager.dart';
 
 import 'app.dart';
 import 'common/utils/device_utils.dart';
@@ -27,6 +28,8 @@ void main() {
     await SpUtil.getInstance();
     // init firebase
     await Firebase.initializeApp();
+    // init workmanager
+    // Workmanager.initialize(callbackDispatcher, isInDebugMode: true);
 
     /// init provider
     final authProvider = ChangeNotifierProvider(
@@ -61,4 +64,8 @@ void main() {
       SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
     }
   });
+}
+
+void callbackDispatcher() {
+  Workmanager.executeTask((taskName, inputData) => Future.value(true));
 }

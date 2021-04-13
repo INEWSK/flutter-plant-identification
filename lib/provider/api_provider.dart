@@ -13,7 +13,11 @@ enum Language { HK, EN, CN }
 
 class ApiProvider extends ChangeNotifier {
   final key = UniqueKey();
+
   Language _language = Language.EN;
+  bool _training = false;
+
+  get train => _training;
 
   Dio dio = Dio(BaseOptions(
     baseUrl: RestApi.localUrl,
@@ -101,5 +105,24 @@ class ApiProvider extends ChangeNotifier {
       ),
       duration: Duration(seconds: 5),
     );
+  }
+
+  Future<String> requestRetrain() async {
+    if (_training) {
+      return 'Processing';
+    }
+
+    _training = true;
+    notifyListeners();
+
+    print('request AI retraining method');
+
+    final result =
+        await Future.delayed(const Duration(seconds: 30), () => 'AI訓練完畢');
+
+    _training = false;
+    print(result);
+    notifyListeners();
+    return result;
   }
 }

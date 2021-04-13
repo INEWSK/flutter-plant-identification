@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/constants/rest_api.dart';
 import 'package:flutter_hotelapp/common/utils/fluashbar_utils.dart';
 import 'package:flutter_hotelapp/common/utils/loading_utils.dart';
+import 'package:flutter_hotelapp/provider/api_provider.dart';
 import 'package:flutter_hotelapp/provider/auth_provider.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -32,10 +34,7 @@ class _ProfileScreenState extends State<ProfileScreen>
               child: Text('No'),
             ),
             TextButton(
-              onPressed: () => Navigator.pop(
-                context,
-                _launcherUrl(),
-              ),
+              onPressed: () => Navigator.pop(context, _launcherUrl()),
               child: Text('Yes'),
             ),
           ],
@@ -44,31 +43,26 @@ class _ProfileScreenState extends State<ProfileScreen>
     );
   }
 
-  Future<void> _retrainingRequest(BuildContext context) async {
-    final result = await showDialog(
+  Future<void> _retrainingRequest(BuildContext context, ApiProvider api) async {
+    return showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('AI Retraining Request'),
-          content: Text('Send a request to server to train new model'),
+          title: Text('Warning'),
+          content: Text('該行爲會傳送命令至伺服器要求進行圖片機器模型訓練, 過程不可逆且會消耗伺服器算力'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context, false),
               child: Text('No'),
             ),
             TextButton(
-              onPressed: () async => _requestRetrain(),
+              onPressed: () => Navigator.pop(context, api.requestRetrain()),
               child: Text('Yes'),
             ),
           ],
         );
       },
     );
-    if (result) {
-      Flush.notification(context, message: 'AI Retrain Sent');
-    } else {
-      Flush.error(context, message: 'Cancel');
-    }
   }
 
   void _launcherUrl() async {
@@ -132,15 +126,25 @@ class _ProfileScreenState extends State<ProfileScreen>
             title: Text('Favorite'),
             onTap: null,
           ),
-          Consumer<AuthProvider>(
-            builder: (BuildContext context, user, Widget child) {
+          Consumer2(
+            builder: (_, AuthProvider user, ApiProvider api, __) {
               if (user.admin == true) {
                 return ListTile(
-                  leading: SvgPicture.asset(
-                      'assets/icons/profile/ai_retraining.svg'),
-                  title: Text('AI Retraining'),
-                  onTap: () {},
-                );
+                    leading: api.train
+                        ? Container(
+                            width: 36,
+                            child: SpinKitFadingGrid(
+                              color: Colors.teal,
+                              size: 32,
+                            ),
+                          )
+                        : SvgPicture.asset(
+                            'assets/icons/profile/ai_retraining.svg'),
+                    title:
+                        Text(api.train ? 'Retraining...' : 'Model Retraining'),
+                    onTap: api.train
+                        ? null
+                        : () => _retrainingRequest(context, api));
               } else {
                 return Container();
               }
@@ -167,27 +171,5 @@ class _ProfileScreenState extends State<ProfileScreen>
         ],
       ),
     );
-  }
-
-  _requestRetrain() async {
-    Dio dio = Dio();
-
-    final path = '${RestApi.localUrl}/flora/tree-ai-retrain/';
-
-    final formData = FormData.fromMap({'choice': ''});
-
-    LoadingUtils.show();
-
-    try {
-      final response = await dio.post(path, data: formData);
-      final result = response.data;
-
-      LoadingUtils.cancel();
-
-      print(result);
-    } on DioError catch (e) {
-      print(e.message);
-      LoadingUtils.cancel();
-    }
   }
 }

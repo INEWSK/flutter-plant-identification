@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_hotelapp/common/constants/rest_api.dart';
+import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
 import 'package:flutter_hotelapp/models/tree_info.dart';
 
 class HomeProvider extends ChangeNotifier {
@@ -17,7 +18,7 @@ class HomeProvider extends ChangeNotifier {
     Dio dio = Dio(BaseOptions(
       connectTimeout: 5000, // 5s
       receiveTimeout: 10000, // 10s
-      // contentType 爲 json 則 response 自動轉化爲 json 對象
+      // contentType json 則 response 自動轉化爲 json 對象
       // contentType: Headers.jsonContentType,
       responseType: ResponseType.plain,
     ));
@@ -31,7 +32,9 @@ class HomeProvider extends ChangeNotifier {
 
       return data;
     } catch (e) {
-      print(e);
+      final error = DioExceptions.fromDioError(e);
+      debugPrint(error.messge);
+      return;
     }
   }
 }

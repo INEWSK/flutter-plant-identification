@@ -12,6 +12,10 @@ import Firebase
     // google map API here
     GMSServices.provideAPIKey("AIzaSyC0OLmCYJ5jWvuNxDWF-e4CZoBdSj4Xm90")
     FirebaseApp.configure()
+    // local notification
+    if #available(iOS 10.0, *) {
+      UNUserNotificationCenter.current().delegate = self as? UNUserNotificationCenterDelegate
+      }
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }

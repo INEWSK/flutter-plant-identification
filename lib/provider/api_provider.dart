@@ -6,14 +6,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hotelapp/common/constants/rest_api.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
+import 'package:flutter_hotelapp/common/utils/device_utils.dart';
 import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
+import 'package:flutter_hotelapp/common/utils/local_notification.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 enum Language { HK, EN, CN }
 
 class ApiProvider extends ChangeNotifier {
   final key = UniqueKey();
+
+  var flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   Language _language = Language.EN;
   bool _training = false;
@@ -121,7 +126,7 @@ class ApiProvider extends ChangeNotifier {
     print('request AI retraining method');
 
     final result =
-        await Future.delayed(const Duration(seconds: 20), () => 'AI訓練完畢');
+        await Future.delayed(const Duration(seconds: 10), () => 'AI訓練完畢');
 
     print(result);
 
@@ -133,13 +138,14 @@ class ApiProvider extends ChangeNotifier {
   }
 
   void backgroundService(bool on) async {
-    if (Platform.isAndroid) {
+    if (Device.isAndroid) {
       var methodChannel = MethodChannel("com.example.flutter_hotelapp");
       if (on) {
         String data = await methodChannel.invokeMethod("startService");
         print("data: $data");
       } else {
         String data = await methodChannel.invokeMethod("stopService");
+        LocalNotification.show(0, '伺服器 AI 模型訓練', '伺服器返回狀態');
         print("data: $data");
       }
     }

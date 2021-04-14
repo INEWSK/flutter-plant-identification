@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +14,8 @@ import 'provider/api_provider.dart';
 import 'provider/auth_provider.dart';
 import 'provider/intl_provider.dart';
 import 'provider/theme_provider.dart';
+
+final _notificationsPlugin = FlutterLocalNotificationsPlugin();
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +33,20 @@ void main() {
     await Firebase.initializeApp();
     // init workmanager
     // Workmanager.initialize(callbackDispatcher, isInDebugMode: true);
+
+    // initialise local notification plugin
+    var androidInitialize = AndroidInitializationSettings('app_icon');
+    // iOS permission request
+    var iosInitialize = IOSInitializationSettings();
+    var initializationSettings =
+        InitializationSettings(android: androidInitialize, iOS: iosInitialize);
+
+    await _notificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: (payload) async {
+      if (payload != null) {
+        debugPrint('Notification payload:' + payload);
+      }
+    });
 
     /// init provider
     final authProvider = ChangeNotifierProvider(

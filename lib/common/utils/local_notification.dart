@@ -1,7 +1,7 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class LocalNotification {
-  static Future show(int id, String title, String body) async {
+  static Future show({int id, String title, String body}) async {
     var notificationPlugin = FlutterLocalNotificationsPlugin();
 
     var androidDetails = AndroidNotificationDetails(
@@ -14,9 +14,9 @@ class LocalNotification {
         NotificationDetails(android: androidDetails, iOS: iOSDetails);
 
     await notificationPlugin.show(
-      id,
-      title,
-      body,
+      id ?? '0',
+      title ?? 'Tree Doctor',
+      body ?? '默認內容',
       generalDetails,
     );
   }

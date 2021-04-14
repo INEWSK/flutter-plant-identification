@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/utils/fluashbar_utils.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 import 'components/error_page.dart';
@@ -19,6 +20,23 @@ class _SearchScreenState extends State<SearchScreen>
 
   final provider = SearchProvider();
 
+  Widget _loading() {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SpinKitWave(color: Colors.teal, size: 50),
+            SizedBox(height: 20),
+            Text('Loading Tree Data From Server')
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -29,6 +47,7 @@ class _SearchScreenState extends State<SearchScreen>
   }
 
   Widget _body() {
+    final brightness = Theme.of(context).brightness;
     return ChangeNotifierProvider(
       create: (_) => provider,
       child: Consumer(
@@ -50,11 +69,15 @@ class _SearchScreenState extends State<SearchScreen>
               return TreeList();
               break;
             case Status.Loading:
-              return ShimmerEffect();
+              return brightness == Brightness.light
+                  ? ShimmerEffect()
+                  : _loading();
               break;
             default:
               _init(tree);
-              return ShimmerEffect();
+              return brightness == Brightness.light
+                  ? ShimmerEffect()
+                  : _loading();
           }
         },
       ),

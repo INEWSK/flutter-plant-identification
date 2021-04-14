@@ -114,13 +114,13 @@ class _ProfileScreenState extends State<ProfileScreen>
             // dense: true,
             leading: SvgPicture.asset('assets/icons/profile/manual.svg'),
             title: Text('Manual'),
-            onTap: null,
+            onTap: () {},
           ),
           ListTile(
             // dense: true,
             leading: SvgPicture.asset('assets/icons/profile/favorite.svg'),
             title: Text('Favorite'),
-            onTap: null,
+            onTap: () {},
           ),
           Consumer2(
             builder: (_, AuthProvider user, ApiProvider api, __) {
@@ -136,8 +136,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                           )
                         : SvgPicture.asset(
                             'assets/icons/profile/ai_retraining.svg'),
-                    title:
-                        Text(api.train ? 'Retraining...' : 'Model Retraining'),
+                    title: Text(api.train
+                        ? 'Model is Retraining...'
+                        : 'Model Retraining'),
                     onTap: api.train
                         ? null
                         : () => _retrainingRequest(context, api));

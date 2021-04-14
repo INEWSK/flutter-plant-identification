@@ -40,8 +40,8 @@ class SearchProvider extends ChangeNotifier {
     // dio baseoption preset
     Dio dio = Dio(
       BaseOptions(
-        connectTimeout: 5000, //10s
-        receiveTimeout: 10000,
+        connectTimeout: 10000, //10s
+        receiveTimeout: 5000,
         headers: {
           HttpHeaders.acceptLanguageHeader:
               _language == Language.HK ? 'zh-HK' : 'en-US',

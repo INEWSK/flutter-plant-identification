@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 
 class DioExceptions implements Exception {
   ///未知錯誤
+  //Connection to API server failed
   static const String UNKNOWN = "UNKNOWN";
 
   ///解析錯誤
@@ -19,34 +20,38 @@ class DioExceptions implements Exception {
   static const String SSL_ERROR = "SSL_ERROR";
 
   ///連接超時
+  //Connection timeout with API server
   static const String CONNECT_TIMEOUT = "CONNECT_TIMEOUT";
 
   ///回應超時
+  //Receive timeout in connection with API server
   static const String RECEIVE_TIMEOUT = "RECEIVE_TIMEOUT";
 
   ///發送超時
+  //Send timeout in connection with API server
   static const String SEND_TIMEOUT = "SEND_TIMEOUT";
 
   ///網絡請求取消
+  //Request to API server was cancelled
   static const String CANCEL = "CANCEL";
 
   DioExceptions.fromDioError(DioError error) {
     switch (error.type) {
       case DioErrorType.cancel:
         _code = CANCEL;
-        _message = "Request to API server was cancelled";
+        _message = "發送請求協議不一樣, 伺服器拒絕了";
         break;
       case DioErrorType.connectTimeout:
         _code = CONNECT_TIMEOUT;
-        _message = "Connection timeout with API server";
+        _message = "連接伺服器失敗, 請檢查伺服器狀態";
         break;
       case DioErrorType.other:
         _code = UNKNOWN;
-        _message = "Connection to API server failed";
+        _message = "太多咖啡因了以至於伺服器不知道自己發生了什麼事情";
         break;
       case DioErrorType.receiveTimeout:
         _code = RECEIVE_TIMEOUT;
-        _message = "Receive timeout in connection with API server";
+        _message = "伺服器喝醉了, 沒有即時作出回應";
         break;
       case DioErrorType.response:
         _code = HTTP_ERROR;
@@ -54,10 +59,10 @@ class DioExceptions implements Exception {
         break;
       case DioErrorType.sendTimeout:
         _code = SEND_TIMEOUT;
-        _message = "Send timeout in connection with API server";
+        _message = "發送超時了, 注意下你的分寸";
         break;
       default:
-        _message = "Something went wrong";
+        _message = "程式我寫的，是我疏忽忘記寫必要的驗證了";
         break;
     }
   }

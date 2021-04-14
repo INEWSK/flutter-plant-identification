@@ -14,6 +14,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 enum Language { HK, EN, CN }
+enum Result { ERROR, SUCCESS }
 
 class ApiProvider extends ChangeNotifier {
   final key = UniqueKey();
@@ -62,13 +63,13 @@ class ApiProvider extends ChangeNotifier {
         final result = response.toString();
         BotToast.remove(key);
 
-        _resultToast(result, false);
+        _resultToast(result, Result.SUCCESS);
       });
     } on DioError catch (e) {
       final error = DioExceptions.fromDioError(e);
       print('API CALL ERROR: ${error.messge}');
       BotToast.remove(key);
-      _resultToast(error.messge, true);
+      _resultToast(error.messge, Result.ERROR);
     }
   }
 
@@ -95,12 +96,12 @@ class ApiProvider extends ChangeNotifier {
     );
   }
 
-  void _resultToast(String result, bool isError) {
+  void _resultToast(String result, Result type) {
     BotToast.showNotification(
       leading: (cancel) => SizedBox.fromSize(
           size: const Size(40, 40),
           child: IconButton(
-            icon: isError == false
+            icon: type == Result.SUCCESS
                 ? Icon(Ionicons.ios_rose, color: Colors.redAccent)
                 : Icon(FontAwesome.times, color: Colors.redAccent),
             onPressed: cancel,
@@ -137,16 +138,36 @@ class ApiProvider extends ChangeNotifier {
     return result;
   }
 
+  //這種東西估計也沒什麼用
+  //A機8.0以上軟件進入後台1分鐘後就會進入閒置狀態, 限制取用
+  //有機會被系統殺死APP釋放內存
+  //自求平安
   void backgroundService(bool on) async {
     if (Device.isAndroid) {
       var methodChannel = MethodChannel("com.example.flutter_hotelapp");
       if (on) {
         String data = await methodChannel.invokeMethod("startService");
-        print("data: $data");
+        print("Service Status: $data");
       } else {
         String data = await methodChannel.invokeMethod("stopService");
-        LocalNotification.show(0, '伺服器 AI 模型訓練', '伺服器返回狀態');
-        print("data: $data");
+
+        LocalNotification.show(
+          id: 0,
+          title: '伺服器 AI 模型訓練',
+          body: '伺服器返回狀態',
+        );
+
+        print("Service Status: $data");
+      }
+    }
+    // ios 只返回 notification
+    if (Device.isIOS) {
+      if (!on) {
+        LocalNotification.show(
+          id: 0,
+          title: '伺服器 AI 模型訓練',
+          body: '伺服器完成 AI 圖形訓練',
+        );
       }
     }
   }

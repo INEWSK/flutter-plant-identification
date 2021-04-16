@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
-import 'package:flutter_hotelapp/common/utils/fluashbar_utils.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/provider/auth_provider.dart';
 import 'package:flutter_hotelapp/provider/theme_provider.dart';
@@ -73,12 +72,9 @@ class SettingsScreen extends StatelessWidget {
           );
         });
     if (i != null) {
-      // log("language selected: ${i == 1 ? "Chinese" : "English"} ");
-      Flush.notification(
-        context,
-        title: 'Language Selected',
-        message: '${i == 1 ? "Chinese" : "English"} ',
-      );
+      Toast.notification(
+          title: 'Language Selected',
+          subtitle: '${i == 1 ? "Chinese" : "English"} ');
     }
   }
 

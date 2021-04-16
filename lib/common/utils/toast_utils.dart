@@ -1,3 +1,6 @@
+import 'package:bot_toast/bot_toast.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:oktoast/oktoast.dart';
 
 /// OKToast utils
@@ -10,6 +13,44 @@ class Toast {
       message,
       duration: Duration(milliseconds: duration),
       dismissOtherToast: true,
+    );
+  }
+
+  static void notification({String title, String subtitle}) {
+    if (title == null) {
+      return;
+    }
+    BotToast.showSimpleNotification(
+      title: title,
+      subTitle: subtitle ?? null,
+      titleStyle: kBodyTextStyle.copyWith(color: Colors.white),
+      backgroundColor: const Color(0xFF303030),
+      duration: Duration(seconds: 4),
+      hideCloseButton: true,
+      onlyOne: true,
+    );
+  }
+
+  static void error({String title, String subtitle}) {
+    if (title == null) {
+      return;
+    }
+    BotToast.showNotification(
+      leading: (cancel) => IconButton(
+          icon: Icon(Icons.error, color: Colors.white70), onPressed: cancel),
+      title: (_) => Text(
+        title,
+        style: kBodyTextStyle.copyWith(color: Colors.white),
+      ),
+      subtitle: (_) => subtitle != null
+          ? Text(
+              subtitle,
+              style: kSecondaryBodyTextStyle.copyWith(color: Colors.white54),
+            )
+          : null,
+      backgroundColor: Colors.redAccent,
+      duration: Duration(seconds: 5),
+      onlyOne: true,
     );
   }
 

@@ -100,7 +100,7 @@ class DetailPageWidget extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 4.0),
                         child: Text(
                           scientificName ?? '',
-                          style: kBodyTextStyle.copyWith(color: Colors.green),
+                          style: kBodyTextStyle.copyWith(color: Colors.teal),
                         ),
                       ),
                     ]),

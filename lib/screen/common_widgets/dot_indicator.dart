@@ -8,7 +8,7 @@ class DotIndicator extends StatelessWidget {
   const DotIndicator(
       {Key key,
       this.isActive = false,
-      this.activeColor = Colors.green,
+      this.activeColor = Colors.teal,
       this.inActiveColor = const Color(0xFF868686)})
       : super(key: key);
 

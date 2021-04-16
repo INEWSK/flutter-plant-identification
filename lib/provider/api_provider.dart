@@ -3,12 +3,9 @@ import 'dart:io';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_hotelapp/common/constants/rest_api.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
-import 'package:flutter_hotelapp/common/utils/device_utils.dart';
 import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
-import 'package:flutter_hotelapp/common/utils/local_notification.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -22,17 +19,11 @@ class ApiProvider extends ChangeNotifier {
   var flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   Language _language = Language.EN;
-  bool _training = false;
-
-  get train => _training;
 
   Dio dio = Dio(BaseOptions(
     baseUrl: RestApi.localUrl,
     connectTimeout: 5000, // 5s
     receiveTimeout: 10000, // 10s
-    // contentType 爲 json 則 response 自動轉化爲 json 對象
-    contentType: Headers.jsonContentType,
-    // responseType: ResponseType.plain,
   ));
 
   void upload(File file) async {
@@ -52,15 +43,9 @@ class ApiProvider extends ChangeNotifier {
     try {
       final url = '/flora/tree-ai/';
 
-      await dio
-          .post(url,
-              data: data,
-              options: Options(headers: {
-                HttpHeaders.acceptLanguageHeader:
-                    _language == Language.HK ? 'zh-HK' : 'en-US'
-              }))
-          .then((response) {
+      await dio.post(url, data: data).then((response) {
         final result = response.toString();
+        debugPrint(result);
         BotToast.remove(key);
 
         _resultToast(result, Result.SUCCESS);
@@ -112,63 +97,5 @@ class ApiProvider extends ChangeNotifier {
       ),
       duration: Duration(seconds: 5),
     );
-  }
-
-  Future<String> requestRetrain() async {
-    if (_training) {
-      return 'Processing';
-    }
-
-    backgroundService(true);
-
-    _training = true;
-    notifyListeners();
-
-    print('request AI retraining method');
-
-    final result =
-        await Future.delayed(const Duration(seconds: 10), () => 'AI訓練完畢');
-
-    print(result);
-
-    backgroundService(false);
-
-    _training = false;
-    notifyListeners();
-    return result;
-  }
-
-  //這種東西估計也沒什麼用
-  //A機8.0以上軟件進入後台1分鐘後就會進入閒置狀態, 限制取用
-  //有機會被系統殺死APP釋放內存
-  //自求平安
-  void backgroundService(bool on) async {
-    if (Device.isAndroid) {
-      var methodChannel = MethodChannel("com.example.flutter_hotelapp");
-      if (on) {
-        String data = await methodChannel.invokeMethod("startService");
-        print("Service Status: $data");
-      } else {
-        String data = await methodChannel.invokeMethod("stopService");
-
-        LocalNotification.show(
-          id: 0,
-          title: '伺服器 AI 模型訓練',
-          body: '伺服器返回狀態',
-        );
-
-        print("Service Status: $data");
-      }
-    }
-    // ios 只返回 notification
-    if (Device.isIOS) {
-      if (!on) {
-        LocalNotification.show(
-          id: 0,
-          title: '伺服器 AI 模型訓練',
-          body: '伺服器完成 AI 圖形訓練',
-        );
-      }
-    }
   }
 }

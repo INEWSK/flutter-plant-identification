@@ -1,6 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hotelapp/common/utils/fluashbar_utils.dart';
 import 'package:flutter_hotelapp/common/utils/form_field_validator.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/provider/auth_provider.dart';
@@ -76,7 +75,7 @@ class _SignUpFormState extends State<SignUpForm> {
       Toast.show(message);
       Navigator.pop(context);
     } else {
-      Flush.error(context, message: message);
+      Toast.error(title: message);
     }
   }
 

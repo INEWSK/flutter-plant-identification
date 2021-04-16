@@ -30,8 +30,6 @@ class _TreeListState extends State<TreeList> {
   @override
   void initState() {
     super.initState();
-    // _treeData = widget.provider.treeList;
-    // _displayListItem = _treeData;
     _textController.addListener(() {
       setState(() {
         // text length > 0 then true
@@ -40,11 +38,12 @@ class _TreeListState extends State<TreeList> {
     });
   }
 
-  void _reset(SearchProvider model) {
+  void _reset() async {
     // text 不爲空進行清除動作
     if (_textController.text.isNotEmpty) {
       _textController.clear();
-      model.clear();
+      //讀取 provider 內資料, 直接返回 T,不需要去監聽變化
+      context.read<SearchProvider>().clear();
       return;
     }
   }
@@ -61,7 +60,7 @@ class _TreeListState extends State<TreeList> {
               ? null
               : GestureDetector(
                   child: Icon(Icons.cancel),
-                  onTap: () => _reset(model),
+                  onTap: () => _reset(),
                 ),
         ),
         onChanged: (query) => model.onQueryChanged(query),
@@ -87,7 +86,8 @@ class _TreeListState extends State<TreeList> {
   @override
   Widget build(BuildContext context) {
     return Consumer<SearchProvider>(
-      builder: (context, model, _) {
+      builder: (_, model, __) {
+        // model.test('adfsdf');
         return GestureDetector(
           onTap: () {
             // 在 android 機上, 用於判斷 keyboard 彈出并且關閉

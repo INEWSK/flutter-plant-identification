@@ -27,7 +27,7 @@ class _ForgotFormState extends State<ForgotForm> {
             validator: emailValidator,
             onSaved: (value) => _email = value,
             style: kSecondaryBodyTextStyle,
-            cursorColor: Colors.green,
+            cursorColor: Colors.teal,
             keyboardType: TextInputType.emailAddress,
             decoration: otpInputDecoration.copyWith(
               prefixIcon: Icon(Icons.person),

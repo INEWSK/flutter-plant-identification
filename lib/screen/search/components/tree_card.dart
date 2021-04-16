@@ -47,7 +47,7 @@ class TreeCard extends StatelessWidget {
           child: const Text(
             'VIEW MORE',
             style: TextStyle(
-              color: Colors.green,
+              color: Colors.teal,
             ),
           ),
         ),

@@ -1,7 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hotelapp/common/utils/fluashbar_utils.dart';
 import 'package:flutter_hotelapp/common/utils/form_field_validator.dart';
+import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/provider/auth_provider.dart';
 import 'package:flutter_hotelapp/screen/auth/widgets/auth_form_field.dart';
 import 'package:flutter_hotelapp/screen/common_widgets/primary_button.dart';
@@ -70,7 +70,7 @@ class _SignInFormState extends State<SignInForm> {
     if (success) {
       Navigator.pop(context);
     } else {
-      Flush.error(context, message: message);
+      Toast.error(title: '不行', subtitle: message);
     }
   }
 

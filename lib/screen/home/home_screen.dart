@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/demo/demo_data.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
-import 'package:flutter_hotelapp/models/tree_info.dart';
+import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -47,15 +47,21 @@ class _HomeScreenState extends State<HomeScreen>
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasData) {
-                  final List<TreeInfo> data = snapshot.data;
-                  return _buildList(provider, data);
+                  // final List<TreeInfo> data = snapshot.data;
+                  return _buildList(provider);
                 } else {
                   // demo local data
-                  return _demoList();
+                  return _demoList(provider);
                 }
               } else {
-                return Center(
-                  child: SpinKitFadingCube(color: Colors.teal),
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SpinKitFadingCube(color: Colors.teal),
+                    SizedBox(height: 40),
+                    Text('Loading...'),
+                  ],
                 );
               }
             },
@@ -65,13 +71,13 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  Widget _buildList(HomeProvider home, List<TreeInfo> data) {
+  Widget _buildList(HomeProvider provider) {
     return RefreshIndicator(
-      onRefresh: () => home.refresh(),
+      onRefresh: () async => provider.reloadData(),
       child: AnimationLimiter(
         child: ListView.builder(
           addAutomaticKeepAlives: false, // 本體已被包裹在 autoKeepAlive, 禁用
-          itemCount: data.length,
+          itemCount: provider.list.length,
           itemBuilder: (context, index) {
             return AnimationConfiguration.staggeredList(
               position: index,
@@ -80,9 +86,9 @@ class _HomeScreenState extends State<HomeScreen>
                 verticalOffset: 50.0,
                 child: FadeInAnimation(
                   child: IntroCard(
-                    sort: data[index].infoType,
-                    title: data[index].title,
-                    text: data[index].content,
+                    sort: provider.list[index].infoType,
+                    title: provider.list[index].title,
+                    text: provider.list[index].content,
                     image: demoIntroCardData[index]["image"],
                   ),
                 ),
@@ -94,28 +100,31 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  Widget _demoList() {
-    return AnimationLimiter(
-      child: ListView.builder(
-        addAutomaticKeepAlives: false, // 本體已被包裹在 autoKeepAlive, 禁用
-        itemCount: demoIntroCardData.length,
-        itemBuilder: (context, index) {
-          return AnimationConfiguration.staggeredList(
-            position: index,
-            duration: kDefaultDuration,
-            child: SlideAnimation(
-              verticalOffset: 50.0,
-              child: FadeInAnimation(
-                child: IntroCard(
-                  sort: demoIntroCardData[index]["sort"],
-                  title: demoIntroCardData[index]["title"],
-                  text: demoIntroCardData[index]["text"],
-                  image: demoIntroCardData[index]["image"],
+  Widget _demoList(HomeProvider provider) {
+    return RefreshIndicator(
+      onRefresh: () async => provider.reloadData(),
+      child: AnimationLimiter(
+        child: ListView.builder(
+          addAutomaticKeepAlives: false, // 本體已被包裹在 autoKeepAlive, 禁用
+          itemCount: demoIntroCardData.length,
+          itemBuilder: (context, index) {
+            return AnimationConfiguration.staggeredList(
+              position: index,
+              duration: kDefaultDuration,
+              child: SlideAnimation(
+                verticalOffset: 50.0,
+                child: FadeInAnimation(
+                  child: IntroCard(
+                    sort: demoIntroCardData[index]["sort"],
+                    title: demoIntroCardData[index]["title"],
+                    text: demoIntroCardData[index]["text"],
+                    image: demoIntroCardData[index]["image"],
+                  ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

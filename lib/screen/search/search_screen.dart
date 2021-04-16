@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hotelapp/common/utils/fluashbar_utils.dart';
+import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
+import 'package:flutter_hotelapp/generated/intl/messages_en.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
@@ -29,8 +30,8 @@ class _SearchScreenState extends State<SearchScreen>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SpinKitWave(color: Colors.teal, size: 50),
-            SizedBox(height: 20),
-            Text('Loading Tree Data From Server')
+            SizedBox(height: 40),
+            Text('Loading Data From Server')
           ],
         ),
       ),
@@ -50,20 +51,22 @@ class _SearchScreenState extends State<SearchScreen>
     final brightness = Theme.of(context).brightness;
     return ChangeNotifierProvider(
       create: (_) => provider,
-      child: Consumer(
-        builder: (_, SearchProvider tree, __) {
+      child: Consumer<SearchProvider>(
+        builder: (_, tree, __) {
           switch (tree.status) {
             case Status.Error:
-              return ErrorPage(press: () async {
-                final response = await tree.fetchData();
+              return ErrorPage(
+                press: () async {
+                  final response = await tree.fetchData();
 
-                final String result = response['message'];
-                final bool success = response['success'];
+                  final String result = response['message'];
+                  final bool success = response['success'];
 
-                if (!success) {
-                  Flush.error(context, message: result);
-                }
-              });
+                  if (!success) {
+                    Toast.error(title: '404 NOT FOUND', subtitle: result);
+                  }
+                },
+              );
               break;
             case Status.Loaded:
               return TreeList();
@@ -84,6 +87,7 @@ class _SearchScreenState extends State<SearchScreen>
     );
   }
 
+  // 初始化資料卡, 呼叫 API
   void _init(SearchProvider tree) async {
     final response = await tree.fetchData();
 
@@ -91,7 +95,7 @@ class _SearchScreenState extends State<SearchScreen>
     final bool success = response['success'];
 
     if (!success) {
-      Flush.error(context, message: result);
+      Toast.error(title: '404 NOT FOUND', subtitle: result);
     }
   }
 }

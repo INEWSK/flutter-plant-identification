@@ -13,6 +13,7 @@ ThemeData lightTheme(BuildContext context) {
       // accentIconTheme.color To be removed.
       foregroundColor: Colors.white,
     ),
+    primaryColor: Color(0xFF00BF6D),
     brightness: Brightness.light,
     iconTheme: IconThemeData(color: Color(0xFF1D1D35)),
     textTheme: GoogleFonts.interTextTheme(Theme.of(context).textTheme).apply(

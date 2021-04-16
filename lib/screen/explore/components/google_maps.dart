@@ -1,21 +1,14 @@
-import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
-import 'dart:ui' as ui;
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_hotelapp/common/constants/rest_api.dart';
-import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
-import 'package:flutter_hotelapp/common/utils/fluashbar_utils.dart';
+
+import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/models/tree_data.dart';
 import 'package:flutter_hotelapp/screen/detail/detail_screen.dart';
-import 'package:flutter_hotelapp/screen/explore/components/map_bottom_pill.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:flutter_hotelapp/screen/explore/provider/google_maps_provider.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 
 import 'google_maps_button.dart';
+import 'map_bottom_pill.dart';
 
 class GoogleMaps extends StatefulWidget {
   @override
@@ -23,43 +16,33 @@ class GoogleMaps extends StatefulWidget {
 }
 
 class _GoogleMapsState extends State<GoogleMaps> {
-  GoogleMapController _mapController;
-  List<Marker> _markers = [];
-  // marker icon
-  BitmapDescriptor _markerIcon;
-
   final LatLng _hongKong = const LatLng(22.3939351, 114.1561875);
-
-  bool _isVisible = false;
-  TreeData _pillData;
 
   @override
   void dispose() {
     super.dispose();
-    _mapController?.dispose();
+    context.read<GoogleMapsProvider>().dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    _fetchDataFormApi();
+    initGoogleMapsMarker();
   }
 
   void _setMarker(List<TreeData> treeData) {
+    var provider = context.read<GoogleMapsProvider>();
     treeData.forEach((data) {
       if (data.treeLocations.isNotEmpty) {
         List<TreeLocation> locations = data.treeLocations;
         locations.forEach((loc) {
-          _markers.add(
+          provider.markers.add(
             Marker(
               zIndex: loc.id.toDouble(),
               markerId: MarkerId(loc.id.toString()),
               onTap: () {
-                setState(() {
-                  _isVisible = true;
-                  // 將 data 傳進 widget
-                  if (_pillData != data) _pillData = data;
-                });
+                provider.isShowPill(true);
+                provider.getPillData(data);
               },
               infoWindow: InfoWindow(
                 title: data.commonName,
@@ -75,7 +58,7 @@ class _GoogleMapsState extends State<GoogleMaps> {
                 ),
               ),
               position: LatLng(loc.treeLat, loc.treeLong),
-              icon: _markerIcon,
+              icon: provider.icon,
             ),
           );
         });
@@ -83,111 +66,48 @@ class _GoogleMapsState extends State<GoogleMaps> {
     });
   }
 
-  Future<void> _fetchDataFormApi() async {
-    // dio baseoption preset
-    Dio dio = Dio(
-      BaseOptions(
-        connectTimeout: 10000, //10s
-        receiveTimeout: 5000, //5s
-        headers: {
-          HttpHeaders.acceptLanguageHeader: 'en-US',
-        },
-        contentType: Headers.jsonContentType,
-        responseType: ResponseType.plain,
-      ),
-    );
+  void initGoogleMapsMarker() async {
+    final result = await context.read<GoogleMapsProvider>().fetchMarkerData();
 
-    // 本地測試請求地址
-    final String url = RestApi.localUrl + '/flora/tree/';
+    final String message = result['message'];
+    final bool success = result['success'];
+    final List<TreeData> data = result['data'];
 
-    try {
-      final response = await dio.get(url);
-
-      List<TreeData> data = List<TreeData>.from(
-        json.decode(response.data).map(
-              (x) => TreeData.fromJson(x),
-            ),
-      );
-      // 通知 widget data 拿到了進行刷新以設置 marker
-      setState(() {
-        _setMarker(data);
-      });
-    } on DioError catch (e) {
-      var error = DioExceptions.fromDioError(e);
-      Flush.error(context, message: error.messge);
+    if (!success) {
+      Toast.error(title: '加載座標失敗', subtitle: message);
+    } else {
+      _setMarker(data);
     }
-  }
-
-  // convert image method  for google map marker
-  Future<Uint8List> _getBytesFromAsset(String path, {int width = 100}) async {
-    ByteData data = await rootBundle.load(path);
-    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
-        targetWidth: width);
-    ui.FrameInfo fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))
-        .buffer
-        .asUint8List();
-  }
-
-  void _initMarkerIcon(context) async {
-    Uint8List _icon =
-        await _getBytesFromAsset('assets/images/location_marker.png');
-
-    _markerIcon = BitmapDescriptor.fromBytes(_icon);
-  }
-
-  void _locatePosition() async {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-
-    if (position != null) {
-      LatLng latLng = LatLng(position.latitude, position.longitude);
-
-      CameraPosition cameraPosition =
-          CameraPosition(bearing: 0.0, target: latLng, zoom: 16);
-      _mapController
-          .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-    }
-  }
-
-  void _onMapCreated(GoogleMapController controller) async {
-    setState(() {
-      _mapController = controller;
-    });
-
-    // 定向用戶位置
-    _locatePosition();
   }
 
   @override
   Widget build(BuildContext context) {
-    _initMarkerIcon(context);
-    return Stack(
-      children: [
-        GoogleMap(
-          onMapCreated: _onMapCreated,
-          // mapToolbarEnabled: false, // android only
-          zoomControlsEnabled: false,
-          myLocationEnabled: true,
-          myLocationButtonEnabled: false,
-          markers: Set.from(_markers),
-          initialCameraPosition: CameraPosition(target: _hongKong, zoom: 12.0),
-          onTap: (LatLng loc) {
-            setState(() {
-              _isVisible = false;
-            });
-          },
-        ),
-        // _locateButton(),
-        GoogleMapsButton(
-          locate: _locatePosition,
-          refresh: _fetchDataFormApi,
-        ),
-        MapBottomPill(
-          isVisible: _isVisible,
-          data: _pillData,
-        ),
-      ],
+    return Consumer<GoogleMapsProvider>(
+      builder: (_, map, __) {
+        return Stack(
+          children: [
+            GoogleMap(
+              onMapCreated: map.onMapCreated,
+              // mapToolbarEnabled: false,
+              zoomControlsEnabled: false,
+              myLocationEnabled: true,
+              myLocationButtonEnabled: false,
+              markers: Set.from(map.markers),
+              initialCameraPosition:
+                  CameraPosition(target: _hongKong, zoom: 12.0),
+              onTap: (LatLng loc) {
+                map.isShowPill(false);
+              },
+            ),
+            // _locateButton(),
+            GoogleMapsButton(
+              locate: map.locatePosition,
+              refresh: map.fetchMarkerData,
+            ),
+            MapBottomPill(isVisible: map.visible, data: map.pillData),
+          ],
+        );
+      },
     );
   }
 }

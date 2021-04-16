@@ -25,9 +25,6 @@ class ViewImageScreen extends StatelessWidget {
   }
 
   Widget _body(BuildContext context) {
-    //Provider.of 用于用於訪問特定數據, set listen為false不進行UI重構
-    final apiProvider = Provider.of<ApiProvider>(context, listen: false);
-
     return Stack(
       children: [
         PhotoView(
@@ -56,7 +53,7 @@ class ViewImageScreen extends StatelessWidget {
             child: PrimaryButton(
               press: () {
                 //呼叫 api upload image 並關閉當前頁
-                Navigator.of(context).pop(apiProvider.upload(image));
+                Navigator.of(context).pop(true);
               },
               text: 'Upload',
             ),

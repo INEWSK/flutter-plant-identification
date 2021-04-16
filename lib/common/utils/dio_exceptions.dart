@@ -39,7 +39,7 @@ class DioExceptions implements Exception {
     switch (error.type) {
       case DioErrorType.cancel:
         _code = CANCEL;
-        _message = "發送請求協議不一樣, 伺服器拒絕了";
+        _message = "你給的不是伺服器想要的";
         break;
       case DioErrorType.connectTimeout:
         _code = CONNECT_TIMEOUT;
@@ -47,11 +47,11 @@ class DioExceptions implements Exception {
         break;
       case DioErrorType.other:
         _code = UNKNOWN;
-        _message = "太多咖啡因了以至於伺服器不知道自己發生了什麼事情";
+        _message = "呼叫 API 失敗, 請檢查網絡狀態";
         break;
       case DioErrorType.receiveTimeout:
         _code = RECEIVE_TIMEOUT;
-        _message = "伺服器喝醉了, 沒有即時作出回應";
+        _message = "伺服器沒有及時作出回應";
         break;
       case DioErrorType.response:
         _code = HTTP_ERROR;

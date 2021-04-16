@@ -73,7 +73,11 @@ class _HomeScreenState extends State<HomeScreen>
 
   Widget _buildList(HomeProvider provider) {
     return RefreshIndicator(
-      onRefresh: () async => provider.reloadData(),
+      onRefresh: () async => provider.reloadData().then((success) {
+        if (!success) {
+          Toast.error(icon: Icons.wifi_off, title: '外星人截斷了網絡!');
+        }
+      }),
       child: AnimationLimiter(
         child: ListView.builder(
           addAutomaticKeepAlives: false, // 本體已被包裹在 autoKeepAlive, 禁用
@@ -102,7 +106,11 @@ class _HomeScreenState extends State<HomeScreen>
 
   Widget _demoList(HomeProvider provider) {
     return RefreshIndicator(
-      onRefresh: () async => provider.reloadData(),
+      onRefresh: () async => provider.reloadData().then((success) {
+        if (!success) {
+          Toast.error(title: '請檢查網絡狀態');
+        }
+      }),
       child: AnimationLimiter(
         child: ListView.builder(
           addAutomaticKeepAlives: false, // 本體已被包裹在 autoKeepAlive, 禁用

@@ -40,7 +40,7 @@ class HomeProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> reloadData() async {
+  Future<bool> reloadData() async {
     final path = '${RestApi.localUrl}/flora/info';
 
     try {
@@ -50,10 +50,13 @@ class HomeProvider extends ChangeNotifier {
 
       _list = data;
       notifyListeners();
+
+      return true;
     } catch (e) {
       final error = DioExceptions.fromDioError(e);
       LoggerUtils.show(message: error.messge, type: Type.WTF);
-      Toast.error(title: '刷新失敗', subtitle: '網絡發生了小問題, 請稍候刷新重試');
+
+      return false;
     }
   }
 }

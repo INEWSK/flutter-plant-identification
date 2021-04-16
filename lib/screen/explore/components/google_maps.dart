@@ -74,7 +74,8 @@ class _GoogleMapsState extends State<GoogleMaps> {
     final List<TreeData> data = result['data'];
 
     if (!success) {
-      Toast.error(title: '加載座標失敗', subtitle: message);
+      Toast.error(
+          icon: Icons.wrong_location, title: '加載座標失敗', subtitle: message);
     } else {
       _setMarker(data);
     }

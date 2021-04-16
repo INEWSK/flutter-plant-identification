@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/common/utils/device_utils.dart';
+import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/screen/detail/detail_screen.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
@@ -98,7 +99,13 @@ class _TreeListState extends State<TreeList> {
           },
           child: SafeArea(
             child: RefreshIndicator(
-              onRefresh: () => model.fetchData(),
+              onRefresh: () async => model.fetchData().then((result) {
+                final String message = result['message'];
+                final bool success = result['success'];
+                if (!success) {
+                  Toast.error(title: '網絡電波不夠', subtitle: message);
+                }
+              }),
               child: ListView.builder(
                 itemCount: model.displayList.length + 1,
                 itemBuilder: (BuildContext context, int index) {

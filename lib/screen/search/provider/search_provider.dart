@@ -16,7 +16,6 @@ class SearchProvider extends ChangeNotifier {
 
   List<TreeData> _data = [];
   List<TreeData> _displayList = [];
-  TreeData _testData;
 
   // dio baseoption preset
   Dio dio = Dio(
@@ -95,18 +94,5 @@ class SearchProvider extends ChangeNotifier {
 
       return result;
     }
-  }
-
-  void test(String keyword) async {
-    //根據 keyword 嘗試查找單個符合的元素
-    //如果有多個則拋出 error
-    //如果沒有則返回 null
-    //因爲不是使用database, 不清楚往後數據量大會否對效能造成影響
-    _testData = _data.singleWhere((element) {
-      var title = element.folderName.toLowerCase();
-      return title.contains(keyword);
-    }, orElse: () => null);
-
-    debugPrint(_testData != null ? _testData.commonName : '沒有資料');
   }
 }

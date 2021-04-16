@@ -28,16 +28,18 @@ class Toast {
       duration: Duration(seconds: 4),
       hideCloseButton: true,
       onlyOne: true,
+      crossPage: false,
     );
   }
 
-  static void error({String title, String subtitle}) {
+  static void error(
+      {String title, String subtitle, IconData icon = Icons.error}) {
     if (title == null) {
       return;
     }
     BotToast.showNotification(
-      leading: (cancel) => IconButton(
-          icon: Icon(Icons.error, color: Colors.white70), onPressed: cancel),
+      leading: (cancel) =>
+          IconButton(icon: Icon(icon, color: Colors.white), onPressed: cancel),
       title: (_) => Text(
         title,
         style: kBodyTextStyle.copyWith(color: Colors.white),
@@ -45,12 +47,13 @@ class Toast {
       subtitle: (_) => subtitle != null
           ? Text(
               subtitle,
-              style: kSecondaryBodyTextStyle.copyWith(color: Colors.white54),
+              style: kSecondaryBodyTextStyle.copyWith(color: Colors.white70),
             )
           : null,
       backgroundColor: Colors.redAccent,
       duration: Duration(seconds: 5),
       onlyOne: true,
+      crossPage: false,
     );
   }
 

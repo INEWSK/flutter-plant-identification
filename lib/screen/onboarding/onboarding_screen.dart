@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hotelapp/common/constants/constants.dart';
 import 'package:flutter_hotelapp/common/demo/demo_data.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/screen/common_widgets/dot_indicator.dart';
 import 'package:flutter_hotelapp/screen/common_widgets/primary_button.dart';
-import 'package:sp_util/sp_util.dart';
+import 'package:hive/hive.dart';
 import 'components/onboard_content.dart';
 
 class OnBoardingScreen extends StatefulWidget {
@@ -15,8 +16,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   int currentPage = 0;
 
   void _onIntroEnd(context) {
+    var box = Hive.box(Constant.box);
+
     /// FOR remember the user already seen the demo
-    SpUtil.putBool('seen', true);
+    box.put(Constant.seen, true);
     Navigator.popAndPushNamed(context, '/main');
   }
 

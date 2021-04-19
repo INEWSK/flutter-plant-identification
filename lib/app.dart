@@ -1,10 +1,11 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hotelapp/common/constants/constants.dart';
 import 'package:flutter_hotelapp/screen/main_screen.dart';
 import 'package:flutter_hotelapp/screen/onboarding/onboarding_screen.dart';
+import 'package:hive/hive.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
-import 'package:sp_util/sp_util.dart';
 
 import 'common/styles/styles.dart';
 import 'common/themes/themes.dart';
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var box = Hive.box(Constant.box);
     // SpUtil.clear();
     final botToastBuilder = BotToastInit();
     return OKToast(
@@ -47,11 +49,10 @@ class MyApp extends StatelessWidget {
             navigatorObservers: [BotToastNavigatorObserver()],
             home: home ??
                 Builder(builder: (_) {
-                  // did user see the introduction screen?
-                  bool _seen = SpUtil.getBool('seen') ?? false;
+                  bool seen = box.get(Constant.seen) ?? false;
                   if (user.status == Status.Uninitialized)
                     user.initAuthProvider();
-                  if (_seen) {
+                  if (seen) {
                     return MainScreen();
                   } else {
                     return OnBoardingScreen();

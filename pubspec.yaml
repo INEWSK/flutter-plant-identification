@@ -60,7 +60,7 @@ dependencies:
   provider: ^4.3.3
   shared_preferences: ^2.0.3
   shimmer: ^1.1.2
-  sp_util: ^2.0.3
+  # sp_util: ^2.0.3
   unicorndial: ^1.1.5
   url_launcher: ^6.0.2
   vibration: ^1.7.3

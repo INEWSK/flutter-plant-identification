@@ -1,12 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_hotelapp/common/constants/constants.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:sp_util/sp_util.dart';
-import 'package:workmanager/workmanager.dart';
 
 import 'app.dart';
 import 'common/utils/device_utils.dart';
@@ -28,11 +27,11 @@ void main() {
     // init data store
     await Hive.initFlutter();
     // init sp
-    await SpUtil.getInstance();
+    // await SpUtil.getInstance();
     // init firebase
     await Firebase.initializeApp();
-    // init workmanager
-    // Workmanager.initialize(callbackDispatcher, isInDebugMode: true);
+    // 打開一個隨時可以使用的盒子, 用作儲存少量數據
+    await Hive.openBox(Constant.box);
 
     // initialise local notification plugin
     var androidInitialize = AndroidInitializationSettings('app_icon');
@@ -83,6 +82,6 @@ void main() {
   });
 }
 
-void callbackDispatcher() {
-  Workmanager.executeTask((taskName, inputData) => Future.value(true));
-}
+// void callbackDispatcher() {
+//   Workmanager.executeTask((taskName, inputData) => Future.value(true));
+// }

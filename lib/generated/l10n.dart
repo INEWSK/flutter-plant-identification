@@ -11,8 +11,6 @@
 // // ignore_for_file: non_constant_identifier_names, lines_longer_than_80_chars
 // // ignore_for_file: join_return_with_assignment, prefer_final_in_for_each
 // // ignore_for_file: avoid_redundant_argument_values
-// // 不支持 flutter 的空安全
-// // https://github.com/dart-lang/intl_translation/issues/134
 
 // class S {
 //   S();

@@ -2,16 +2,16 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter_hotelapp/common/constants/constants.dart';
 import 'package:flutter_hotelapp/common/constants/rest_api.dart';
 import 'package:flutter_hotelapp/common/utils/device_utils.dart';
 import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
-import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
+import 'package:flutter_hotelapp/common/utils/logger_utils.dart';
 import 'package:flutter_hotelapp/models/user.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:sp_util/sp_util.dart';
 
 enum Status { Uninitialized, Authenticated, Authenticating, Unauthenticated }
 
@@ -41,11 +41,7 @@ class AuthProvider extends ChangeNotifier {
   initAuthProvider() async {
     String token = await getToken();
     if (token != null) {
-      User user = await getUserData();
-      _token = user.token;
-      _email = user.email;
-      _username = user.username;
-      _admin = user.admin;
+      await getUserData();
       _status = Status.Authenticated;
       updateProfilePicture();
       log('User Authenticated');
@@ -57,18 +53,20 @@ class AuthProvider extends ChangeNotifier {
   }
 
   updateProfilePicture() async {
+    var box = await Hive.openBox(Constant.authBox);
+
     try {
-      // 如果登入了查找 app 文件夾是否有現有的頭像
+      // 如果登入了查找 app 是否已設置頭像
       if (_status == Status.Authenticated) {
         // 獲取用戶文件夾
         final userFolder = await getUserFolder();
         // 查找名爲 user_profile_picture 的文件是否存在
         final fileName = 'profile_picture';
         final imageFile = File('$userFolder/$fileName');
-        // 如果有的話
+        // 如果有頭像的話
         if (await imageFile.exists()) {
-          SpUtil.putString('profilePicture', imageFile.path);
-          print('獲取頭像\n' + 'PATH: ' + imageFile.path);
+          box.put(Constant.userAvatar, imageFile.path);
+          debugPrint('獲取頭像\n' + 'PATH: ' + imageFile.path);
           if (Device.isMobile) {
             _image = FileImage(imageFile);
           }
@@ -226,30 +224,32 @@ class AuthProvider extends ChangeNotifier {
     _token = data['token'];
     _admin = data['admin'];
 
-    var box = await Hive.openBox('authBox');
+    var box = await Hive.openBox(Constant.authBox);
 
-    box.put('username', _username);
-    box.put('email', _email);
-    box.put('token', _token);
-    box.put('admin', _admin);
+    box.put(Constant.username, _username);
+    box.put(Constant.email, _email);
+    box.put(Constant.accessToken, _token);
+    box.put(Constant.admin, _admin);
 
-    log('HiveBox: Auth data stored: ${box.toMap()}');
+    LoggerUtils.show(
+      message: 'User data stored: ${box.toMap()}',
+    );
   }
 
   // get user data
-  Future<User> getUserData() async {
-    var box = await Hive.openBox('authBox');
+  Future<void> getUserData() async {
+    var box = await Hive.openBox(Constant.authBox);
 
-    final token = box.get('token');
-    final username = box.get('username');
-    final email = box.get('email');
-    final admin = box.get('admin');
+    _token = box.get(Constant.accessToken);
+    _username = box.get(Constant.username);
+    _email = box.get(Constant.email);
+    _admin = box.get(Constant.admin);
 
     User user = User(
-      username: username,
-      email: email,
-      token: token,
-      admin: admin,
+      username: _username,
+      email: _email,
+      token: _token,
+      admin: _admin,
     );
 
     return user;
@@ -257,13 +257,15 @@ class AuthProvider extends ChangeNotifier {
 
   /// get token if logged
   Future<String> getToken() async {
-    var box = await Hive.openBox('authBox');
-    String token = box.get('token');
+    var box = await Hive.openBox(Constant.authBox);
+
+    String token = box.get(Constant.accessToken);
 
     return token;
   }
 
   Future<void> getImage() async {
+    var box = await Hive.openBox(Constant.authBox);
     final ImagePicker _picker = ImagePicker();
     // getting image
     final pickedFile =
@@ -282,7 +284,7 @@ class AuthProvider extends ChangeNotifier {
         // 詳見 https://github.com/flutter/flutter/issues/24858
         imageCache.evict(FileImage(imageFile));
         // 持久化頭像
-        SpUtil.putString('profilePicture', imageFile.path);
+        box.put(Constant.userAvatar, imageFile.path);
         // check if web platform
         if (Device.isWeb) {
           _image = NetworkImage(pickedFile.path);
@@ -295,7 +297,6 @@ class AuthProvider extends ChangeNotifier {
         // debugPrint('FILE PATH: 無文件被選擇');
       }
     } catch (e) {
-      Toast.show('沒有權限使用相冊');
       debugPrint('頭像選擇發生錯誤: ' + e.toString());
     }
   }
@@ -308,6 +309,7 @@ class AuthProvider extends ChangeNotifier {
     final userFolder = Directory('${appDirectory.path}/$_token');
     // if folder already exists
     if (await userFolder.exists()) {
+      debugPrint('用戶文件夾' + userFolder.path);
       return userFolder.path;
     } else {
       // if not exists, create new one
@@ -319,6 +321,7 @@ class AuthProvider extends ChangeNotifier {
 
   /// sign out method
   void signOut([bool tokenExpired = false]) async {
+    //重置 variable
     _status = Status.Unauthenticated;
     _token = null;
     _username = null;
@@ -334,9 +337,10 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
 
     /// clear all auth data value
-    var box = await Hive.openBox('authBox');
-    box.clear().whenComplete(() => log('HiveBox: Auth data has been clear'));
-    // clear user sp util data
-    SpUtil.remove('profilePicture');
+    var box = await Hive.openBox(Constant.authBox);
+    await box.clear().whenComplete(
+        () => LoggerUtils.show(message: 'Auth data has been clear'));
+
+    box.close();
   }
 }

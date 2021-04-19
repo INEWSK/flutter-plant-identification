@@ -887,13 +887,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0"
-  sp_util:
-    dependency: "direct main"
-    description:
-      name: sp_util
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.3"
   sqflite:
     dependency: transitive
     description:

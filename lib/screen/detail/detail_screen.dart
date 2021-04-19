@@ -5,7 +5,7 @@ import 'components/detail_page_widget.dart';
 
 ///根據傳進的 treedata 決定顯示什麼 data
 class DetailScreen extends StatefulWidget {
-  final TreeData data;
+  final Result data;
 
   const DetailScreen({
     Key key,
@@ -23,7 +23,7 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    TreeData data = widget.data;
+    Result data = widget.data;
 
     return Scaffold(
       body: DetailPageWidget(

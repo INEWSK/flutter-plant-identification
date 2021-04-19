@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/models/tree_data.dart';
 import 'package:flutter_hotelapp/screen/detail/detail_screen.dart';
-import 'package:flutter_hotelapp/screen/explore/provider/google_maps_provider.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 import 'google_maps_button.dart';
 import 'map_bottom_pill.dart';
+import '../provider/google_maps_provider.dart';
 
 class GoogleMaps extends StatefulWidget {
   @override
@@ -30,7 +30,7 @@ class _GoogleMapsState extends State<GoogleMaps> {
     initGoogleMapsMarker();
   }
 
-  void _setMarker(List<TreeData> treeData) {
+  void _setMarker(List<Result> treeData) {
     var provider = context.read<GoogleMapsProvider>();
     treeData.forEach((data) {
       if (data.treeLocations.isNotEmpty) {
@@ -71,7 +71,7 @@ class _GoogleMapsState extends State<GoogleMaps> {
 
     final String message = result['message'];
     final bool success = result['success'];
-    final List<TreeData> data = result['data'];
+    final List<Result> data = result['data'];
 
     if (!success) {
       Toast.error(

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/constants/rest_api.dart';
 import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
 import 'package:flutter_hotelapp/common/utils/logger_utils.dart';
-import 'package:flutter_hotelapp/models/tree_data.dart';
+import 'package:flutter_hotelapp/models/tree_data.dart' as tree;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 enum Language { HK, EN, CN }
@@ -18,8 +18,8 @@ class ApiProvider extends ChangeNotifier {
 
   bool isLoading = false;
   Language _language = Language.EN;
-  List<TreeData> _listData = [];
-  TreeData data;
+  List<tree.Result> _listData = [];
+  tree.Result data;
 
   Dio dio = Dio(BaseOptions(
     baseUrl: RestApi.localUrl,
@@ -33,7 +33,7 @@ class ApiProvider extends ChangeNotifier {
     Map<String, dynamic> result = {
       'success': false,
       'result': 'Unknown',
-      'data': TreeData ?? null,
+      'data': tree.Result ?? null,
     };
 
     // fab loading effect
@@ -57,15 +57,18 @@ class ApiProvider extends ChangeNotifier {
         final responseData = response.data.toString();
 
         if (_listData.isEmpty) {
-          await _fetchTreeData();
+          final loaded = await _fetchTreeData();
+          if (loaded) {
+            // 將 ai 傳回的 response 根據名字查找是否有對應名字的資料
+            final keyword = responseData.toLowerCase();
+            final data = await _test(keyword);
+
+            result['data'] = data;
+          }
         }
-        // 將 ai 傳回的 response 根據名字查找是否有對應名字的資料
-        final keyword = responseData.toLowerCase();
-        final data = await _test(keyword);
 
         result['success'] = true;
         result['result'] = responseData;
-        result['data'] = data;
 
         isLoading = false;
         notifyListeners();
@@ -85,7 +88,7 @@ class ApiProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> _fetchTreeData() async {
+  Future<bool> _fetchTreeData() async {
     print('tree data 爲空, 開始執行 fetchTreeData');
 
     final url = '/flora/tree/';
@@ -95,17 +98,20 @@ class ApiProvider extends ChangeNotifier {
             HttpHeaders.acceptLanguageHeader:
                 _language == Language.HK ? 'zh-HK' : 'en-US'
           }));
-      final data = treeDataFromJson(response.data);
+      final data = tree.treeDataFromJson(response.data).results;
+
       _listData = data;
-      print('data 加載完成');
+      debugPrint('data 加載完成');
+      return true;
     } on DioError catch (e) {
       final error = DioExceptions.fromDioError(e);
       //輸出錯誤到控制台
       LoggerUtils.show(type: Type.Warning, message: error.messge);
+      return false;
     }
   }
 
-  Future<TreeData> _test(String keyword) async {
+  Future<tree.Result> _test(String keyword) async {
     //根據 keyword 嘗試查找單個符合的元素
     //如果有多個則拋出 error
     //如果沒有則返回 null

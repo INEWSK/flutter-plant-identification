@@ -1,13 +1,40 @@
 import 'dart:convert';
 
-List<TreeInfo> treeInfoFromJson(String str) =>
-    List<TreeInfo>.from(json.decode(str).map((x) => TreeInfo.fromJson(x)));
+TreeInfo treeInfoFromJson(String str) => TreeInfo.fromJson(json.decode(str));
 
-String treeInfoToJson(List<TreeInfo> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String treeInfoToJson(TreeInfo data) => json.encode(data.toJson());
 
 class TreeInfo {
   TreeInfo({
+    this.count,
+    this.next,
+    this.previous,
+    this.results,
+  });
+
+  int count;
+  dynamic next;
+  dynamic previous;
+  List<Result> results;
+
+  factory TreeInfo.fromJson(Map<String, dynamic> json) => TreeInfo(
+        count: json["count"],
+        next: json["next"],
+        previous: json["previous"],
+        results:
+            List<Result>.from(json["results"].map((x) => Result.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "count": count,
+        "next": next,
+        "previous": previous,
+        "results": List<dynamic>.from(results.map((x) => x.toJson())),
+      };
+}
+
+class Result {
+  Result({
     this.infoType,
     this.title,
     this.content,
@@ -21,7 +48,7 @@ class TreeInfo {
   DateTime dateCreated;
   List<InfoImage> infoImages;
 
-  factory TreeInfo.fromJson(Map<String, dynamic> json) => TreeInfo(
+  factory Result.fromJson(Map<String, dynamic> json) => Result(
         infoType: json["info_type"],
         title: json["title"],
         content: json["content"],

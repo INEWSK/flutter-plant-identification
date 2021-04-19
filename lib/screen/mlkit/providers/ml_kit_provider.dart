@@ -75,7 +75,6 @@
 
 //       final labelsFile = File(appDirectory.path + "/_network_flora_labels.txt");
 
-//       //記得關閉 dio
 //       dio.close();
 
 //       return labelsFile;

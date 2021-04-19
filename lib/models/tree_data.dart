@@ -5,14 +5,41 @@
 
 import 'dart:convert';
 
-List<TreeData> treeDataFromJson(String str) =>
-    List<TreeData>.from(json.decode(str).map((x) => TreeData.fromJson(x)));
+TreeData treeDataFromJson(String str) => TreeData.fromJson(json.decode(str));
 
-String treeDataToJson(List<TreeData> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String treeDataToJson(TreeData data) => json.encode(data.toJson());
 
 class TreeData {
   TreeData({
+    this.count,
+    this.next,
+    this.previous,
+    this.results,
+  });
+
+  int count;
+  dynamic next;
+  dynamic previous;
+  List<Result> results;
+
+  factory TreeData.fromJson(Map<String, dynamic> json) => TreeData(
+        count: json["count"],
+        next: json["next"],
+        previous: json["previous"],
+        results:
+            List<Result>.from(json["results"].map((x) => Result.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "count": count,
+        "next": next,
+        "previous": previous,
+        "results": List<dynamic>.from(results.map((x) => x.toJson())),
+      };
+}
+
+class Result {
+  Result({
     this.id,
     this.folderName,
     this.scientificName,
@@ -52,7 +79,7 @@ class TreeData {
   List<TreeImage> treeImages;
   List<TreeLocation> treeLocations;
 
-  factory TreeData.fromJson(Map<String, dynamic> json) => TreeData(
+  factory Result.fromJson(Map<String, dynamic> json) => Result(
         id: json["id"],
         folderName: json["folder_name"],
         scientificName: json["scientific_name"],
@@ -129,6 +156,7 @@ class TreeImage {
 class TreeLocation {
   TreeLocation({
     this.id,
+    this.treeImage,
     this.treeLat,
     this.treeLong,
     this.dateCreated,
@@ -136,6 +164,7 @@ class TreeLocation {
   });
 
   int id;
+  String treeImage;
   double treeLat;
   double treeLong;
   DateTime dateCreated;
@@ -143,6 +172,7 @@ class TreeLocation {
 
   factory TreeLocation.fromJson(Map<String, dynamic> json) => TreeLocation(
         id: json["id"],
+        treeImage: json["tree_image"],
         treeLat: json["tree_lat"].toDouble(),
         treeLong: json["tree_long"].toDouble(),
         dateCreated: DateTime.parse(json["date_created"]),
@@ -151,6 +181,7 @@ class TreeLocation {
 
   Map<String, dynamic> toJson() => {
         "id": id,
+        "tree_image": treeImage,
         "tree_lat": treeLat,
         "tree_long": treeLong,
         "date_created": dateCreated.toIso8601String(),

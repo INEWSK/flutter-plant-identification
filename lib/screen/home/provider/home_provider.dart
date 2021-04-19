@@ -4,15 +4,15 @@ import 'package:flutter_hotelapp/common/constants/rest_api.dart';
 import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
 import 'package:flutter_hotelapp/common/utils/logger_utils.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
-import 'package:flutter_hotelapp/models/tree_info.dart';
+import 'package:flutter_hotelapp/models/tree_info.dart' as treeInfo;
 
 enum Status { Init, Loaded, Refresh }
 
 class HomeProvider extends ChangeNotifier {
   Status status = Status.Init;
 
-  List<TreeInfo> _list = [];
-  List<TreeInfo> get list => _list;
+  List<treeInfo.Result> _list = [];
+  List<treeInfo.Result> get list => _list;
 
   Dio dio = Dio(BaseOptions(
     connectTimeout: 5000, // 5s
@@ -21,17 +21,17 @@ class HomeProvider extends ChangeNotifier {
     responseType: ResponseType.plain,
   ));
 
-  Future<List<TreeInfo>> fetchData() async {
-    final path = '${RestApi.localUrl}/flora/info';
+  Future<List<treeInfo.Result>> fetchData() async {
+    final path = '${RestApi.localUrl}/flora/info/';
 
     try {
       final response = await dio.get(path);
 
-      final data = treeInfoFromJson(response.data);
+      final data = treeInfo.treeInfoFromJson(response.data);
 
-      _list = data;
+      _list = data.results;
 
-      return data;
+      return _list;
     } catch (e) {
       final error = DioExceptions.fromDioError(e);
       LoggerUtils.show(message: error.messge, type: Type.Warning);
@@ -46,9 +46,9 @@ class HomeProvider extends ChangeNotifier {
     try {
       final response = await dio.get(path);
 
-      final data = treeInfoFromJson(response.data);
+      final data = treeInfo.treeInfoFromJson(response.data);
 
-      _list = data;
+      _list = data.results;
       notifyListeners();
 
       return true;

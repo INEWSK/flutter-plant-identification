@@ -6,7 +6,7 @@ import 'package:flutter_hotelapp/models/tree_data.dart';
 
 class TreeCard extends StatelessWidget {
   final String tag;
-  final TreeData data;
+  final Result data;
   final Function press;
 
   const TreeCard({

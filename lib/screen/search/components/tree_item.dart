@@ -4,7 +4,7 @@ import 'package:flutter_hotelapp/common/utils/image_utils.dart';
 import 'package:flutter_hotelapp/models/tree_data.dart';
 
 class TreeItem extends StatelessWidget {
-  final TreeData data;
+  final Result data;
   final Function press;
 
   const TreeItem({

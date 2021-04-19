@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_hotelapp/common/constants/rest_api.dart';
 import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
 import 'package:flutter_hotelapp/common/utils/logger_utils.dart';
-import 'package:flutter_hotelapp/models/tree_data.dart';
+import 'package:flutter_hotelapp/models/tree_data.dart' as tree;
 
 enum Language { HK, EN, CN }
 enum Status { Uninitialized, Loading, Loaded, Error }
@@ -14,8 +14,8 @@ class SearchProvider extends ChangeNotifier {
   Status _status = Status.Uninitialized;
   Language _language = Language.HK;
 
-  List<TreeData> _data = [];
-  List<TreeData> _displayList = [];
+  List<tree.Result> _data = [];
+  List<tree.Result> _displayList = [];
 
   // dio baseoption preset
   Dio dio = Dio(
@@ -70,7 +70,7 @@ class SearchProvider extends ChangeNotifier {
       result['success'] = true;
       result['message'] = 'Loaded';
 
-      final data = treeDataFromJson(response.data);
+      final data = tree.treeDataFromJson(response.data).results;
 
       _data = data;
       _displayList = _data;

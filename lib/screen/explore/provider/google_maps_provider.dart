@@ -8,19 +8,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hotelapp/common/constants/rest_api.dart';
 import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
-import 'package:flutter_hotelapp/models/tree_data.dart';
+import 'package:flutter_hotelapp/models/tree_data.dart' as tree;
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class GoogleMapsProvider extends ChangeNotifier {
   GoogleMapController _mapController;
-  List<TreeData> _data = [];
+  List<tree.Result> _data = [];
   List<Marker> _markers = [];
   // marker icon
   BitmapDescriptor _markerIcon;
   bool _isPillVisible = false;
   // data for bottom pill widget and detail page
-  TreeData _pillData;
+  tree.Result _pillData;
 
   get mapController => _mapController;
   get markers => _markers;
@@ -54,7 +54,7 @@ class GoogleMapsProvider extends ChangeNotifier {
     try {
       final response = await dio.get(url);
 
-      final data = treeDataFromJson(response.data);
+      final data = tree.treeDataFromJson(response.data).results;
 
       result['success'] = true;
       result['message'] = 'Loaded';
@@ -114,7 +114,7 @@ class GoogleMapsProvider extends ChangeNotifier {
     locatePosition();
   }
 
-  void getPillData(TreeData data) {
+  void getPillData(tree.Result data) {
     if (_pillData != data) _pillData = data;
     notifyListeners();
   }

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_hotelapp/common/utils/logger_utils.dart';
 
 /// dio 請求返回提示處理封裝
 
@@ -39,11 +40,11 @@ class DioExceptions implements Exception {
     switch (error.type) {
       case DioErrorType.cancel:
         _code = CANCEL;
-        _message = "你給的不是伺服器想要的";
+        _message = "發送請求取消";
         break;
       case DioErrorType.connectTimeout:
         _code = CONNECT_TIMEOUT;
-        _message = "連接伺服器失敗, 請檢查伺服器狀態";
+        _message = "連接伺服器超時";
         break;
       case DioErrorType.other:
         _code = UNKNOWN;
@@ -59,7 +60,7 @@ class DioExceptions implements Exception {
         break;
       case DioErrorType.sendTimeout:
         _code = SEND_TIMEOUT;
-        _message = "發送超時了, 注意下你的分寸";
+        _message = "發送超時";
         break;
       default:
         _message = "程式我寫的，是我疏忽忘記寫必要的驗證了";

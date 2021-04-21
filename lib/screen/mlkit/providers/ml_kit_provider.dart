@@ -5,7 +5,8 @@
 // import 'package:firebase_ml_custom/firebase_ml_custom.dart';
 // import 'package:flutter/cupertino.dart';
 // import 'package:flutter/services.dart';
-// import 'package:flutter_hotelapp/common/utils/log_error.dart';
+// import 'package:flutter_hotelapp/common/constants/rest_api.dart';
+// import 'package:flutter_hotelapp/common/utils/logger_utils.dart';
 // import 'package:image_picker/image_picker.dart';
 // import 'package:path_provider/path_provider.dart';
 // import 'package:tflite/tflite.dart';
@@ -45,6 +46,7 @@
 
 //   /// Gets the model ready for inference on images.
 //   Future<String> loadModel() async {
+//     Tflite.close();
 //     final modelFile = await _loadModelFromFirebase();
 //     final modelLabel = await _loadLabelFromNetwork();
 //     final model = await _loadTFLiteModel(modelFile, modelLabel);
@@ -58,12 +60,16 @@
 //   }
 
 //   static Future<File> _loadLabelFromNetwork() async {
+//     Dio dio = Dio(BaseOptions(
+//       connectTimeout: 5000,
+//       receiveTimeout: 5000,
+//     ));
+
 //     final appDirectory = await getApplicationDocumentsDirectory();
 
 //     try {
-//       final url = 'http://10.0.2.2:8000/flora/tree-ai-labels/';
-
-//       Dio dio = Dio();
+//       debugPrint('load label from network');
+//       final url = '${RestApi.localUrl}/flora/tree-ai-labels/';
 
 //       ///參數一 文件URL
 //       ///參數二 下載的本地目錄文件
@@ -75,12 +81,10 @@
 
 //       final labelsFile = File(appDirectory.path + "/_network_flora_labels.txt");
 
-//       dio.close();
-
 //       return labelsFile;
 //     } catch (e) {
-//       print('Failed on loading  model label from network: $e');
-//       LogError.show('MLKIT', '從 api 下載 txt 文件失敗, 讀取內置 labels.txt');
+//       LoggerUtils.show(
+//           type: Type.WTF, message: '從 api 下載 txt 文件失敗, 讀取內置 labels.txt');
 //       // local assets file
 //       final labelsData =
 //           await rootBundle.load("assets/models/flora_labels.txt");
@@ -97,6 +101,7 @@
 //   /// located on the mobile device.
 //   static Future<File> _loadModelFromFirebase() async {
 //     try {
+//       debugPrint('load model from firebase');
 //       // create model with a name that is specified in the Firebase console
 //       final model = FirebaseCustomRemoteModel('flora_leaf_model');
 
@@ -143,5 +148,11 @@
 //       print('The program will not be resumed');
 //       rethrow;
 //     }
+//   }
+
+//   @override
+//   void dispose() {
+//     super.dispose();
+//     Tflite.close();
 //   }
 // }

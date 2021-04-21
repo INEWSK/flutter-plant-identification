@@ -33,6 +33,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   dio: ^4.0.0-beta6
   firebase_core: ^1.0.3
+  # firebase_ml_custom: ^0.2.0
   flutter_easyrefresh: ^2.2.1
   flutter_icons: ^1.1.0
   flutter_local_notifications: ^5.0.0+1
@@ -60,7 +61,7 @@ dependencies:
   provider: ^4.3.3
   shared_preferences: ^2.0.3
   shimmer: ^1.1.2
-  # sp_util: ^2.0.3
+  # tflite: ^1.1.2
   unicorndial: ^1.1.5
   url_launcher: ^6.0.2
   vibration: ^1.7.3

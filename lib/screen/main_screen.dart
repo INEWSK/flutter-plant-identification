@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/utils/device_utils.dart';
+import 'package:flutter_hotelapp/screen/home/provider/home_provider.dart';
+import 'package:flutter_hotelapp/screen/search/provider/search_provider.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:vibration/vibration.dart';
 
 import 'common_widgets/bottom_nav_bar.dart';
@@ -30,6 +33,13 @@ class _MainScreenState extends State<MainScreen> {
     ProfileScreen(),
   ];
 
+  final homeScreen = ChangeNotifierProvider(
+    create: (BuildContext context) => HomeProvider(),
+  );
+  final searchScreen = ChangeNotifierProvider(
+    create: (BuildContext context) => SearchProvider(),
+  );
+
   @override
   void initState() {
     super.initState();
@@ -58,7 +68,7 @@ class _MainScreenState extends State<MainScreen> {
     _pageController.jumpToPage(newIndex);
 
     //震動反饋
-    if (!Device.isDesktop && await Vibration.hasVibrator()) {
+    if (Device.isMobile && await Vibration.hasVibrator()) {
       Vibration.vibrate(duration: 10); //0.1s
     }
   }
@@ -72,28 +82,31 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     // press back button twice to exit app
-    return DoubleBackExitApp(
-      child: SafeArea(
-        top: false,
-        bottom: false,
-        child: Scaffold(
-          // 防止浮動按鈕隨鍵盤彈起上移
-          resizeToAvoidBottomInset: false,
-          floatingActionButton: FAB(),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
-          bottomNavigationBar: BottomNavBar(
-            index: _currentIndex,
-            onTap: _onTap,
-          ),
+    return MultiProvider(
+      providers: [homeScreen, searchScreen],
+      child: DoubleBackExitApp(
+        child: SafeArea(
+          top: false,
+          bottom: false,
+          child: Scaffold(
+            // 防止浮動按鈕隨鍵盤彈起上移
+            resizeToAvoidBottomInset: false,
+            floatingActionButton: FAB(),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            bottomNavigationBar: BottomNavBar(
+              index: _currentIndex,
+              onTap: _onTap,
+            ),
 
-          /// 使用 PageView 原因參看 https://zhuanlan.zhihu.com/p/58582876
-          body: PageView(
-            controller: _pageController,
-            onPageChanged: onPageChanged,
-            children: _screens,
-            // 禁左右滑動切換頁
-            physics: NeverScrollableScrollPhysics(),
+            /// 使用 PageView 原因參看 https://zhuanlan.zhihu.com/p/58582876
+            body: PageView(
+              controller: _pageController,
+              onPageChanged: onPageChanged,
+              children: _screens,
+              // 禁左右滑動切換頁
+              physics: NeverScrollableScrollPhysics(),
+            ),
           ),
         ),
       ),

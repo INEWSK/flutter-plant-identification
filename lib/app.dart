@@ -49,9 +49,9 @@ class MyApp extends StatelessWidget {
             navigatorObservers: [BotToastNavigatorObserver()],
             home: home ??
                 Builder(builder: (_) {
-                  bool seen = box.get(Constant.seen) ?? false;
                   if (user.status == Status.Uninitialized)
                     user.initAuthProvider();
+                  bool seen = box.get(Constant.seen) ?? false;
                   if (seen) {
                     return MainScreen();
                   } else {

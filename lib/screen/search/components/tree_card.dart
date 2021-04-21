@@ -38,23 +38,6 @@ class TreeCard extends StatelessWidget {
     );
   }
 
-  Widget _button() {
-    return ButtonBar(
-      alignment: MainAxisAlignment.end,
-      children: [
-        TextButton(
-          onPressed: press,
-          child: const Text(
-            'VIEW MORE',
-            style: TextStyle(
-              color: Colors.teal,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _intro() {
     return GestureDetector(
       onTap: press,

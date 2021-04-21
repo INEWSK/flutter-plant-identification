@@ -59,7 +59,10 @@ class DetailPageWidget extends StatelessWidget {
             background: Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: ImageUtils.getImageProvider(treeImage),
+                  image: treeImage != null
+                      ? ImageUtils.getImageProvider(treeImage)
+                      : ImageUtils.getAssetImage('nophoto',
+                          format: ImageFormat.jpg),
                   fit: BoxFit.cover,
                 ),
               ),

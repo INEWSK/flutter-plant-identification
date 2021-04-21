@@ -19,11 +19,16 @@ class TreeItem extends StatelessWidget {
       future: _imageUrl(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (snapshot.hasData) {
+          final ImageType imageType = snapshot.data['imageType'];
+          final String image = snapshot.data['image'];
+
           return Container(
             // clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: ImageUtils.getImageProvider(snapshot.data),
+                image: imageType == ImageType.network
+                    ? ImageUtils.getImageProvider(image)
+                    : ImageUtils.getAssetImage(image),
                 fit: BoxFit.cover,
               ),
             ),
@@ -40,15 +45,26 @@ class TreeItem extends StatelessWidget {
     );
   }
 
-  _imageUrl() async {
+  Future<Map> _imageUrl() async {
     String imgUrl;
+
+    Map<String, dynamic> response = {
+      'imageType': ImageType.local,
+      'image': imgUrl,
+    };
 
     if (data.treeImages.isNotEmpty) {
       imgUrl = data.treeImages.first.treeImage;
-      return imgUrl;
+
+      response['imageType'] = ImageType.network;
+      response['image'] = imgUrl;
+
+      return response;
     } else {
-      imgUrl = 'assets/images/nophoto.jpg';
-      return imgUrl;
+      imgUrl = 'no-photo';
+      response['image'] = imgUrl;
+
+      return response;
     }
   }
 

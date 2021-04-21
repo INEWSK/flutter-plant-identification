@@ -26,8 +26,6 @@ void main() {
   ]).then((_) async {
     // init data store
     await Hive.initFlutter();
-    // init sp
-    // await SpUtil.getInstance();
     // init firebase
     await Firebase.initializeApp();
     // 打開一個隨時可以使用的盒子, 用作儲存少量數據
@@ -60,6 +58,9 @@ void main() {
     final apiProvider = ChangeNotifierProvider(
       create: (_) => ApiProvider(),
     );
+    // final mlkitProvider = ChangeNotifierProvider(
+    //   create: (_) => MLKitProvider(),
+    // );
 
     runApp(
       MultiProvider(
@@ -68,6 +69,7 @@ void main() {
           themeProvider, // 管理APP主題界面
           intlProvider, // 管理APP語言
           apiProvider, // API CALL
+          // mlkitProvider, // MLKIT
         ],
         child: MyApp(),
       ),

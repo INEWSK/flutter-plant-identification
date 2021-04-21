@@ -23,10 +23,7 @@ class LaborScreen extends StatelessWidget {
           title: Text('Realtime Detect (Tensorflow)'),
           onTap: () {},
         ),
-        ListTile(
-          title: Text('Firebase ML Kit'),
-          onTap: () => Navigator.pushReplacementNamed(context, '/mlkit'),
-        ),
+        ListTile(title: Text('Firebase ML Kit'), onTap: () {}),
       ],
     );
   }

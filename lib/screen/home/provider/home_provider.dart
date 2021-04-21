@@ -85,9 +85,8 @@ class HomeProvider extends ChangeNotifier {
       final data = info.treeInfoFromJson(response.data);
 
       // 如果伺服器傳回沒有下一頁
-      if (data.next == null) {
-        _nextPage = false;
-      }
+      if (data.next == null) _nextPage = false;
+
       // 將新 data 加入現有的 list
       _list.addAll(data.results);
       notifyListeners();
@@ -104,10 +103,10 @@ class HomeProvider extends ChangeNotifier {
     }
   }
 
-  /// 上拉刷行
+  /// 上拉刷新
   Future<bool> refresh() async {
     _currentPage = 1; // 重置頁數
-    _nextPage = true;
+    _nextPage = true; // 重置下頁可能
 
     final path = '${RestApi.localUrl}/flora/info';
 

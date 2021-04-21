@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/common/utils/logger_utils.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
-import 'package:flutter_hotelapp/models/tree_data.dart' as treeData;
+import 'package:flutter_hotelapp/models/tree_data.dart' as tree;
 import 'package:flutter_hotelapp/provider/api_provider.dart';
 import 'package:flutter_hotelapp/screen/detail/detail_screen.dart';
 import 'package:flutter_hotelapp/screen/view_image/view_image_screen.dart';
@@ -67,7 +67,7 @@ class FAB extends StatelessWidget {
     final String result = response['result'];
 
     if (success) {
-      final treeData.Result data = response['data'];
+      final tree.Result data = response['data'];
       BotToast.showNotification(
           leading: (cancel) => IconButton(
                 icon: Icon(Ionicons.ios_rose, color: Colors.redAccent),

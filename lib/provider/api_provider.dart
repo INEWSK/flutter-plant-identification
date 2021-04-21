@@ -54,21 +54,19 @@ class ApiProvider extends ChangeNotifier {
       final url = '/flora/tree-ai/';
 
       await dio.post(url, data: data).then((response) async {
-        final responseData = response.data.toString();
+        final aiResult = response.data.toString();
 
         if (_listData.isEmpty) {
-          final loaded = await _fetchTreeData();
-          if (loaded) {
-            // 將 ai 傳回的 response 根據名字查找是否有對應名字的資料
-            final keyword = responseData.toLowerCase();
-            final data = await _test(keyword);
-
-            result['data'] = data;
-          }
+          await _fetchTreeData();
         }
 
+        // 將 ai 傳回的 response 根據名字查找是否有對應名字的資料
+        final keyword = aiResult.toLowerCase();
+        final data = await _test(keyword);
+
+        result['data'] = data;
         result['success'] = true;
-        result['result'] = responseData;
+        result['result'] = aiResult;
 
         isLoading = false;
         notifyListeners();
@@ -89,7 +87,7 @@ class ApiProvider extends ChangeNotifier {
   }
 
   Future<bool> _fetchTreeData() async {
-    print('tree data 爲空, 開始執行 fetchTreeData');
+    LoggerUtils.show(message: 'Tree Data 空, 開始執行 fetchData');
 
     final url = '/flora/tree/';
     try {

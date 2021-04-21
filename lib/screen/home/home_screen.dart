@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hotelapp/screen/home/components/home_background.dart';
 import 'package:flutter_hotelapp/screen/home/components/info_api_list.dart';
 import 'package:flutter_hotelapp/screen/home/components/info_demo_list.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -21,16 +22,23 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Tree Doctor',
-          style: GoogleFonts.balooPaaji(
-            textStyle: TextStyle(color: Colors.green, fontSize: 26.0),
+    return Stack(
+      children: [
+        HomeBackground(),
+        Scaffold(
+          appBar: AppBar(
+            title: Text(
+              'Tree Doctor',
+              style: GoogleFonts.balooPaaji(
+                textStyle: TextStyle(color: Colors.green, fontSize: 26.0),
+              ),
+            ),
           ),
+          body: _body(),
+          backgroundColor:
+              Theme.of(context).scaffoldBackgroundColor.withAlpha(155),
         ),
-      ),
-      body: _body(),
+      ],
     );
   }
 

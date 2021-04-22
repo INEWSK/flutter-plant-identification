@@ -6,6 +6,8 @@ import 'package:flutter_hotelapp/screen/onboarding/onboarding_screen.dart';
 import 'package:hive/hive.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'common/styles/styles.dart';
 import 'common/themes/themes.dart';
@@ -28,12 +30,28 @@ class MyApp extends StatelessWidget {
     return OKToast(
       child: Consumer3(
         builder: (_, ThemeProvider themer, AuthProvider user,
-            IntlProvider locale, __) {
+            IntlProvider localer, __) {
           return MaterialApp(
             // debugShowCheckedModeBanner: false, // top-right debug flag
             theme: theme ?? lightTheme(context),
             darkTheme: darkTheme(context),
             themeMode: themer.getThemeMode(),
+            // 在地化
+            localizationsDelegates: [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: [
+              //english, no country code
+              const Locale('en', ''),
+              //generic simplified Chinese 'zh_Hans'
+              const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans'),
+              //generic traditional Chinese 'zh_Hant'
+              const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant'),
+            ],
+            locale: localer.locale,
             // 優雅地管理 route
             routes: Routes.routes,
             builder: (context, child) {

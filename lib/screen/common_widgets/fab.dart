@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/common/utils/logger_utils.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
@@ -142,12 +143,16 @@ class FAB extends StatelessWidget {
                   builder: (BuildContext context) {
                     return SimpleDialog(
                       // contentPadding: EdgeInsets.all(kDefaultPadding),
-                      title: Text('Select Image Source'),
+                      title: Text(AppLocalizations.of(context).selectImage),
                       children: [
                         _imageSourceOption(
-                            context, 'Gallery', ImageSource.gallery),
+                            context,
+                            AppLocalizations.of(context).gallery,
+                            ImageSource.gallery),
                         _imageSourceOption(
-                            context, 'Camera', ImageSource.camera),
+                            context,
+                            AppLocalizations.of(context).camera,
+                            ImageSource.camera),
                       ],
                     );
                   },

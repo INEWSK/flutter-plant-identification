@@ -31,18 +31,18 @@ class _GoogleMapsState extends State<GoogleMaps> {
   }
 
   void _setMarker(List<Result> treeData) {
-    var provider = context.read<GoogleMapsProvider>();
+    var map = context.read<GoogleMapsProvider>();
     treeData.forEach((data) {
       if (data.treeLocations.isNotEmpty) {
         List<TreeLocation> locations = data.treeLocations;
         locations.forEach((loc) {
-          provider.markers.add(
+          map.markers.add(
             Marker(
               zIndex: loc.id.toDouble(),
               markerId: MarkerId(loc.id.toString()),
               onTap: () {
-                provider.isShowPill(true);
-                provider.getPillData(data);
+                map.isShowPill(true);
+                map.getPillData(data);
               },
               infoWindow: InfoWindow(
                 title: data.commonName,
@@ -58,7 +58,7 @@ class _GoogleMapsState extends State<GoogleMaps> {
                 ),
               ),
               position: LatLng(loc.treeLat, loc.treeLong),
-              icon: provider.icon,
+              icon: map.icon,
             ),
           );
         });

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hotelapp/common/utils/logger_utils.dart';
-import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/provider/auth_provider.dart';
 import 'package:flutter_hotelapp/screen/profile/provider/profile_provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -24,7 +24,7 @@ class _ProfileScreenState extends State<ProfileScreen>
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Contact Us'),
+          title: Text(AppLocalizations.of(context).contactUs),
           content: Text('This will lead you to the email application'),
           actions: [
             TextButton(
@@ -98,7 +98,6 @@ class _ProfileScreenState extends State<ProfileScreen>
           children: [
             Consumer<AuthProvider>(
               builder: (_, user, __) {
-                // user.initProfilePicture();
                 return ProfileHeader(
                   logged: user.token != null ? true : false,
                   email: user.email,
@@ -118,15 +117,13 @@ class _ProfileScreenState extends State<ProfileScreen>
             ListTile(
               // dense: true,
               leading: SvgPicture.asset('assets/icons/profile/manual.svg'),
-              title: Text('Manual'),
-              onTap: () {
-                Toast.notification(title: 'tetesttesttesttesttesttestst');
-              },
+              title: Text(AppLocalizations.of(context).manual),
+              onTap: () {},
             ),
             ListTile(
               // dense: true,
               leading: SvgPicture.asset('assets/icons/profile/favorite.svg'),
-              title: Text('Favorite'),
+              title: Text(AppLocalizations.of(context).favorite),
               onTap: () {},
             ),
             Consumer2(
@@ -145,7 +142,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                               'assets/icons/profile/ai_retraining.svg'),
                       title: Text(api.train
                           ? 'Model is Retraining...'
-                          : 'Model Retraining'),
+                          : AppLocalizations.of(context).modelRetraining),
                       onTap: api.train
                           ? null
                           : () => _retrainingDialog(context, api));
@@ -157,19 +154,19 @@ class _ProfileScreenState extends State<ProfileScreen>
             ListTile(
               // dense: true,
               leading: SvgPicture.asset('assets/icons/profile/settings.svg'),
-              title: Text('Settings'),
+              title: Text(AppLocalizations.of(context).settings),
               onTap: () => Navigator.pushNamed(context, '/settings'),
             ),
             ListTile(
               // dense: true,
               leading: SvgPicture.asset('assets/icons/profile/fqa.svg'),
-              title: Text('FQA'),
+              title: Text(AppLocalizations.of(context).fqa),
               onTap: () => Navigator.pushNamed(context, '/fqa'),
             ),
             ListTile(
               // dense: true,
               leading: SvgPicture.asset('assets/icons/profile/contact.svg'),
-              title: Text('Contact Us'),
+              title: Text(AppLocalizations.of(context).contactUs),
               onTap: () async => _toEmailDialog(context),
             ),
           ],

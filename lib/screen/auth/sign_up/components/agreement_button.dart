@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AgreementButton extends StatelessWidget {
   @override
@@ -8,10 +9,10 @@ class AgreementButton extends StatelessWidget {
       child: Text.rich(
         TextSpan(
           style: Theme.of(context).textTheme.button.copyWith(fontSize: 12.0),
-          text: 'By Signing up you agree to our ',
+          text: AppLocalizations.of(context).textAgree + ' ',
           children: [
             TextSpan(
-              text: 'Terms & Conditions',
+              text: AppLocalizations.of(context).terms,
               style: TextStyle(color: Colors.green),
               recognizer: TapGestureRecognizer()
                 ..onTap = () => Navigator.pushNamed(context, '/agreement'),

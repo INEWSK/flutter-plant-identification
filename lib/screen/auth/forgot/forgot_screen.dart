@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/common/utils/screen_utils.dart';
 import 'package:flutter_hotelapp/screen/auth/widgets/welcome_text.dart';
@@ -33,7 +34,7 @@ class ForgotScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               WelcomeText(
-                title: 'Forgot Password',
+                title: AppLocalizations.of(context).forgotPassword,
                 text:
                     'Enter your email address and we will \nsent you a reset instructions.',
               ),

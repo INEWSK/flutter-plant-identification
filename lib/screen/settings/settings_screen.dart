@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_hotelapp/common/constants/constants.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/provider/auth_provider.dart';
+import 'package:flutter_hotelapp/provider/intl_provider.dart';
 import 'package:flutter_hotelapp/provider/theme_provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -12,16 +16,16 @@ class SettingsScreen extends StatelessWidget {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Logout'),
+            title: Text(AppLocalizations.of(context).logout),
             content: Text('Do you want to sign out with this account?'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
-                child: Text('No'),
+                child: Text(AppLocalizations.of(context).no),
               ),
               TextButton(
                 onPressed: () => Navigator.pop(context, true),
-                child: Text('Yes'),
+                child: Text(AppLocalizations.of(context).yes),
               ),
             ],
           );
@@ -42,11 +46,14 @@ class SettingsScreen extends StatelessWidget {
         context: context,
         builder: (BuildContext context) {
           return SimpleDialog(
-            title: Text('Select Theme'),
+            title: Text(AppLocalizations.of(context).selectTheme),
             children: [
-              _themeModeOption(context, 1, 'Light Mode'),
-              _themeModeOption(context, 2, 'Dark Mode'),
-              _themeModeOption(context, 0, 'System Mode'),
+              _themeModeOption(
+                  context, 1, AppLocalizations.of(context).lightMode),
+              _themeModeOption(
+                  context, 2, AppLocalizations.of(context).darkMode),
+              _themeModeOption(
+                  context, 0, AppLocalizations.of(context).followSystem),
             ],
           );
         });
@@ -54,7 +61,7 @@ class SettingsScreen extends StatelessWidget {
       final ThemeMode themeMode = i == 0
           ? ThemeMode.system
           : (i == 1 ? ThemeMode.light : ThemeMode.dark);
-      // 等價於 provider.of(context)
+      // 等價於 provider.of(context, listen: false)
       context.read<ThemeProvider>().setTheme(themeMode);
     }
   }
@@ -64,17 +71,23 @@ class SettingsScreen extends StatelessWidget {
         context: context,
         builder: (BuildContext context) {
           return SimpleDialog(
-            title: Text('Select Language'),
+            title: Text(AppLocalizations.of(context).selectLanguage),
             children: [
-              _languageSelect(context, 1, 'Traditional Chinese'),
-              _languageSelect(context, 2, 'English'),
+              _languageSelect(
+                  context, 1, AppLocalizations.of(context).tchinese),
+              _languageSelect(context, 2, AppLocalizations.of(context).english),
+              _languageSelect(
+                  context, 0, AppLocalizations.of(context).followSystem)
             ],
           );
         });
     if (i != null) {
+      final String locale = i == 0 ? '' : (i == 1 ? 'zh' : 'en');
+      context.read<IntlProvider>().setLocale(locale);
       Toast.notification(
-          title: 'Language Selected',
-          subtitle: '${i == 1 ? "Chinese" : "English"} ');
+          title: i == 1 ? '語言變更成功' : 'Language changed',
+          subtitle:
+              i == 1 ? '部分設定需要重啓 APP 生效' : 'You may researt to take effect');
     }
   }
 
@@ -106,6 +119,29 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
+  Widget _signoutButton(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: Colors.red,
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+          ),
+          // padding: EdgeInsets.symmetric(vertical: 15.0),
+          // color: Colors.red,
+          // shape: RoundedRectangleBorder(
+          //   borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          // ),
+          onPressed: () => _confirmSignOutDialog(context),
+          child: Text(AppLocalizations.of(context).logout,
+              style: kButtonTextStyle),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,26 +157,28 @@ class SettingsScreen extends StatelessWidget {
           return Column(
             children: [
               ListTile(
-                title: Text('Dark Mode'),
+                title: Text(AppLocalizations.of(context).themeOption),
+                subtitle: Text(_getCurrentTheme(context)),
                 onTap: () {
                   _selectThemeDialog(context);
                 },
               ),
               ListTile(
-                title: Text('Language'),
+                title: Text(AppLocalizations.of(context).languageOption),
+                subtitle: Text(_getCurrentLocale(context)),
                 onTap: () {
                   _selectLanguageDialog(context);
                 },
               ),
               Divider(height: 20),
               ListTile(
-                title: Text('Terms & Conditions'),
+                title: Text(AppLocalizations.of(context).terms),
                 onTap: () {
                   Navigator.pushNamed(context, '/agreement');
                 },
               ),
               ListTile(
-                title: Text('About'),
+                title: Text(AppLocalizations.of(context).about),
                 onTap: () {
                   showAboutDialog(
                     context: context,
@@ -153,14 +191,14 @@ class SettingsScreen extends StatelessWidget {
                 },
               ),
               ListTile(
-                title: Text('Laboratories'),
+                title: Text(AppLocalizations.of(context).labor),
                 onTap: () => Navigator.pushNamed(context, '/labor'),
               ),
               Divider(height: 20),
               ListTile(
                 title: user.status == Status.Authenticated
-                    ? Text('Switch Account')
-                    : Text('Sign In'),
+                    ? Text(AppLocalizations.of(context).switchAccount)
+                    : Text(AppLocalizations.of(context).login),
                 onTap: () {
                   Navigator.pushNamed(context, '/signIn');
                 },
@@ -179,25 +217,38 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget _signoutButton(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            primary: Colors.red,
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-          ),
-          // padding: EdgeInsets.symmetric(vertical: 15.0),
-          // color: Colors.red,
-          // shape: RoundedRectangleBorder(
-          //   borderRadius: BorderRadius.all(Radius.circular(5.0)),
-          // ),
-          onPressed: () => _confirmSignOutDialog(context),
-          child: Text('Sign Out', style: kButtonTextStyle),
-        ),
-      ),
-    );
+  String _getCurrentTheme(BuildContext context) {
+    var box = Hive.box(Constant.box);
+    final String theme = box.get(Constant.theme);
+    String themeMode;
+    switch (theme) {
+      case 'Dark':
+        themeMode = AppLocalizations.of(context).darkMode;
+        break;
+      case 'Light':
+        themeMode = AppLocalizations.of(context).lightMode;
+        break;
+      default:
+        themeMode = AppLocalizations.of(context).followSystem;
+        break;
+    }
+    return themeMode;
+  }
+
+  String _getCurrentLocale(BuildContext context) {
+    var box = Hive.box(Constant.box);
+    final String locale = box.get(Constant.locale);
+    String localeMode;
+    switch (locale) {
+      case 'zh':
+        localeMode = '中文';
+        break;
+      case 'en':
+        localeMode = 'English';
+        break;
+      default:
+        localeMode = '跟随系统';
+    }
+    return localeMode;
   }
 }

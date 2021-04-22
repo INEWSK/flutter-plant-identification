@@ -1,5 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hotelapp/common/utils/form_field_validator.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/provider/auth_provider.dart';
@@ -94,7 +95,7 @@ class _SignInFormState extends State<SignInForm> {
             editCompleted: () => FocusScope.of(context).nextFocus(),
             inputType: TextInputType.emailAddress,
             obscureText: false,
-            hintText: 'Email',
+            hintText: AppLocalizations.of(context).email,
             prefixIcon: Icon(Icons.person),
             suffixIcon: (!_clearButton)
                 ? null
@@ -117,7 +118,7 @@ class _SignInFormState extends State<SignInForm> {
               editCompleted: () => FocusScope.of(context).unfocus(),
               inputType: TextInputType.visiblePassword,
               obscureText: _obscureText,
-              hintText: 'Password',
+              hintText: AppLocalizations.of(context).password,
               prefixIcon: Icon(Icons.lock),
               suffixIcon: GestureDetector(
                 onTap: () {
@@ -133,7 +134,7 @@ class _SignInFormState extends State<SignInForm> {
           ForgotButton(),
           SizedBox(height: 20),
           PrimaryButton(
-            text: 'Sign In',
+            text: AppLocalizations.of(context).login,
             press: () {
               if (_formValidate()) {
                 _formSubmit();

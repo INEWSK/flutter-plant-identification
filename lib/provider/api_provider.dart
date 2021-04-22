@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hotelapp/common/constants/constants.dart';
 import 'package:flutter_hotelapp/common/constants/rest_api.dart';
 import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
 import 'package:flutter_hotelapp/common/utils/logger_utils.dart';
 import 'package:flutter_hotelapp/models/tree_data.dart' as tree;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:hive/hive.dart';
 
 enum Language { HK, EN, CN }
 enum Result { ERROR, SUCCESS }
@@ -16,10 +18,13 @@ class ApiProvider extends ChangeNotifier {
 
   var flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
+  String _locale;
   bool isLoading = false;
-  Language _language = Language.EN;
   List<tree.Result> _listData = [];
   tree.Result data;
+
+  // 獲取當前軟件語言
+  var box = Hive.box(Constant.box);
 
   Dio dio = Dio(BaseOptions(
     baseUrl: RestApi.localUrl,
@@ -56,7 +61,11 @@ class ApiProvider extends ChangeNotifier {
       await dio.post(url, data: data).then((response) async {
         final aiResult = response.data.toString();
 
-        if (_listData.isEmpty) {
+        final String locale = box.get(Constant.locale);
+        // 如果 list 爲空, 或是當前儲存得語言和新抓得語言不相同(既用戶轉語言)
+        if (_listData.isEmpty || _locale != locale) {
+          //清空 list
+          _listData.clear();
           await _fetchTreeData();
         }
 
@@ -87,19 +96,23 @@ class ApiProvider extends ChangeNotifier {
   }
 
   Future<bool> _fetchTreeData() async {
-    LoggerUtils.show(message: 'Tree Data 空, 開始執行 fetchData');
+    LoggerUtils.show(message: 'TREE DATA 空, 從 API 抓取資料');
 
     final url = '/flora/tree/';
+
+    final String locale = box.get(Constant.locale);
+    // 儲存語言資料, 用作下次對比
+    _locale = locale;
+
     try {
       final response = await dio.get(url,
           options: Options(responseType: ResponseType.plain, headers: {
-            HttpHeaders.acceptLanguageHeader:
-                _language == Language.HK ? 'zh-HK' : 'en-US'
+            HttpHeaders.acceptLanguageHeader: locale == 'zh' ? 'zh-HK' : 'en-US'
           }));
       final data = tree.treeDataFromJson(response.data).results;
 
       _listData = data;
-      debugPrint('data 加載完成');
+
       return true;
     } on DioError catch (e) {
       final error = DioExceptions.fromDioError(e);

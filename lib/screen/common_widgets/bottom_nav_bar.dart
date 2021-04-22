@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BottomNavBar extends StatelessWidget {
   final Function onTap;
@@ -13,11 +14,23 @@ class BottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     // list of bottom navbar items
     List<Map<String, dynamic>> items = [
-      {"icon": "assets/icons/navbar/home.svg", "title": "Home"},
-      {"icon": "assets/icons/navbar/explore.svg", "title": "Explore"},
+      {
+        "icon": "assets/icons/navbar/home.svg",
+        "title": AppLocalizations.of(context).homePage
+      },
+      {
+        "icon": "assets/icons/navbar/explore.svg",
+        "title": AppLocalizations.of(context).explorePage
+      },
       {"icon": "assets/icons/navbar/transparent.svg", "title": ""},
-      {"icon": "assets/icons/navbar/search.svg", "title": "Search"},
-      {"icon": "assets/icons/navbar/profile.svg", "title": "Profile"}
+      {
+        "icon": "assets/icons/navbar/search.svg",
+        "title": AppLocalizations.of(context).searchPage
+      },
+      {
+        "icon": "assets/icons/navbar/profile.svg",
+        "title": AppLocalizations.of(context).profilePage
+      }
     ];
 
     /// 忽略 navbar 第三個按鈕的 event

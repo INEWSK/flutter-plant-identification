@@ -24,6 +24,7 @@ class Toast {
       title: title,
       subTitle: subtitle ?? null,
       titleStyle: kBodyTextStyle.copyWith(color: Colors.white),
+      subTitleStyle: kSecondaryBodyTextStyle.copyWith(color: Colors.white54),
       backgroundColor: const Color(0xFF303030),
       duration: Duration(seconds: 4),
       hideCloseButton: true,

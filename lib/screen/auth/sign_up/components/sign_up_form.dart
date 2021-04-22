@@ -1,5 +1,6 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hotelapp/common/utils/form_field_validator.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/provider/auth_provider.dart';
@@ -99,7 +100,7 @@ class _SignUpFormState extends State<SignUpForm> {
               editCompleted: () => FocusScope.of(context).nextFocus(),
               inputType: TextInputType.emailAddress,
               obscureText: false,
-              hintText: 'Email',
+              hintText: AppLocalizations.of(context).email,
               prefixIcon: Icon(Icons.person),
               suffixIcon: (!_clearButton)
                   ? null
@@ -121,7 +122,7 @@ class _SignUpFormState extends State<SignUpForm> {
               editCompleted: () => FocusScope.of(context).nextFocus(),
               inputType: TextInputType.visiblePassword,
               obscureText: _obscureText,
-              hintText: 'Password',
+              hintText: AppLocalizations.of(context).password,
               prefixIcon: Icon(Icons.lock),
               suffixIcon: GestureDetector(
                 onTap: () {
@@ -146,7 +147,7 @@ class _SignUpFormState extends State<SignUpForm> {
               editCompleted: () => FocusScope.of(context).unfocus(),
               inputType: TextInputType.visiblePassword,
               obscureText: _obscureText,
-              hintText: 'Re-enter Password',
+              hintText: AppLocalizations.of(context).rePassword,
               prefixIcon: Icon(Icons.lock),
               suffixIcon: GestureDetector(
                 onTap: () {
@@ -162,7 +163,7 @@ class _SignUpFormState extends State<SignUpForm> {
           AgreementButton(),
           SizedBox(height: 20),
           PrimaryButton(
-            text: 'Sign Up',
+            text: AppLocalizations.of(context).signUp,
             press: () {
               if (_formValidate()) {
                 _formSubmit();

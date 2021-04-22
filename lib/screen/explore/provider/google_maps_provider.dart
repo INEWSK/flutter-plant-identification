@@ -6,11 +6,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_hotelapp/common/constants/constants.dart';
 import 'package:flutter_hotelapp/common/constants/rest_api.dart';
 import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
 import 'package:flutter_hotelapp/models/tree_data.dart' as tree;
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hive/hive.dart';
 
 class GoogleMapsProvider extends ChangeNotifier {
   GoogleMapController _mapController;
@@ -42,17 +44,21 @@ class GoogleMapsProvider extends ChangeNotifier {
       BaseOptions(
         connectTimeout: 10000, //10s
         receiveTimeout: 5000, //5s
-        headers: {
-          HttpHeaders.acceptLanguageHeader: 'en-US',
-        },
         responseType: ResponseType.plain,
       ),
     );
 
     final String url = '${RestApi.localUrl}/flora/tree';
 
+    // 獲取當前軟件語言
+    var box = Hive.box(Constant.box);
+    final String locale = box.get(Constant.locale);
+
     try {
-      final response = await dio.get(url);
+      final response = await dio.get(url,
+          options: Options(headers: {
+            HttpHeaders.acceptLanguageHeader: locale == 'zh' ? 'zh-HK' : 'en-US'
+          }));
 
       final data = tree.treeDataFromJson(response.data).results;
 

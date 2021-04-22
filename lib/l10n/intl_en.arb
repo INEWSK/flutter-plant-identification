@@ -1,0 +1,283 @@
+{
+    "helloWorld": "Hello World!",
+    "@helloWorld": {
+      "description": "The conventional newborn programmer greeting",
+      "type": "text"
+    },
+
+    "homePage": "Home",
+    "@homePage": {
+      "description": "Title for home page",
+      "type": "text"
+    },
+
+    "explorePage": "Explore",
+    "@explorePage": {
+      "description": "Title for explore page",
+      "type": "text"
+    },
+
+    "searchPage": "Search",
+    "@searchPage": {
+      "description": "Title for search page",
+      "type": "text"
+    },
+
+    "profilePage": "Profile",
+    "@profilePage": {
+      "description": "Title for profile page item",
+      "type": "text"
+    },
+
+    "manual": "Manual",
+    "@manual": {
+      "description": "Profile page item title for manual",
+      "type": "text"
+    },
+
+    "favorite": "Favorite",
+    "@favorite": {
+      "description": "Profile page item title for favorite",
+      "type": "text"
+    },
+
+    "modelRetraining": "Model Retraining",
+    "@modelRetraining": {
+      "description": "Profile page item title for model retraining",
+      "type": "text"
+    },
+
+    "settings": "Settings",
+    "@settings": {
+      "description": "Profile page item title for settings",
+      "type": "text"
+    },
+
+    "fqa": "FQA",
+    "@fqa": {
+      "description": "Profile page item title for fqa",
+      "type": "text"
+    },
+
+    "contactUs": "Contact Us",
+    "@contactUs": {
+      "description": "Profile page item title for contact",
+      "type": "text"
+    },
+
+    "selectTheme": "Select Theme",
+    "@selectTheme": {
+      "description": "Setting page item title for theme mode select",
+      "type": "text"
+    },
+
+    "themeOption": "Theme Mode",
+    "@themeOption": {
+      "description": "Setting page item title for theme mode select",
+      "type": "text"
+    },
+    
+    "lightMode": "Light Mode",
+    "@lightMode": {
+      "description": "Theme mode select title for light mode",
+      "type": "text"
+    },
+
+    "darkMode": "Dark Mode",
+    "@darkMode": {
+      "description": "Theme mode select title for dark mode",
+      "type": "text"
+    },
+
+    "selectLanguage": "Select Language",
+    "@language": {
+      "description": "Setting page item title for language select",
+      "type": "text"
+    },
+
+    "languageOption": "Language",
+    "@languageOption": {
+      "description": "Setting page item title for language select",
+      "type": "text"
+    },
+
+    "tchinese": "繁體中文",
+    "@tchinese": {
+      "description": "Language select item title",
+      "type": "text"
+    },
+
+    "schinese": "簡體中文",
+    "@schinese": {
+      "description": "Language select item title",
+      "type": "text"
+    },
+
+    "english": "English",
+    "@english": {
+      "description": "Language select item title",
+      "type": "text"
+    },
+
+    "followSystem": "Follow System",
+    "@followSystem": {
+      "description": "Follow system options title",
+      "type": "text"
+    },
+
+    "terms": "Terms & Conditions",
+    "@terms": {
+      "description": "Terms and condition title",
+      "type": "text"
+    },
+
+    "about": "About",
+    "@about": {
+      "description": "Setting page about title",
+      "type": "text"
+    },
+
+    "labor": "Laboratories",
+    "@labor": {
+      "description": "Setting page laboratories title",
+      "type": "text"
+    },
+
+    "login": "Login",
+    "@login": {
+      "description": "Login title",
+      "type": "text"
+    },
+
+    "logout": "Sign Out",
+    "@logout": {
+      "description": "Logout title",
+      "type": "text"
+    },
+
+    "signUp": "Sign Up",
+    "@signUp": {
+      "description": "Logout title",
+      "type": "text"
+    },
+
+    "switchAccount": "Switch Account",
+    "@switchAccount": {
+      "description": "Switch account title",
+      "type": "text"
+    },
+
+    "warning": "Warning",
+    "@warning": {
+      "description": "Title for warning",
+      "type": "text"
+    },
+
+    "email": "Email",
+    "@email": {
+      "description": "Title for email",
+      "type": "text"
+    },
+
+    "password": "Password",
+    "@password": {
+      "description": "Title for password",
+      "type": "text"
+    },
+
+    "rePassword": "Re-enter Password",
+    "@rePassword": {
+      "description": "Title for re-enter password text field",
+      "type": "text"
+    },
+
+    "forgotPassword": "Forgot Password",
+    "@forgotPassword": {
+      "description": "Title for forgot password button",
+      "type": "text"
+    },
+
+    "or": "or",
+    "@or": {
+      "description": "Title for or divided",
+      "type": "text"
+    },
+
+    "noAccount": "Don't have an account?",
+    "@noAccount": {
+      "description": "Text for no account",
+      "type": "text"
+    },
+
+    "createAccount": "Create a new account",
+    "@createAccount": {
+      "description": "Text for create account button",
+      "type": "text"
+    },
+
+    "resetPassword": "Reset Password",
+    "@resetPassword": {
+      "description": "Text for reset password button",
+      "type": "text"
+    },
+
+    "textAgree": "By Signing up you agree to our",
+    "@textAgree": {
+      "description": "Text for agree terms",
+      "type": "text"
+    },
+
+    "haveAccount": "Already have an account?",
+    "@haveAccount": {
+      "description": "Text for already have account",
+      "type": "text"
+    },
+
+    "selectImage": "Select Image",
+    "@selectImage": {
+      "description": "Title for select image",
+      "type": "text"
+    },
+
+    "gallery": "Gallery",
+    "@gallery": {
+      "description": "Title for gallery",
+      "type": "text"
+    },
+
+    "camera": "Camera",
+    "@camera": {
+      "description": "Title for camera",
+      "type": "text"
+    },
+
+    "yes": "Yes",
+    "@yes": {
+      "description": "Yes",
+      "type": "text"
+    },
+
+    "no": "No",
+    "@no": {
+      "description": "No",
+      "type": "text"
+    },
+
+    "confirm": "Confirm",
+    "@confirm": {
+      "description": "Confirm",
+      "type": "text"
+    },
+
+    "cancel": "Cancel",
+    "@cancel": {
+      "description": "Cancel",
+      "type": "text"
+    },
+
+    "upload": "Upload",
+    "@upload": {
+      "description": "Title for upload button",
+      "type": "text"
+    }
+}

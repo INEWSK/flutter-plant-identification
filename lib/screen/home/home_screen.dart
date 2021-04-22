@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/screen/home/components/home_background.dart';
 import 'package:flutter_hotelapp/screen/home/components/info_api_list.dart';
@@ -29,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen>
         Scaffold(
           appBar: AppBar(
             title: Text(
-              'Tree Doctor',
+              AppLocalizations.of(context).helloWorld,
               style: GoogleFonts.balooPaaji(
                 textStyle: TextStyle(color: Color(0xFF0A8270), fontSize: 26.0),
               ),

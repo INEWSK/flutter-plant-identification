@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/common/utils/form_field_validator.dart';
 import 'package:flutter_hotelapp/screen/common_widgets/primary_button.dart';
@@ -23,6 +24,7 @@ class _ForgotFormState extends State<ForgotForm> {
         children: [
           // email field
           TextFormField(
+            enabled: false,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: emailValidator,
             onSaved: (value) => _email = value,
@@ -31,7 +33,7 @@ class _ForgotFormState extends State<ForgotForm> {
             keyboardType: TextInputType.emailAddress,
             decoration: otpInputDecoration.copyWith(
               prefixIcon: Icon(Icons.person),
-              hintText: 'Email',
+              hintText: AppLocalizations.of(context).email,
               contentPadding: kTextFieldPadding,
             ),
           ),
@@ -39,7 +41,7 @@ class _ForgotFormState extends State<ForgotForm> {
 
           // reset button
           PrimaryButton(
-            text: 'Reset Password',
+            text: AppLocalizations.of(context).resetPassword,
             press: () {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();

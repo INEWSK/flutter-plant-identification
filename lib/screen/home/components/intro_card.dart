@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/common/utils/screen_utils.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class IntroCard extends StatelessWidget {
   final String sort, title, text, image;
@@ -66,24 +67,27 @@ class IntroCard extends StatelessWidget {
         vertical: 16.0,
       ),
       // height: 152, // 該數值決定容器最終大小
-      width: Screen.width(context) * 0.65, // 65% of the container
+      width: Screen.width(context) * 0.6, // 65% of the container
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          // tag background
           Expanded(
             flex: 1,
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 8.0),
               decoration: BoxDecoration(
-                color: Colors.green,
+                color: Color(0xFF7DE393),
                 borderRadius: BorderRadius.all(
                   Radius.circular(5.0),
                 ),
               ),
+              // tag text
               child: Text(
                 sort,
                 maxLines: 1,
+                overflow: TextOverflow.fade,
                 style: TextStyle(
                   fontSize: 10.0,
                   color: Colors.white,
@@ -91,21 +95,29 @@ class IntroCard extends StatelessWidget {
               ),
             ),
           ),
+          SizedBox(height: 5),
+          // title
           Expanded(
             flex: 2,
             child: Text(
               title,
-              style: kH1TextStyle.copyWith(fontSize: 16.0),
+              style: GoogleFonts.itim().copyWith(
+                fontSize: 14.0,
+                height: 1.1,
+                color: Color(
+                  0xFF0A8270,
+                ),
+              ),
+              maxLines: 2,
             ),
           ),
+          // content
           Expanded(
             flex: 5,
-            child: Text(
-              text,
-              maxLines: 4,
-              overflow: TextOverflow.ellipsis, // 省略號
-              style: kBodyTextStyle.copyWith(fontSize: 12.0),
-            ),
+            child: Text(text,
+                maxLines: 4,
+                overflow: TextOverflow.ellipsis, // 省略號
+                style: GoogleFonts.itim().copyWith(fontSize: 12.0)),
           ),
         ],
       ),

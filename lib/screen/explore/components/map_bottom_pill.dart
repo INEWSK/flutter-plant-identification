@@ -94,9 +94,9 @@ class MapBottomPill extends StatelessWidget {
     };
 
     if (data != null) {
-      if (data.treeImages.isNotEmpty) {
+      if (data.treeLocations.first.treeImage.isNotEmpty) {
         result['imageType'] = ImageType.network;
-        result['imageUrl'] = data.treeImages.first.treeImage;
+        result['imageUrl'] = data.treeLocations.first.treeImage;
         return result;
       } else {
         return result;

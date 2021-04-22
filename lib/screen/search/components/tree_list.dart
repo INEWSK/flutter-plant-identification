@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/common/utils/device_utils.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/screen/detail/detail_screen.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/search_provider.dart';
-import 'tree_item.dart';
+import 'tree_cell.dart';
 
 class TreeList extends StatefulWidget {
   @override
@@ -16,6 +16,7 @@ class TreeList extends StatefulWidget {
 
 class _TreeListState extends State<TreeList> {
   final _textController = TextEditingController();
+  final _refreshController = EasyRefreshController();
   final _focusNode = FocusNode();
 
   bool _clearButton = false;
@@ -25,6 +26,7 @@ class _TreeListState extends State<TreeList> {
     super.dispose();
     // 銷毀listener
     _focusNode?.dispose();
+    _refreshController?.dispose();
     _textController?.dispose();
   }
 
@@ -51,11 +53,12 @@ class _TreeListState extends State<TreeList> {
 
   Widget _searchBar(SearchProvider model) {
     return Padding(
-      padding: EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8.0),
       child: TextField(
         focusNode: _focusNode,
         controller: _textController,
         decoration: searchInputDecoration.copyWith(
+          contentPadding: const EdgeInsets.all(16.0),
           hintStyle: kInputTextStyle,
           suffixIcon: (!_clearButton)
               ? null
@@ -70,7 +73,7 @@ class _TreeListState extends State<TreeList> {
   }
 
   Widget _listItem(int index, BuildContext context, SearchProvider model) {
-    return TreeItem(
+    return TreeCell(
       data: model.displayList[index],
       press: () => Navigator.push(
         context,
@@ -88,7 +91,6 @@ class _TreeListState extends State<TreeList> {
   Widget build(BuildContext context) {
     return Consumer<SearchProvider>(
       builder: (_, model, __) {
-        // model.test('adfsdf');
         return GestureDetector(
           onTap: () {
             // 在 android 機上, 用於判斷 keyboard 彈出并且關閉
@@ -98,27 +100,43 @@ class _TreeListState extends State<TreeList> {
             }
           },
           child: SafeArea(
-            child: RefreshIndicator(
-              onRefresh: () async => model.fetchData().then((result) {
-                final String message = result['message'];
-                final bool success = result['success'];
-                if (!success) {
-                  Toast.error(title: '網絡電波不夠', subtitle: message);
-                }
-              }),
-              child: ListView.builder(
-                itemCount: model.displayList.length + 1,
-                itemBuilder: (BuildContext context, int index) {
-                  return AnimationConfiguration.staggeredList(
-                    position: index,
-                    child: FadeInAnimation(
-                      child: index == 0
-                          ? _searchBar(model)
-                          : _listItem(index - 1, context, model),
-                    ),
-                  );
-                },
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                _searchBar(model),
+                Expanded(
+                  child: EasyRefresh.custom(
+                    header: DeliveryHeader(),
+                    controller: _refreshController,
+                    slivers: [
+                      SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (BuildContext context, int index) {
+                            return _listItem(index, context, model);
+                          },
+                          childCount: model.displayList.length,
+                        ),
+                      ),
+                    ],
+                    onRefresh: () async => model.fetchData().then((success) {
+                      if (!success) {
+                        Toast.error(title: '網絡電波不夠', subtitle: '原地爆炸');
+                      }
+                      _refreshController.resetLoadState();
+                    }),
+                    onLoad: () async => await model.loadMore().then((success) {
+                      if (!success)
+                        Toast.error(
+                          icon: Icons.wifi_lock,
+                          title: '伺服器遇到神祕阻力',
+                          subtitle: '加載不可',
+                        );
+                      _refreshController.finishLoad();
+                    }),
+                  ),
+                ),
+              ],
             ),
           ),
         );

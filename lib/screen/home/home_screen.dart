@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/screen/home/components/home_background.dart';
 import 'package:flutter_hotelapp/screen/home/components/info_api_list.dart';
 import 'package:flutter_hotelapp/screen/home/components/info_demo_list.dart';
@@ -30,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen>
             title: Text(
               'Tree Doctor',
               style: GoogleFonts.balooPaaji(
-                textStyle: TextStyle(color: Colors.green, fontSize: 26.0),
+                textStyle: TextStyle(color: Color(0xFF0A8270), fontSize: 26.0),
               ),
             ),
           ),
@@ -52,7 +53,14 @@ class _HomeScreenState extends State<HomeScreen>
           return InfoApiList();
           break;
         default:
-          home.fetchData();
+          home.fetchData().then((success) {
+            if (!success) {
+              Toast.error(
+                title: '加載失敗',
+                subtitle: '網絡發生了小問題, 請稍候刷新重試',
+              );
+            }
+          });
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,

@@ -69,28 +69,29 @@ class FAB extends StatelessWidget {
     if (success) {
       final tree.Result data = response['data'];
       BotToast.showNotification(
-          leading: (cancel) => IconButton(
-                icon: Icon(Ionicons.ios_rose, color: Colors.redAccent),
-                onPressed: cancel,
-              ),
-          title: (_) => Text('AI 預測結果', style: kBodyTextStyle),
-          subtitle: (_) => Text(result),
-          // 沒有傳回 data 或 data 爲 null 不顯示 '查看更多' 標題
-          trailing: (cancel) => data != null
-              ? TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              DetailScreen(data: data)),
-                    );
-                  },
-                  child: Text('查看更多'))
-              // 同上, 無視點擊事件
-              : null,
-          duration: Duration(seconds: 8),
-          crossPage: false);
+        leading: (cancel) => IconButton(
+          icon: Icon(Ionicons.ios_rose, color: Colors.redAccent),
+          onPressed: cancel,
+        ),
+        title: (_) => Text('AI 預測結果', style: kBodyTextStyle),
+        subtitle: (_) => Text(result),
+        // 沒有傳回 data 或 data 爲 null 不顯示 '查看更多' 標題
+        trailing: (cancel) => data != null
+            ? TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            DetailScreen(data: data)),
+                  );
+                },
+                child: Text('查看更多'))
+            // 同上, 無視點擊事件
+            : null,
+        duration: Duration(minutes: 1),
+        crossPage: false,
+      );
     } else {
       BotToast.showNotification(
         leading: (cancel) => IconButton(
@@ -105,9 +106,10 @@ class FAB extends StatelessWidget {
           '嘗試 ML Kit?',
           style: TextStyle(color: Colors.white70),
         ),
-        onTap: () => print('進入 ML Kit 頁面'),
+        onTap: () => Navigator.pushNamed(context, '/labor'),
         backgroundColor: Colors.redAccent,
         duration: Duration(seconds: 7),
+        crossPage: false,
       );
     }
   }

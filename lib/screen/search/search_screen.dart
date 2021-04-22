@@ -20,6 +20,7 @@ class _SearchScreenState extends State<SearchScreen>
 
   final provider = SearchProvider();
 
+  /// shimmer effect 在 darkmode 不友好, 改用 loading icon widget
   Widget _loading() {
     return Scaffold(
       appBar: AppBar(),
@@ -53,13 +54,9 @@ class _SearchScreenState extends State<SearchScreen>
         case Status.Error:
           return ErrorPage(
             press: () async {
-              final response = await tree.fetchData();
-
-              final String result = response['message'];
-              final bool success = response['success'];
-
+              final success = await tree.fetchData();
               if (!success) {
-                Toast.error(title: '404 NOT FOUND', subtitle: result);
+                Toast.error(title: '404 NOT FOUND', subtitle: '原地爆炸');
               }
             },
           );
@@ -71,21 +68,13 @@ class _SearchScreenState extends State<SearchScreen>
           return brightness == Brightness.light ? ShimmerEffect() : _loading();
           break;
         default:
-          _init(tree);
+          tree.fetchData().then((success) {
+            if (!success) {
+              Toast.error(title: '404 NOT FOUND', subtitle: '不行拉');
+            }
+          });
           return brightness == Brightness.light ? ShimmerEffect() : _loading();
       }
     });
-  }
-
-  // 初始化資料卡, 呼叫 API
-  void _init(SearchProvider tree) async {
-    final response = await tree.fetchData();
-
-    final String result = response['message'];
-    final bool success = response['success'];
-
-    if (!success) {
-      Toast.error(title: '404 NOT FOUND', subtitle: result);
-    }
   }
 }

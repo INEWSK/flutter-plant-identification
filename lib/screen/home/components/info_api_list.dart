@@ -17,6 +17,55 @@ class _InfoApiListState extends State<InfoApiList> {
   final _refreshController = EasyRefreshController();
 
   @override
+  void dispose() {
+    super.dispose();
+    _refreshController.dispose();
+  }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Consumer<HomeProvider>(builder: (_, home, __) {
+  //     return EasyRefresh.custom(
+  //       controller: _refreshController,
+  //       slivers: [
+  //         ///most of time we will use listview
+  //         ///for custom load and refresh header and footer
+  //         ///using sliver list
+  //         SliverList(
+  //             delegate:
+  //                 SliverChildBuilderDelegate((BuildContext context, int index) {
+  //           return IntroCard(
+  //             sort: home.list[index].infoType,
+  //             title: home.list[index].title,
+  //             text: home.list[index].content,
+  //             image: "assets/svg/at_home_octe.svg",
+  //           );
+  //         }, childCount: home.list.length)),
+  //       ],
+  //       onRefresh: () async => await home.refresh().then((success) {
+  //         if (!success)
+  //           Toast.error(
+  //             icon: Icons.wifi_lock,
+  //             title: 'Ooops!!',
+  //             subtitle: '外星人切斷了網絡',
+  //           );
+  //         _refreshController.resetLoadState();
+  //       }),
+  //       onLoad: () async => await home.loadMore().then((success) {
+  //         if (!success)
+  //           Toast.error(
+  //             icon: Icons.wifi_lock,
+  //             title: '伺服器遇到神祕阻力',
+  //             subtitle: '加載不可',
+  //           );
+  //         _refreshController.finishLoad();
+  //       }),
+  //       header: DeliveryHeader(),
+  //     );
+  //   });
+  // }
+
+  @override
   Widget build(BuildContext context) {
     return Consumer<HomeProvider>(
       builder: (_, home, __) {
@@ -54,16 +103,20 @@ class _InfoApiListState extends State<InfoApiList> {
                 title: 'Ooops!!',
                 subtitle: '外星人切斷了網絡',
               );
+            _refreshController.resetLoadState();
           }),
           onLoad: () async => await home.loadMore().then((success) {
-            if (!success) {
+            if (!success)
               Toast.error(
                 icon: Icons.wifi_lock,
                 title: '伺服器遇到神祕阻力',
                 subtitle: '加載不可',
               );
-            }
+            _refreshController.finishLoad();
           }),
+          //之後在此自定義文字
+          header: ClassicalHeader(),
+          footer: ClassicalFooter(),
         );
       },
     );

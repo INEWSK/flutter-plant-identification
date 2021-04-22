@@ -3,11 +3,11 @@ import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/common/utils/image_utils.dart';
 import 'package:flutter_hotelapp/models/tree_data.dart';
 
-class TreeItem extends StatelessWidget {
+class TreeCell extends StatelessWidget {
   final Result data;
   final Function press;
 
-  const TreeItem({
+  const TreeCell({
     Key key,
     this.data,
     this.press,

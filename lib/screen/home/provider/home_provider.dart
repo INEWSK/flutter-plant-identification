@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_hotelapp/common/constants/rest_api.dart';
 import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
 import 'package:flutter_hotelapp/common/utils/logger_utils.dart';
-import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/models/tree_info.dart' as info;
 
 enum Status { Uninitialized, Loaded, Refresh, Error }
@@ -33,9 +32,6 @@ class HomeProvider extends ChangeNotifier {
     final path = '${RestApi.localUrl}/flora/info/';
 
     try {
-      // 初始化頁數
-      _currentPage = 1;
-
       final response = await dio.get(path);
 
       final data = info.treeInfoFromJson(response.data);
@@ -44,22 +40,20 @@ class HomeProvider extends ChangeNotifier {
 
       _list = data.results;
 
-      status = Status.Loaded;
-      notifyListeners();
+      if (status != Status.Loaded) {
+        status = Status.Loaded;
+        notifyListeners();
+      }
 
       return true;
     } catch (e) {
       final error = DioExceptions.fromDioError(e);
-
       LoggerUtils.show(message: error.messge, type: Type.Warning);
 
-      Toast.error(
-        title: '加載失敗',
-        subtitle: '網絡發生了小問題, 請稍候刷新重試',
-      );
-
-      status = Status.Error;
-      notifyListeners();
+      if (status == Status.Uninitialized) {
+        status = Status.Error;
+        notifyListeners();
+      }
 
       return false;
     }
@@ -105,27 +99,10 @@ class HomeProvider extends ChangeNotifier {
 
   /// 上拉刷新
   Future<bool> refresh() async {
+    status = Status.Refresh;
     _currentPage = 1; // 重置頁數
     _nextPage = true; // 重置下頁可能
-
-    final path = '${RestApi.localUrl}/flora/info';
-
-    try {
-      final response = await dio.get(path);
-
-      final data = info.treeInfoFromJson(response.data);
-      // 如果伺服器傳回沒有下一頁
-      if (data.next == null) _nextPage = false;
-
-      _list = data.results;
-      notifyListeners();
-
-      return true;
-    } catch (e) {
-      final error = DioExceptions.fromDioError(e);
-      LoggerUtils.show(message: error.messge, type: Type.WTF);
-
-      return false;
-    }
+    _list.clear();
+    return fetchData();
   }
 }

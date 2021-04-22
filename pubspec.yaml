@@ -25,21 +25,18 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  animated_text_kit: ^4.1.1
-  bot_toast: ^3.0.5
+  bot_toast: ^4.0.1
   cached_network_image: ^3.0.0
   common_utils: ^2.0.2
   connectivity: ^3.0.2
   cupertino_icons: ^1.0.2
   dio: ^4.0.0-beta6
   firebase_core: ^1.0.3
-  # firebase_ml_custom: ^0.2.0
   flutter_easyrefresh: ^2.2.1
   flutter_icons: ^1.1.0
   flutter_local_notifications: ^5.0.0+1
   flutter_markdown: ^0.6.0
-  flutter_offline: ^2.0.0
-  flutter_spinkit: ^4.1.2+1
+  flutter_spinkit: ^5.0.0
   flutter_staggered_animations: ^1.0.0
   flutter_svg: ^0.21.0-nullsafety.0
   form_field_validator: ^1.0.1
@@ -51,27 +48,22 @@ dependencies:
   http_parser: ^4.0.0
   image_picker: ^0.7.2
   intl: ^0.17.0
-  intl_utils: ^2.1.0
   logger: ^1.0.0
-  oktoast: ^2.3.2
+  oktoast: ^3.0.0
   path: ^1.7.0
   path_provider: ^2.0.1
   permission_handler: ^6.0.1
-  photo_view: ^0.10.3
-  provider: ^4.3.3
-  shared_preferences: ^2.0.3
-  shimmer: ^1.1.2
-  # tflite: ^1.1.2
+  photo_view: ^0.11.1
+  provider: ^5.0.0
+  shimmer: ^2.0.0
   unicorndial: ^1.1.5
   url_launcher: ^6.0.2
   vibration: ^1.7.3
-  wave: ^0.2.0
-  workmanager: ^0.2.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  build_runner: ^1.11.1
+  build_runner: ^2.0.1
   flutter_launcher_icons: ^0.9.0
   flutter_native_splash: ^1.0.3
   hive_generator: ^1.0.0
@@ -80,7 +72,7 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter.
 flutter:
-
+  generate: true
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -115,5 +107,3 @@ flutter:
           weight: 700
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
-flutter_intl:
-  enabled: true

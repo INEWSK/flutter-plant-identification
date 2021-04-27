@@ -31,7 +31,7 @@ class _SearchScreenState extends State<SearchScreen>
           children: [
             SpinKitWave(color: Colors.teal, size: 50),
             SizedBox(height: 40),
-            Text('Loading Data From Server')
+            Text('正在加載數據')
           ],
         ),
       ),

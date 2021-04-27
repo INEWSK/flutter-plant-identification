@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/screen/auth/widgets/welcome_text.dart';
 
@@ -17,11 +18,13 @@ class LaborScreen extends StatelessWidget {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-          child: WelcomeText(title: '實驗室', text: '以下功能爲實驗性功能 (測試階段)'),
+          child: WelcomeText(
+              title: AppLocalizations.of(context).labor,
+              text: AppLocalizations.of(context).laborLongText),
         ),
         ListTile(
           title: Text('Realtime Detect (Tensorflow)'),
-          onTap: () {},
+          onTap: null,
         ),
         ListTile(title: Text('Firebase ML Kit'), onTap: () {}),
       ],

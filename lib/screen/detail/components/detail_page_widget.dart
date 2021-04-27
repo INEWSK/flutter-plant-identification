@@ -56,16 +56,19 @@ class DetailPageWidget extends StatelessWidget {
               StretchMode.blurBackground,
               StretchMode.fadeTitle
             ],
-            background: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: treeImage != null
-                      ? ImageUtils.getImageProvider(treeImage)
-                      : ImageUtils.getAssetImage('nophoto',
-                          format: ImageFormat.jpg),
-                  fit: BoxFit.cover,
+            background: Hero(
+              child: Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: treeImage != null
+                        ? ImageUtils.getImageProvider(treeImage)
+                        : ImageUtils.getAssetImage('nophoto',
+                            format: ImageFormat.jpg),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
+              tag: treeImage != null ? treeImage : 'noPhoto',
             ),
           ),
         ),

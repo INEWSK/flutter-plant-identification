@@ -15,7 +15,9 @@ class SignUpScreen extends StatelessWidget {
         Scaffold(
           backgroundColor:
               Theme.of(context).scaffoldBackgroundColor.withAlpha(225),
-          appBar: AppBar(),
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+          ),
           body: _body(),
         ),
       ],

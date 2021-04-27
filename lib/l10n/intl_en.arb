@@ -1,7 +1,13 @@
 {
-    "helloWorld": "Hello World!",
-    "@helloWorld": {
+    "hello": "Hello",
+    "@hello": {
       "description": "The conventional newborn programmer greeting",
+      "type": "text"
+    },
+
+    "welcome": "Welcome",
+    "@welcome": {
+      "description": "Welcome",
       "type": "text"
     },
 
@@ -122,6 +128,12 @@
     "followSystem": "Follow System",
     "@followSystem": {
       "description": "Follow system options title",
+      "type": "text"
+    },
+
+    "followSystem2": "Follow System",
+    "@followSystem2": {
+      "description": "Follow system options title 2",
       "type": "text"
     },
 
@@ -278,6 +290,114 @@
     "upload": "Upload",
     "@upload": {
       "description": "Title for upload button",
+      "type": "text"
+    },
+
+    "locate": "Locate",
+    "@locate": {
+      "description": "Title for locate button",
+      "type": "text"
+    },
+
+    "search": "Search",
+    "@search": {
+      "description": "Hint for search text field",
+      "type": "text"
+    },
+
+    "laborLongText": "The following features are in the experimental stage",
+    "@laborLongText": {
+      "description": "Long text content for labor welcome text",
+      "type": "text"
+    },
+
+    "refreshText": "Pull to Refresh",
+    "@pullToRefresh": {
+      "description": "Pull to refresh text",
+      "type": "text"
+    },
+
+    "refreshReadyText": "Ready to refresh",
+    "@refreshReadyText": {
+      "description": "Load more text",
+      "type": "text"
+    },
+
+    "refreshingText": "Refreshing...",
+    "@refreshingText": {
+      "description": "Load more text",
+      "type": "text"
+    },
+
+    "refreshedText": "Refreshed",
+    "@refreshedText": {
+      "description": "Load more text",
+      "type": "text"
+    },
+
+    "loadMoreText": "Load more",
+    "@loadMoreText": {
+      "description": "Load more text",
+      "type": "text"
+    },
+    
+    "loadReadyText": "Load ready",
+    "@loadReadyText": {
+      "description": "Load ready text",
+      "type": "text"
+    },
+    
+    "loadingText": "Loading",
+    "@loadingText": {
+      "description": "Loading text",
+      "type": "text"
+    },
+
+    "loadedText": "Load completed",
+    "@loadedText": {
+      "description": "Load completed text",
+      "type": "text"
+    },
+
+    "noMoreText": "No more",
+    "@noMoreText": {
+      "description": "No more text",
+      "type": "text"
+    },
+
+    "emailRequired": "Email is required",
+    "@emailRequired": {
+      "description": "Text for email validator",
+      "type": "text"
+    },
+
+    "passwordRequired": "Password is required",
+    "@passwordRequired": {
+      "description": "Text for password validator",
+      "type": "text"
+    },
+
+    "passwordNoMatch": "Passwords do not match",
+    "@passwordNoMatch": {
+      "description": "Text for password validator",
+      "type": "text"
+    },
+
+    "emailValid": "Enter a valid email address",
+    "@emailValid": {
+      "description": "Text for email validator",
+      "type": "text"
+    },
+
+    "passwordValid": "Password must be at least 8 digits long",
+    "@passwordValid": {
+      "description": "Text for password validator",
+      "type": "text"
+    },
+
+    "minPasswordValid": "Must have at least one number",
+    "@MinPasswordValid": {
+      "description": "Text for password validator",
       "type": "text"
     }
 }

@@ -15,7 +15,6 @@ import 'provider/intl_provider.dart';
 import 'provider/theme_provider.dart';
 
 final _notificationsPlugin = FlutterLocalNotificationsPlugin();
-
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 

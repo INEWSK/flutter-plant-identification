@@ -2,12 +2,11 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_hotelapp/common/constants/constants.dart';
 import 'package:flutter_hotelapp/common/constants/rest_api.dart';
 import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
+import 'package:flutter_hotelapp/common/utils/locale_utils.dart';
 import 'package:flutter_hotelapp/common/utils/logger_utils.dart';
 import 'package:flutter_hotelapp/models/tree_data.dart' as tree;
-import 'package:hive/hive.dart';
 
 enum Language { HK, EN, CN }
 enum Status { Uninitialized, Loading, Loaded, Error }
@@ -58,14 +57,10 @@ class SearchProvider extends ChangeNotifier {
 
     final url = '${RestApi.localUrl}/flora/tree/';
 
-    // 獲取當前軟件語言
-    var box = Hive.box(Constant.box);
-    final String locale = box.get(Constant.locale);
-
     try {
       final response = await dio.get(url,
           options: Options(headers: {
-            HttpHeaders.acceptLanguageHeader: locale == 'zh' ? 'zh-HK' : 'en-US'
+            HttpHeaders.acceptLanguageHeader: LocaleUtils.getLocale
           }));
 
       final data = tree.treeDataFromJson(response.data);

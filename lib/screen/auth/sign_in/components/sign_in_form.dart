@@ -1,11 +1,11 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_hotelapp/common/utils/form_field_validator.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/provider/auth_provider.dart';
 import 'package:flutter_hotelapp/screen/auth/widgets/auth_form_field.dart';
 import 'package:flutter_hotelapp/screen/common_widgets/primary_button.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:provider/provider.dart';
 
 import 'forgot_button.dart';
@@ -88,7 +88,14 @@ class _SignInFormState extends State<SignInForm> {
             controller: _emailController,
             maxLength: 30,
             validateMode: _validateMode,
-            validator: emailValidator,
+            validator: MultiValidator([
+              RequiredValidator(
+                errorText: AppLocalizations.of(context).emailRequired,
+              ),
+              EmailValidator(
+                errorText: AppLocalizations.of(context).emailValid,
+              )
+            ]),
             onSaved: (value) => _email = value,
             onChanged: null,
             inputAction: TextInputAction.next,
@@ -110,7 +117,19 @@ class _SignInFormState extends State<SignInForm> {
               controller: _passwordController,
               maxLength: 20,
               validateMode: _validateMode,
-              validator: passwordValidator,
+              validator: MultiValidator([
+                RequiredValidator(
+                  errorText: AppLocalizations.of(context).passwordRequired,
+                ),
+                MinLengthValidator(
+                  8,
+                  errorText: AppLocalizations.of(context).passwordValid,
+                ),
+                PatternValidator(
+                  r'(?=.*?[0-9])',
+                  errorText: AppLocalizations.of(context).minPasswordValid,
+                )
+              ]),
               onSaved: (value) => _password = value,
               onChanged: null,
               inputAction: TextInputAction.done,

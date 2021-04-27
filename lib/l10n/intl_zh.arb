@@ -1,5 +1,6 @@
 {
-    "helloWorld": "世界, 你好!",
+    "hello": "你好",
+    "welcome": "歡迎",
     "homePage": "主頁",
     "explorePage": "探索",
     "searchPage": "瀏覽",
@@ -20,6 +21,7 @@
     "schinese": "簡體中文",
     "english": "English",
     "followSystem": "跟隨系統",
+    "followSystem2": "跟隨系統/System",
     "terms": "條款及細則",
     "about": "關於",
     "labor": "實驗室功能",
@@ -45,5 +47,24 @@
     "no": "否",
     "confirm": "確認",
     "cancel": "取消",
-    "upload": "上傳"
+    "upload": "上傳",
+    "locate": "定位",
+    "search": "搜索",
+    "laborLongText": "以下功能處於實驗性階段(測試階段)或尚未啓用",
+    "refreshText": "下拉刷新",
+    "refreshReadyText": "鬆開開始刷新",
+    "refreshingText": "正在刷新...",
+    "refreshedText": "刷新完成",
+    "loadMoreText": "上拉加載更多",
+    "loadReadyText": "鬆開開始加載",
+    "loadingText": "正在加載...",
+    "loadedText": "加載完成",
+    "noMoreText": "沒有更多內容了",
+    "emailRequired": "請輸入電郵地址",
+    "passwordRequired": "是不是忘記填密碼了?",
+    "passwordNoMatch": "輸入的密碼不相符",
+    "emailValid": "請輸入有效的電郵地址",
+    "passwordValid": "請設定 8 個字元以上的密碼",
+    "minPasswordValid": "密碼必須包含 1 個或以上數字"
+
 }

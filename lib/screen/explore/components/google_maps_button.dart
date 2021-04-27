@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hotelapp/common/utils/device_utils.dart';
 
 class GoogleMapsButton extends StatelessWidget {
@@ -21,7 +22,7 @@ class GoogleMapsButton extends StatelessWidget {
           child: Column(
             children: [
               FloatingActionButton(
-                tooltip: 'Locate',
+                tooltip: AppLocalizations.of(context).locate,
                 heroTag: 'lctbtn',
                 onPressed: locate,
                 child: Icon(Icons.my_location),

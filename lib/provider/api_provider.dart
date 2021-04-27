@@ -2,13 +2,12 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hotelapp/common/constants/constants.dart';
 import 'package:flutter_hotelapp/common/constants/rest_api.dart';
 import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
+import 'package:flutter_hotelapp/common/utils/locale_utils.dart';
 import 'package:flutter_hotelapp/common/utils/logger_utils.dart';
 import 'package:flutter_hotelapp/models/tree_data.dart' as tree;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:hive/hive.dart';
 
 enum Language { HK, EN, CN }
 enum Result { ERROR, SUCCESS }
@@ -22,9 +21,6 @@ class ApiProvider extends ChangeNotifier {
   bool isLoading = false;
   List<tree.Result> _listData = [];
   tree.Result data;
-
-  // 獲取當前軟件語言
-  var box = Hive.box(Constant.box);
 
   Dio dio = Dio(BaseOptions(
     baseUrl: RestApi.localUrl,
@@ -61,7 +57,7 @@ class ApiProvider extends ChangeNotifier {
       await dio.post(url, data: data).then((response) async {
         final aiResult = response.data.toString();
 
-        final String locale = box.get(Constant.locale);
+        final String locale = LocaleUtils.getLocale;
         // 如果 list 爲空, 或是當前儲存得語言和新抓得語言不相同(既用戶轉語言)
         if (_listData.isEmpty || _locale != locale) {
           //清空 list
@@ -100,7 +96,7 @@ class ApiProvider extends ChangeNotifier {
 
     final url = '/flora/tree/';
 
-    final String locale = box.get(Constant.locale);
+    final String locale = LocaleUtils.getLocale;
     // 儲存語言資料, 用作下次對比
     _locale = locale;
 

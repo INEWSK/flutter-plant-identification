@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
@@ -115,8 +116,17 @@ class _InfoApiListState extends State<InfoApiList> {
             _refreshController.finishLoad();
           }),
           //之後在此自定義文字
-          header: ClassicalHeader(),
-          footer: ClassicalFooter(),
+          header: ClassicalHeader(
+              refreshText: AppLocalizations.of(context).refreshText,
+              refreshReadyText: AppLocalizations.of(context).refreshReadyText,
+              refreshingText: AppLocalizations.of(context).refreshingText,
+              refreshedText: AppLocalizations.of(context).refreshedText),
+          footer: ClassicalFooter(
+            loadText: AppLocalizations.of(context).loadMoreText,
+            loadReadyText: AppLocalizations.of(context).loadReadyText,
+            loadingText: AppLocalizations.of(context).loadingText,
+            loadedText: AppLocalizations.of(context).loadedText,
+          ),
         );
       },
     );

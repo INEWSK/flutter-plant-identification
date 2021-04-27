@@ -2,12 +2,11 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_hotelapp/common/constants/constants.dart';
 import 'package:flutter_hotelapp/common/constants/rest_api.dart';
 import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
+import 'package:flutter_hotelapp/common/utils/locale_utils.dart';
 import 'package:flutter_hotelapp/common/utils/logger_utils.dart';
 import 'package:flutter_hotelapp/models/tree_info.dart' as info;
-import 'package:hive/hive.dart';
 
 enum Status { Uninitialized, Loaded, Refresh, Error }
 
@@ -35,14 +34,10 @@ class HomeProvider extends ChangeNotifier {
   Future<bool> fetchData() async {
     final path = '${RestApi.localUrl}/flora/info/';
 
-    // 獲取當前軟件語言
-    var box = Hive.box(Constant.box);
-    final String locale = box.get(Constant.locale);
-
     try {
       final response = await dio.get(path,
           options: Options(headers: {
-            HttpHeaders.acceptLanguageHeader: locale == 'zh' ? 'zh-HK' : 'en-US'
+            HttpHeaders.acceptLanguageHeader: LocaleUtils.getLocale
           }));
 
       final data = info.treeInfoFromJson(response.data);

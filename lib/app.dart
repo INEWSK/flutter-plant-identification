@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var box = Hive.box(Constant.box);
+    // box.clear();
     // SpUtil.clear();
     final botToastBuilder = BotToastInit();
     return OKToast(

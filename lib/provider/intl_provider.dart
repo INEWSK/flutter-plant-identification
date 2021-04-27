@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_hotelapp/common/constants/constants.dart';
 import 'package:hive/hive.dart';
 
 class IntlProvider extends ChangeNotifier {
+  String defaultLocale = Platform.localeName;
   var box = Hive.box('box');
 
   Locale get locale {
@@ -11,7 +14,7 @@ class IntlProvider extends ChangeNotifier {
       case 'zh':
         return const Locale('zh', 'HK');
       case 'en':
-        return const Locale('en', 'US');
+        return const Locale('en', '');
       default:
         return null;
     }

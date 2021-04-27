@@ -247,7 +247,7 @@ class SettingsScreen extends StatelessWidget {
         localeMode = 'English';
         break;
       default:
-        localeMode = '跟随系统';
+        localeMode = AppLocalizations.of(context).followSystem;
     }
     return localeMode;
   }

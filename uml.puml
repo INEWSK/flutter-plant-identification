@@ -1,0 +1,1153 @@
+@startuml
+set namespaceSeparator ::
+
+class "flutter_hotelapp::app.dart::MyApp" {
+  +Widget* home
+  +Theme* theme
+  +Widget* build()
+}
+
+"flutter_hotelapp::app.dart::MyApp" o-- "flutter::src::widgets::framework.dart::Widget*"
+"flutter_hotelapp::app.dart::MyApp" o-- "flutter::src::material::theme.dart::Theme*"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::app.dart::MyApp"
+
+class "flutter_hotelapp::common::constants::constants.dart::Constant" {
+  {static} +bool* inProduction
+  {static} +bool* isDriverTest
+  {static} +bool* isUnitTest
+  {static} +String* box
+  {static} +String* authBox
+  {static} +String* data
+  {static} +String* message
+  {static} +String* code
+  {static} +String* userAvatar
+  {static} +String* username
+  {static} +String* email
+  {static} +String* admin
+  {static} +String* accessToken
+  {static} +String* refreshToken
+  {static} +String* theme
+  {static} +String* locale
+  {static} +String* seen
+}
+
+class "flutter_hotelapp::common::constants::rest_api.dart::RestApi" {
+  {static} +String* azureUrl
+  {static} +String* localUrl
+  {static} +String* vtcUrl
+}
+
+class "flutter_hotelapp::common::utils::device_utils.dart::Device" {
+  {static} +bool* isDesktop
+  {static} +bool* isMobile
+  {static} +bool* isWeb
+  {static} +bool* isWindows
+  {static} +bool* isLinux
+  {static} +bool* isMacOS
+  {static} +bool* isAndroid
+  {static} +bool* isFuchsia
+  {static} +bool* isIOS
+}
+
+class "flutter_hotelapp::common::utils::dio_exceptions.dart::DioExceptions" {
+  {static} +String* UNKNOWN
+  {static} +String* PARSE_ERROR
+  {static} +String* NETWORK_ERROR
+  {static} +String* HTTP_ERROR
+  {static} +String* SSL_ERROR
+  {static} +String* CONNECT_TIMEOUT
+  {static} +String* RECEIVE_TIMEOUT
+  {static} +String* SEND_TIMEOUT
+  {static} +String* CANCEL
+  -String* _message
+  -String* _code
+  +String* messge
+  +String* code
+  -String* _handleError()
+  +String* toString()
+}
+
+"dart::core::Exception" <|-- "flutter_hotelapp::common::utils::dio_exceptions.dart::DioExceptions"
+
+class "flutter_hotelapp::common::utils::dio_utils.dart::DioUtils" {
+  {static} +Dio* dio
+  {static} +int* CONNECT_TIMEOUT
+  {static} +int* RECEIVE_TIMEOUT
+  {static} +String* GET
+  {static} +String* POST
+  {static} +String* PUT
+  {static} +String* PATCH
+  {static} +String* DELETE
+  {static} +Dio* createInstance()
+  {static} +dynamic clear()
+  {static} +void getHttp()
+  {static} +void postHttp()
+  {static} +void requestHttp()
+}
+
+"flutter_hotelapp::common::utils::dio_utils.dart::DioUtils" o-- "dio::src::dio.dart::Dio*"
+
+class "flutter_hotelapp::common::utils::global_snackbar.dart::GlobalSnackBar" {
+  +String* message
+  {static} +dynamic show()
+}
+
+class "flutter_hotelapp::common::utils::image_utils.dart::ImageFormat" {
+  +int* index
+  {static} +List<ImageFormat*>* values
+  {static} +ImageFormat* png
+  {static} +ImageFormat* jpg
+  {static} +ImageFormat* gif
+  {static} +ImageFormat* webp
+}
+
+"flutter_hotelapp::common::utils::image_utils.dart::ImageFormat" o-- "flutter_hotelapp::common::utils::image_utils.dart::ImageFormat*"
+
+class "flutter_hotelapp::common::utils::image_utils.dart::ImageType" {
+  +int* index
+  {static} +List<ImageType*>* values
+  {static} +ImageType* network
+  {static} +ImageType* local
+}
+
+"flutter_hotelapp::common::utils::image_utils.dart::ImageType" o-- "flutter_hotelapp::common::utils::image_utils.dart::ImageType*"
+
+class "flutter_hotelapp::common::utils::image_utils.dart::ImageUtils" {
+  {static} +ImageProvider<Object*>* getAssetImage()
+  {static} +String* getImgPath()
+  {static} +ImageProvider<Object*>* getImageProvider()
+}
+
+class "flutter_hotelapp::common::utils::loading_utils.dart::LoadingUtils" {
+  {static} +dynamic show()
+  {static} +dynamic cancel()
+}
+
+class "flutter_hotelapp::common::utils::local_notification.dart::LocalNotification" {
+  {static} +Future<dynamic>* show()
+}
+
+class "flutter_hotelapp::common::utils::logger_utils.dart::Type" {
+  +int* index
+  {static} +List<Type*>* values
+  {static} +Type* Verbose
+  {static} +Type* Debug
+  {static} +Type* Info
+  {static} +Type* Warning
+  {static} +Type* Error
+  {static} +Type* WTF
+}
+
+"flutter_hotelapp::common::utils::logger_utils.dart::Type" o-- "flutter_hotelapp::common::utils::logger_utils.dart::Type*"
+
+class "flutter_hotelapp::common::utils::logger_utils.dart::LoggerUtils" {
+  {static} +void show()
+}
+
+class "flutter_hotelapp::common::utils::screen_utils.dart::Screen" {
+  {static} -double* _ppi
+  {static} +bool* isLandscape()
+  {static} +Size* size()
+  {static} +double* width()
+  {static} +double* height()
+  {static} +double* diagonal()
+  {static} +Size* inches()
+  {static} +double* widthInches()
+  {static} +double* heightInches()
+  {static} +double* diagonalInches()
+}
+
+class "flutter_hotelapp::common::utils::toast_utils.dart::Toast" {
+  {static} +void show()
+  {static} +void notification()
+  {static} +void error()
+  {static} +void cancel()
+}
+
+class "flutter_hotelapp::models::tree_data.dart::TreeData" {
+  +int* count
+  +dynamic next
+  +dynamic previous
+  +List<Result*>* results
+  +Map<String*, dynamic>* toJson()
+}
+
+class "flutter_hotelapp::models::tree_data.dart::Result" {
+  +int* id
+  +String* folderName
+  +String* scientificName
+  +String* commonName
+  +String* introduction
+  +String* specialFeatures
+  +String* toLearnMore
+  +String* family
+  +String* height
+  +String* natureOfLeaf
+  +String* branch
+  +String* bark
+  +String* leaf
+  +String* flower
+  +String* fruit
+  +DateTime* dateCreated
+  +List<TreeImage*>* treeImages
+  +List<TreeLocation*>* treeLocations
+  +Map<String*, dynamic>* toJson()
+}
+
+class "flutter_hotelapp::models::tree_data.dart::TreeImage" {
+  +int* id
+  +String* treeImage
+  +DateTime* dateCreated
+  +int* tree
+  +Map<String*, dynamic>* toJson()
+}
+
+class "flutter_hotelapp::models::tree_data.dart::TreeLocation" {
+  +int* id
+  +String* treeImage
+  +double* treeLat
+  +double* treeLong
+  +DateTime* dateCreated
+  +int* tree
+  +Map<String*, dynamic>* toJson()
+}
+
+class "flutter_hotelapp::models::tree_info.dart::TreeInfo" {
+  +int* count
+  +dynamic next
+  +dynamic previous
+  +List<Result*>* results
+  +Map<String*, dynamic>* toJson()
+}
+
+class "flutter_hotelapp::models::tree_info.dart::Result" {
+  +String* infoType
+  +String* title
+  +String* content
+  +DateTime* dateCreated
+  +List<InfoImage*>* infoImages
+  +Map<String*, dynamic>* toJson()
+}
+
+class "flutter_hotelapp::models::tree_info.dart::InfoImage" {
+  +int* id
+  +String* infoImage
+  +DateTime* dateCreated
+  +int* info
+  +Map<String*, dynamic>* toJson()
+}
+
+class "flutter_hotelapp::models::tree_result.dart::TreeResult" {
+  +double* confidence
+  +int* id
+  +String* label
+}
+
+class "flutter_hotelapp::models::user.dart::User" {
+  +String* username
+  +String* email
+  +String* token
+  +bool* admin
+  +Map<String*, dynamic>* toJson()
+}
+
+class "flutter_hotelapp::provider::api_provider.dart::Language" {
+  +int* index
+  {static} +List<Language*>* values
+  {static} +Language* HK
+  {static} +Language* EN
+  {static} +Language* CN
+}
+
+"flutter_hotelapp::provider::api_provider.dart::Language" o-- "flutter_hotelapp::provider::api_provider.dart::Language*"
+
+class "flutter_hotelapp::provider::api_provider.dart::Result" {
+  +int* index
+  {static} +List<Result*>* values
+  {static} +Result* ERROR
+  {static} +Result* SUCCESS
+}
+
+"flutter_hotelapp::provider::api_provider.dart::Result" o-- "flutter_hotelapp::provider::api_provider.dart::Result*"
+
+class "flutter_hotelapp::provider::api_provider.dart::ApiProvider" {
+  +UniqueKey* key
+  +FlutterLocalNotificationsPlugin* flutterLocalNotificationsPlugin
+  -String* _locale
+  +bool* isLoading
+  -List<Result*>* _listData
+  +Result* data
+  +Box<dynamic>* box
+  +Dio* dio
+  +Future<Map<dynamic, dynamic>*>* upload()
+  -Future<bool*>* _fetchTreeData()
+  -Future<Result*>* _test()
+}
+
+"flutter_hotelapp::provider::api_provider.dart::ApiProvider" o-- "flutter::src::widgets::framework.dart::UniqueKey*"
+"flutter_hotelapp::provider::api_provider.dart::ApiProvider" o-- "flutter_local_notifications::src::flutter_local_notifications_plugin.dart::FlutterLocalNotificationsPlugin*"
+"flutter_hotelapp::provider::api_provider.dart::ApiProvider" o-- "flutter_hotelapp::models::tree_data.dart::Result*"
+"flutter_hotelapp::provider::api_provider.dart::ApiProvider" o-- "hive::hive.dart::Box<dynamic>*"
+"flutter_hotelapp::provider::api_provider.dart::ApiProvider" o-- "dio::src::dio.dart::Dio*"
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "flutter_hotelapp::provider::api_provider.dart::ApiProvider"
+
+class "flutter_hotelapp::provider::auth_provider.dart::Status" {
+  +int* index
+  {static} +List<Status*>* values
+  {static} +Status* Uninitialized
+  {static} +Status* Authenticated
+  {static} +Status* Authenticating
+  {static} +Status* Unauthenticated
+}
+
+"flutter_hotelapp::provider::auth_provider.dart::Status" o-- "flutter_hotelapp::provider::auth_provider.dart::Status*"
+
+class "flutter_hotelapp::provider::auth_provider.dart::AuthProvider" {
+  -Status* _status
+  -String* _token
+  -String* _username
+  -String* _email
+  -ImageProvider<Object*>* _image
+  -bool* _admin
+  +Dio* dio
+  +dynamic status
+  +dynamic token
+  +dynamic username
+  +dynamic email
+  +dynamic admin
+  +dynamic image
+  +dynamic initAuthProvider()
+  +dynamic updateProfilePicture()
+  +Future<Map<dynamic, dynamic>*>* signIn()
+  +Future<Map<dynamic, dynamic>*>* signUp()
+  +Future<void>* storeUserData()
+  +Future<void>* getUserData()
+  +Future<String*>* getToken()
+  +Future<void>* getImage()
+  +Future<String*>* getUserFolder()
+  +void signOut()
+}
+
+"flutter_hotelapp::provider::auth_provider.dart::AuthProvider" o-- "flutter_hotelapp::provider::auth_provider.dart::Status*"
+"flutter_hotelapp::provider::auth_provider.dart::AuthProvider" o-- "flutter::src::painting::image_provider.dart::ImageProvider<Object*>*"
+"flutter_hotelapp::provider::auth_provider.dart::AuthProvider" o-- "dio::src::dio.dart::Dio*"
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "flutter_hotelapp::provider::auth_provider.dart::AuthProvider"
+
+class "flutter_hotelapp::provider::intl_provider.dart::IntlProvider" {
+  +Box<dynamic>* box
+  +Locale* locale
+  +void setLocale()
+}
+
+"flutter_hotelapp::provider::intl_provider.dart::IntlProvider" o-- "hive::hive.dart::Box<dynamic>*"
+"flutter_hotelapp::provider::intl_provider.dart::IntlProvider" o-- "dart::ui::Locale*"
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "flutter_hotelapp::provider::intl_provider.dart::IntlProvider"
+
+class "flutter_hotelapp::provider::theme_provider.dart::ThemeProvider" {
+  +Box<dynamic>* box
+  +void syncTheme()
+  +void setTheme()
+  +ThemeMode* getThemeMode()
+}
+
+"flutter_hotelapp::provider::theme_provider.dart::ThemeProvider" o-- "hive::hive.dart::Box<dynamic>*"
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "flutter_hotelapp::provider::theme_provider.dart::ThemeProvider"
+
+class "flutter_hotelapp::routes::routes.dart::Routes" {
+  {static} +String* intro
+  {static} +String* main
+  {static} +String* signIn
+  {static} +String* signUp
+  {static} +String* forgot
+  {static} +String* emailSent
+  {static} +String* settings
+  {static} +String* agreement
+  {static} +String* fqa
+  {static} +String* labor
+  {static} +String* tensorflow
+  {static} +String* mlkit
+  {static} +Map<String*, Widget* Function(BuildContext*)*>* routes
+}
+
+class "flutter_hotelapp::screen::agreement::agreement_screen.dart::AgreementScreen" {
+  +Widget* build()
+  -dynamic _text()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::agreement::agreement_screen.dart::AgreementScreen"
+
+class "flutter_hotelapp::screen::auth::forgot::components::forgot_form.dart::ForgotForm" {
+  +_ForgotFormState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "flutter_hotelapp::screen::auth::forgot::components::forgot_form.dart::ForgotForm"
+
+class "flutter_hotelapp::screen::auth::forgot::components::forgot_form.dart::_ForgotFormState" {
+  -GlobalKey<FormState*>* _formKey
+  -String* _email
+  +dynamic kTextFieldPadding
+  +Widget* build()
+}
+
+"flutter_hotelapp::screen::auth::forgot::components::forgot_form.dart::_ForgotFormState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState*>*"
+"flutter::src::widgets::framework.dart::State" <|-- "flutter_hotelapp::screen::auth::forgot::components::forgot_form.dart::_ForgotFormState"
+
+class "flutter_hotelapp::screen::auth::forgot::email_sent_screen.dart::EmailSentScreen" {
+  +Widget* build()
+  -Widget* _body()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::auth::forgot::email_sent_screen.dart::EmailSentScreen"
+
+class "flutter_hotelapp::screen::auth::forgot::forgot_screen.dart::ForgotScreen" {
+  +Widget* build()
+  -Widget* _body()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::auth::forgot::forgot_screen.dart::ForgotScreen"
+
+class "flutter_hotelapp::screen::auth::sign_in::components::create_account_button.dart::CreateAccountButton" {
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::auth::sign_in::components::create_account_button.dart::CreateAccountButton"
+
+class "flutter_hotelapp::screen::auth::sign_in::components::forgot_button.dart::ForgotButton" {
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::auth::sign_in::components::forgot_button.dart::ForgotButton"
+
+class "flutter_hotelapp::screen::auth::sign_in::components::or_divider.dart::OrDivider" {
+  +Widget* build()
+  +Expanded* buildDivider()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::auth::sign_in::components::or_divider.dart::OrDivider"
+
+class "flutter_hotelapp::screen::auth::sign_in::components::sign_in_form.dart::SignInForm" {
+  +_SignInFormState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "flutter_hotelapp::screen::auth::sign_in::components::sign_in_form.dart::SignInForm"
+
+class "flutter_hotelapp::screen::auth::sign_in::components::sign_in_form.dart::_SignInFormState" {
+  -GlobalKey<FormState*>* _formKey
+  -TextEditingController* _emailController
+  -TextEditingController* _passwordController
+  -AutovalidateMode* _validateMode
+  -bool* _obscureText
+  -bool* _clearButton
+  -String* _email
+  -String* _password
+  +void initState()
+  +void dispose()
+  -bool* _formValidate()
+  -dynamic _formSubmit()
+  -void _hideKeyboard()
+  +Widget* build()
+}
+
+"flutter_hotelapp::screen::auth::sign_in::components::sign_in_form.dart::_SignInFormState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState*>*"
+"flutter_hotelapp::screen::auth::sign_in::components::sign_in_form.dart::_SignInFormState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController*"
+"flutter_hotelapp::screen::auth::sign_in::components::sign_in_form.dart::_SignInFormState" o-- "flutter::src::widgets::form.dart::AutovalidateMode*"
+"flutter::src::widgets::framework.dart::State" <|-- "flutter_hotelapp::screen::auth::sign_in::components::sign_in_form.dart::_SignInFormState"
+
+class "flutter_hotelapp::screen::auth::sign_in::components::social_auth_button.dart::SocialAuthButton" {
+  +_SocialAuthButtonState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "flutter_hotelapp::screen::auth::sign_in::components::social_auth_button.dart::SocialAuthButton"
+
+class "flutter_hotelapp::screen::auth::sign_in::components::social_auth_button.dart::_SocialAuthButtonState" {
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "flutter_hotelapp::screen::auth::sign_in::components::social_auth_button.dart::_SocialAuthButtonState"
+
+class "flutter_hotelapp::screen::auth::sign_in::sign_in_screen.dart::SignInScreen" {
+  +Widget* build()
+  -Widget* _body()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::auth::sign_in::sign_in_screen.dart::SignInScreen"
+
+class "flutter_hotelapp::screen::auth::sign_up::components::agreement_button.dart::AgreementButton" {
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::auth::sign_up::components::agreement_button.dart::AgreementButton"
+
+class "flutter_hotelapp::screen::auth::sign_up::components::sign_in_button.dart::SignInButton" {
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::auth::sign_up::components::sign_in_button.dart::SignInButton"
+
+class "flutter_hotelapp::screen::auth::sign_up::components::sign_up_form.dart::SignUpForm" {
+  +_SignUpFormState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "flutter_hotelapp::screen::auth::sign_up::components::sign_up_form.dart::SignUpForm"
+
+class "flutter_hotelapp::screen::auth::sign_up::components::sign_up_form.dart::_SignUpFormState" {
+  -GlobalKey<FormState*>* _formKey
+  -TextEditingController* _emailController
+  -TextEditingController* _passwordController
+  -AutovalidateMode* _validateMode
+  -bool* _obscureText
+  -bool* _clearButton
+  -String* _email
+  -String* _password
+  -String* _confirmPassword
+  +Map<dynamic, dynamic>* response
+  +void initState()
+  +void dispose()
+  -bool* _formValidate()
+  -Future<void>* _formSubmit()
+  -void _hideKeyboard()
+  +Widget* build()
+}
+
+"flutter_hotelapp::screen::auth::sign_up::components::sign_up_form.dart::_SignUpFormState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState*>*"
+"flutter_hotelapp::screen::auth::sign_up::components::sign_up_form.dart::_SignUpFormState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController*"
+"flutter_hotelapp::screen::auth::sign_up::components::sign_up_form.dart::_SignUpFormState" o-- "flutter::src::widgets::form.dart::AutovalidateMode*"
+"flutter::src::widgets::framework.dart::State" <|-- "flutter_hotelapp::screen::auth::sign_up::components::sign_up_form.dart::_SignUpFormState"
+
+class "flutter_hotelapp::screen::auth::sign_up::sign_up_screen.dart::SignUpScreen" {
+  +Widget* build()
+  -Widget* _body()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::auth::sign_up::sign_up_screen.dart::SignUpScreen"
+
+class "flutter_hotelapp::screen::auth::widgets::auth_background.dart::AuthBackground" {
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::auth::widgets::auth_background.dart::AuthBackground"
+
+class "flutter_hotelapp::screen::auth::widgets::auth_form_field.dart::AuthFormField" {
+  +TextEditingController* controller
+  +int* maxLength
+  +AutovalidateMode* validateMode
+  +Function* validator
+  +Function* onSaved
+  +Function* onChanged
+  +TextInputAction* inputAction
+  +void Function()* editCompleted
+  +TextInputType* inputType
+  +bool* obscureText
+  +String* hintText
+  +Widget* prefixIcon
+  +Widget* suffixIcon
+  +dynamic kTextFieldPadding
+  +Widget* build()
+}
+
+"flutter_hotelapp::screen::auth::widgets::auth_form_field.dart::AuthFormField" o-- "flutter::src::widgets::editable_text.dart::TextEditingController*"
+"flutter_hotelapp::screen::auth::widgets::auth_form_field.dart::AuthFormField" o-- "flutter::src::widgets::form.dart::AutovalidateMode*"
+"flutter_hotelapp::screen::auth::widgets::auth_form_field.dart::AuthFormField" o-- "flutter::src::services::text_input.dart::TextInputAction*"
+"flutter_hotelapp::screen::auth::widgets::auth_form_field.dart::AuthFormField" o-- "dart::ui::void Function()*"
+"flutter_hotelapp::screen::auth::widgets::auth_form_field.dart::AuthFormField" o-- "flutter::src::services::text_input.dart::TextInputType*"
+"flutter_hotelapp::screen::auth::widgets::auth_form_field.dart::AuthFormField" o-- "flutter::src::widgets::framework.dart::Widget*"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::auth::widgets::auth_form_field.dart::AuthFormField"
+
+class "flutter_hotelapp::screen::auth::widgets::welcome_text.dart::WelcomeText" {
+  +String* title
+  +String* text
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::auth::widgets::welcome_text.dart::WelcomeText"
+
+class "flutter_hotelapp::screen::common_widgets::bottom_nav_bar.dart::BottomNavBar" {
+  +Function* onTap
+  +int* index
+  +Widget* build()
+  -Widget* _buildNavbarIcon()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::common_widgets::bottom_nav_bar.dart::BottomNavBar"
+
+class "flutter_hotelapp::screen::common_widgets::circular_indicator.dart::CircularIndicator" {
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::common_widgets::circular_indicator.dart::CircularIndicator"
+
+class "flutter_hotelapp::screen::common_widgets::dot_indicator.dart::DotIndicator" {
+  +bool* isActive
+  +Color* activeColor
+  +Color* inActiveColor
+  +Widget* build()
+}
+
+"flutter_hotelapp::screen::common_widgets::dot_indicator.dart::DotIndicator" o-- "dart::ui::Color*"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::common_widgets::dot_indicator.dart::DotIndicator"
+
+class "flutter_hotelapp::screen::common_widgets::double_back_exit_app.dart::DoubleBackExitApp" {
+  +Widget* child
+  +Duration* duration
+  +String* message
+  +_DoubleBackExitAppState* createState()
+}
+
+"flutter_hotelapp::screen::common_widgets::double_back_exit_app.dart::DoubleBackExitApp" o-- "flutter::src::widgets::framework.dart::Widget*"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "flutter_hotelapp::screen::common_widgets::double_back_exit_app.dart::DoubleBackExitApp"
+
+class "flutter_hotelapp::screen::common_widgets::double_back_exit_app.dart::_DoubleBackExitAppState" {
+  -DateTime* _lastTime
+  +Widget* build()
+  -Future<bool*>* _isExit()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "flutter_hotelapp::screen::common_widgets::double_back_exit_app.dart::_DoubleBackExitAppState"
+
+class "flutter_hotelapp::screen::common_widgets::fab.dart::FAB" {
+  -void _pickImage()
+  -Future<void>* _uploadImage()
+  -Future<bool*>* _viewImage()
+  -void _resultToast()
+  +Widget* build()
+  -Widget* _imageSourceOption()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::common_widgets::fab.dart::FAB"
+
+class "flutter_hotelapp::screen::common_widgets::primary_button.dart::PrimaryButton" {
+  +String* text
+  +void Function()* press
+  +Widget* build()
+  +Text* textContext()
+}
+
+"flutter_hotelapp::screen::common_widgets::primary_button.dart::PrimaryButton" o-- "flutter::src::gestures::tap.dart::void Function()*"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::common_widgets::primary_button.dart::PrimaryButton"
+
+class "flutter_hotelapp::screen::common_widgets::search_bar.dart::SearchBar" {
+  +List<String*>* searchResult
+  +List<Widget*>* buildActions()
+  +Widget* buildLeading()
+  +Widget* buildResults()
+  +Widget* buildSuggestions()
+}
+
+"flutter::src::material::search.dart::SearchDelegate" <|-- "flutter_hotelapp::screen::common_widgets::search_bar.dart::SearchBar"
+
+class "flutter_hotelapp::screen::detail::components::detail_page_widget.dart::DetailPageWidget" {
+  +String* treeImage
+  +String* commonName
+  +String* scientificName
+  +String* basicIntro
+  +String* specialFeatures
+  +String* learnMore
+  +String* leafIntro
+  +String* flowerIntro
+  +String* fruitIntro
+  +String* cFamily
+  +String* cHeight
+  +String* cNatureLeaf
+  +String* cBranch
+  +String* cBark
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::detail::components::detail_page_widget.dart::DetailPageWidget"
+
+class "flutter_hotelapp::screen::detail::components::detail_page_widget.dart::CharacteristicTable" {
+  +String* family
+  +String* height
+  +String* nature
+  +String* branch
+  +String* bark
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::detail::components::detail_page_widget.dart::CharacteristicTable"
+
+class "flutter_hotelapp::screen::detail::components::detail_page_widget.dart::SectionDivider" {
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::detail::components::detail_page_widget.dart::SectionDivider"
+
+class "flutter_hotelapp::screen::detail::components::section_cell.dart::SectionCell" {
+  +SvgPicture* icon
+  +String* title
+  +String* content
+  +Widget* build()
+}
+
+"flutter_hotelapp::screen::detail::components::section_cell.dart::SectionCell" o-- "flutter_svg::svg.dart::SvgPicture*"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::detail::components::section_cell.dart::SectionCell"
+
+class "flutter_hotelapp::screen::detail::components::section_cell.dart::SectionDivider" {
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::detail::components::section_cell.dart::SectionDivider"
+
+class "flutter_hotelapp::screen::detail::detail_screen.dart::DetailScreen" {
+  +Result* data
+  +_DetailScreenState* createState()
+}
+
+"flutter_hotelapp::screen::detail::detail_screen.dart::DetailScreen" o-- "flutter_hotelapp::models::tree_data.dart::Result*"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "flutter_hotelapp::screen::detail::detail_screen.dart::DetailScreen"
+
+class "flutter_hotelapp::screen::detail::detail_screen.dart::_DetailScreenState" {
+  +void initState()
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "flutter_hotelapp::screen::detail::detail_screen.dart::_DetailScreenState"
+
+class "flutter_hotelapp::screen::explore::components::google_maps.dart::GoogleMaps" {
+  +_GoogleMapsState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "flutter_hotelapp::screen::explore::components::google_maps.dart::GoogleMaps"
+
+class "flutter_hotelapp::screen::explore::components::google_maps.dart::_GoogleMapsState" {
+  -LatLng* _hongKong
+  +void dispose()
+  +void initState()
+  -void _setMarker()
+  +void initGoogleMapsMarker()
+  +Widget* build()
+}
+
+"flutter_hotelapp::screen::explore::components::google_maps.dart::_GoogleMapsState" o-- "google_maps_flutter_platform_interface::src::types::location.dart::LatLng*"
+"flutter::src::widgets::framework.dart::State" <|-- "flutter_hotelapp::screen::explore::components::google_maps.dart::_GoogleMapsState"
+
+class "flutter_hotelapp::screen::explore::components::google_maps_button.dart::GoogleMapsButton" {
+  +void Function()* locate
+  +void Function()* refresh
+  +Widget* build()
+}
+
+"flutter_hotelapp::screen::explore::components::google_maps_button.dart::GoogleMapsButton" o-- "dart::ui::void Function()*"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::explore::components::google_maps_button.dart::GoogleMapsButton"
+
+class "flutter_hotelapp::screen::explore::components::map_bottom_pill.dart::MapBottomPill" {
+  +bool* isVisible
+  +Result* data
+  +Widget* build()
+  -dynamic _image()
+  -Future<Map<dynamic, dynamic>*>* _getImage()
+}
+
+"flutter_hotelapp::screen::explore::components::map_bottom_pill.dart::MapBottomPill" o-- "flutter_hotelapp::models::tree_data.dart::Result*"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::explore::components::map_bottom_pill.dart::MapBottomPill"
+
+class "flutter_hotelapp::screen::explore::components::permit_error_page.dart::PermitErrorPage" {
+  +void Function()* press
+  +Widget* build()
+}
+
+"flutter_hotelapp::screen::explore::components::permit_error_page.dart::PermitErrorPage" o-- "dart::ui::void Function()*"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::explore::components::permit_error_page.dart::PermitErrorPage"
+
+class "flutter_hotelapp::screen::explore::explore_screen.dart::ExploreScreen" {
+  +_ExploreScreenState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "flutter_hotelapp::screen::explore::explore_screen.dart::ExploreScreen"
+
+class "flutter_hotelapp::screen::explore::explore_screen.dart::_ExploreScreenState" {
+  +ChangeNotifierProvider<PermissionProvider*>* permitProvider
+  +ChangeNotifierProvider<GoogleMapsProvider*>* googleMapProvider
+  +bool* wantKeepAlive
+  +Widget* build()
+  -Widget* _body()
+}
+
+"flutter_hotelapp::screen::explore::explore_screen.dart::_ExploreScreenState" o-- "provider::src::change_notifier_provider.dart::ChangeNotifierProvider<PermissionProvider*>*"
+"flutter_hotelapp::screen::explore::explore_screen.dart::_ExploreScreenState" o-- "provider::src::change_notifier_provider.dart::ChangeNotifierProvider<GoogleMapsProvider*>*"
+"flutter::src::widgets::framework.dart::State" <|-- "flutter_hotelapp::screen::explore::explore_screen.dart::_ExploreScreenState"
+"flutter::src::widgets::automatic_keep_alive.dart::AutomaticKeepAliveClientMixin" <|-- "flutter_hotelapp::screen::explore::explore_screen.dart::_ExploreScreenState"
+
+class "flutter_hotelapp::screen::explore::provider::google_maps_provider.dart::GoogleMapsProvider" {
+  -GoogleMapController* _mapController
+  -List<Result*>* _data
+  -List<Marker*>* _markers
+  -BitmapDescriptor* _markerIcon
+  -bool* _isPillVisible
+  -Result* _pillData
+  +dynamic mapController
+  +dynamic markers
+  +dynamic pillData
+  +dynamic visible
+  +dynamic data
+  +dynamic icon
+  +Future<Map<dynamic, dynamic>*>* fetchMarkerData()
+  -Future<Uint8List*>* _getBytesFromAsset()
+  +Future<void>* initMarkerIcon()
+  +void locatePosition()
+  +void onMapCreated()
+  +void getPillData()
+  +void isShowPill()
+  +void dispose()
+}
+
+"flutter_hotelapp::screen::explore::provider::google_maps_provider.dart::GoogleMapsProvider" o-- "google_maps_flutter::google_maps_flutter.dart::GoogleMapController*"
+"flutter_hotelapp::screen::explore::provider::google_maps_provider.dart::GoogleMapsProvider" o-- "google_maps_flutter_platform_interface::src::types::bitmap.dart::BitmapDescriptor*"
+"flutter_hotelapp::screen::explore::provider::google_maps_provider.dart::GoogleMapsProvider" o-- "flutter_hotelapp::models::tree_data.dart::Result*"
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "flutter_hotelapp::screen::explore::provider::google_maps_provider.dart::GoogleMapsProvider"
+
+class "flutter_hotelapp::screen::explore::provider::permission_provider.dart::Status" {
+  +int* index
+  {static} +List<Status*>* values
+  {static} +Status* Uninitialized
+  {static} +Status* Permitted
+  {static} +Status* Forbidden
+}
+
+"flutter_hotelapp::screen::explore::provider::permission_provider.dart::Status" o-- "flutter_hotelapp::screen::explore::provider::permission_provider.dart::Status*"
+
+class "flutter_hotelapp::screen::explore::provider::permission_provider.dart::PermissionProvider" {
+  -Status* _status
+  +dynamic status
+  +void detectPermisstion()
+  +void requestPermission()
+}
+
+"flutter_hotelapp::screen::explore::provider::permission_provider.dart::PermissionProvider" o-- "flutter_hotelapp::screen::explore::provider::permission_provider.dart::Status*"
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "flutter_hotelapp::screen::explore::provider::permission_provider.dart::PermissionProvider"
+
+class "flutter_hotelapp::screen::home::components::home_background.dart::HomeBackground" {
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::home::components::home_background.dart::HomeBackground"
+
+class "flutter_hotelapp::screen::home::components::info_api_list.dart::InfoApiList" {
+  +_InfoApiListState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "flutter_hotelapp::screen::home::components::info_api_list.dart::InfoApiList"
+
+class "flutter_hotelapp::screen::home::components::info_api_list.dart::_InfoApiListState" {
+  -EasyRefreshController* _refreshController
+  +void dispose()
+  +Widget* build()
+}
+
+"flutter_hotelapp::screen::home::components::info_api_list.dart::_InfoApiListState" o-- "flutter_easyrefresh::src::refresher.dart::EasyRefreshController*"
+"flutter::src::widgets::framework.dart::State" <|-- "flutter_hotelapp::screen::home::components::info_api_list.dart::_InfoApiListState"
+
+class "flutter_hotelapp::screen::home::components::info_demo_list.dart::InfoDemoList" {
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::home::components::info_demo_list.dart::InfoDemoList"
+
+class "flutter_hotelapp::screen::home::components::intro_card.dart::IntroCard" {
+  +String* sort
+  +String* title
+  +String* text
+  +String* image
+  +Function* press
+  +Widget* build()
+  -Widget* _image()
+  -Widget* _text()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::home::components::intro_card.dart::IntroCard"
+
+class "flutter_hotelapp::screen::home::home_screen.dart::HomeScreen" {
+  +_HomeScreenState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "flutter_hotelapp::screen::home::home_screen.dart::HomeScreen"
+
+class "flutter_hotelapp::screen::home::home_screen.dart::_HomeScreenState" {
+  +bool* wantKeepAlive
+  +Widget* build()
+  -Widget* _body()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "flutter_hotelapp::screen::home::home_screen.dart::_HomeScreenState"
+"flutter::src::widgets::automatic_keep_alive.dart::AutomaticKeepAliveClientMixin" <|-- "flutter_hotelapp::screen::home::home_screen.dart::_HomeScreenState"
+
+class "flutter_hotelapp::screen::home::provider::home_provider.dart::Status" {
+  +int* index
+  {static} +List<Status*>* values
+  {static} +Status* Uninitialized
+  {static} +Status* Loaded
+  {static} +Status* Refresh
+  {static} +Status* Error
+}
+
+"flutter_hotelapp::screen::home::provider::home_provider.dart::Status" o-- "flutter_hotelapp::screen::home::provider::home_provider.dart::Status*"
+
+class "flutter_hotelapp::screen::home::provider::home_provider.dart::HomeProvider" {
+  +Status* status
+  -int* _currentPage
+  -bool* _nextPage
+  -List<Result*>* _list
+  +Dio* dio
+  +List<Result*>* list
+  +bool* haveNext
+  +Future<bool*>* fetchData()
+  +Future<bool*>* loadMore()
+  +Future<bool*>* refresh()
+}
+
+"flutter_hotelapp::screen::home::provider::home_provider.dart::HomeProvider" o-- "flutter_hotelapp::screen::home::provider::home_provider.dart::Status*"
+"flutter_hotelapp::screen::home::provider::home_provider.dart::HomeProvider" o-- "dio::src::dio.dart::Dio*"
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "flutter_hotelapp::screen::home::provider::home_provider.dart::HomeProvider"
+
+class "flutter_hotelapp::screen::labor::labor_screen.dart::LaborScreen" {
+  +Widget* build()
+  -Widget* _body()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::labor::labor_screen.dart::LaborScreen"
+
+class "flutter_hotelapp::screen::main_screen.dart::MainScreen" {
+  +State<StatefulWidget*>* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "flutter_hotelapp::screen::main_screen.dart::MainScreen"
+
+class "flutter_hotelapp::screen::main_screen.dart::_MainScreenState" {
+  +ImagePicker* picker
+  -PageController* _pageController
+  -int* _currentIndex
+  -List<StatefulWidget*>* _screens
+  +ChangeNotifierProvider<HomeProvider*>* homeScreen
+  +ChangeNotifierProvider<SearchProvider*>* searchScreen
+  +void initState()
+  +void dispose()
+  -void _onTap()
+  +void onPageChanged()
+  +Widget* build()
+}
+
+"flutter_hotelapp::screen::main_screen.dart::_MainScreenState" o-- "image_picker::image_picker.dart::ImagePicker*"
+"flutter_hotelapp::screen::main_screen.dart::_MainScreenState" o-- "flutter::src::widgets::page_view.dart::PageController*"
+"flutter_hotelapp::screen::main_screen.dart::_MainScreenState" o-- "provider::src::change_notifier_provider.dart::ChangeNotifierProvider<HomeProvider*>*"
+"flutter_hotelapp::screen::main_screen.dart::_MainScreenState" o-- "provider::src::change_notifier_provider.dart::ChangeNotifierProvider<SearchProvider*>*"
+"flutter::src::widgets::framework.dart::State" <|-- "flutter_hotelapp::screen::main_screen.dart::_MainScreenState"
+
+class "flutter_hotelapp::screen::onboarding::components::onboard_content.dart::OnBoardContent" {
+  +String* svg
+  +String* title
+  +String* text
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::onboarding::components::onboard_content.dart::OnBoardContent"
+
+class "flutter_hotelapp::screen::onboarding::onboarding_screen.dart::OnBoardingScreen" {
+  +_OnBoardingScreenState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "flutter_hotelapp::screen::onboarding::onboarding_screen.dart::OnBoardingScreen"
+
+class "flutter_hotelapp::screen::onboarding::onboarding_screen.dart::_OnBoardingScreenState" {
+  +int* currentPage
+  -void _onIntroEnd()
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "flutter_hotelapp::screen::onboarding::onboarding_screen.dart::_OnBoardingScreenState"
+
+class "flutter_hotelapp::screen::profile::components::profile_header.dart::ProfileHeader" {
+  +String* name
+  +String* email
+  +ImageProvider<Object*>* image
+  +Function* press
+  +bool* logged
+  +Widget* build()
+}
+
+"flutter_hotelapp::screen::profile::components::profile_header.dart::ProfileHeader" o-- "flutter::src::painting::image_provider.dart::ImageProvider<Object*>*"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::profile::components::profile_header.dart::ProfileHeader"
+
+class "flutter_hotelapp::screen::profile::components::profile_header.dart::HeaderClipper" {
+  +Path* getClip()
+  +bool* shouldReclip()
+}
+
+"flutter::src::rendering::proxy_box.dart::CustomClipper" <|-- "flutter_hotelapp::screen::profile::components::profile_header.dart::HeaderClipper"
+
+class "flutter_hotelapp::screen::profile::fqa_screen.dart::FQAScreen" {
+  +Widget* build()
+  -Widget* _body()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::profile::fqa_screen.dart::FQAScreen"
+
+class "flutter_hotelapp::screen::profile::fqa_screen.dart::QuestionCell" {
+  +String* title
+  +Function* press
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::profile::fqa_screen.dart::QuestionCell"
+
+class "flutter_hotelapp::screen::profile::profile_screen.dart::ProfileScreen" {
+  +_ProfileScreenState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "flutter_hotelapp::screen::profile::profile_screen.dart::ProfileScreen"
+
+class "flutter_hotelapp::screen::profile::profile_screen.dart::_ProfileScreenState" {
+  +bool* wantKeepAlive
+  -Future<void>* _toEmailDialog()
+  -Future<void>* _retrainingDialog()
+  -Future<void>* _launcherUrl()
+  +void initState()
+  +Widget* build()
+  -Widget* _body()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "flutter_hotelapp::screen::profile::profile_screen.dart::_ProfileScreenState"
+"flutter::src::widgets::automatic_keep_alive.dart::AutomaticKeepAliveClientMixin" <|-- "flutter_hotelapp::screen::profile::profile_screen.dart::_ProfileScreenState"
+
+class "flutter_hotelapp::screen::profile::provider::profile_provider.dart::ProfileProvider" {
+  -bool* _training
+  +dynamic train
+  +Future<String*>* requestRetrain()
+  -Future<void>* _backgroundService()
+}
+
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "flutter_hotelapp::screen::profile::provider::profile_provider.dart::ProfileProvider"
+
+class "flutter_hotelapp::screen::search::components::error_page.dart::ErrorPage" {
+  +Function* press
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::search::components::error_page.dart::ErrorPage"
+
+class "flutter_hotelapp::screen::search::components::shimmer_effect.dart::ShimmerEffect" {
+  +Widget* build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::search::components::shimmer_effect.dart::ShimmerEffect"
+
+class "flutter_hotelapp::screen::search::components::tree_cell.dart::TreeCell" {
+  +Result* data
+  +Function* press
+  -Widget* _image()
+  -Future<Map<dynamic, dynamic>*>* _imageUrl()
+  +Widget* build()
+}
+
+"flutter_hotelapp::screen::search::components::tree_cell.dart::TreeCell" o-- "flutter_hotelapp::models::tree_data.dart::Result*"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::search::components::tree_cell.dart::TreeCell"
+
+class "flutter_hotelapp::screen::search::components::tree_list.dart::TreeList" {
+  +_TreeListState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "flutter_hotelapp::screen::search::components::tree_list.dart::TreeList"
+
+class "flutter_hotelapp::screen::search::components::tree_list.dart::_TreeListState" {
+  -TextEditingController* _textController
+  -EasyRefreshController* _refreshController
+  -FocusNode* _focusNode
+  -bool* _clearButton
+  +void dispose()
+  +void initState()
+  -void _reset()
+  -Widget* _searchBar()
+  -Widget* _listItem()
+  +Widget* build()
+}
+
+"flutter_hotelapp::screen::search::components::tree_list.dart::_TreeListState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController*"
+"flutter_hotelapp::screen::search::components::tree_list.dart::_TreeListState" o-- "flutter_easyrefresh::src::refresher.dart::EasyRefreshController*"
+"flutter_hotelapp::screen::search::components::tree_list.dart::_TreeListState" o-- "flutter::src::widgets::focus_manager.dart::FocusNode*"
+"flutter::src::widgets::framework.dart::State" <|-- "flutter_hotelapp::screen::search::components::tree_list.dart::_TreeListState"
+
+class "flutter_hotelapp::screen::search::provider::search_provider.dart::Language" {
+  +int* index
+  {static} +List<Language*>* values
+  {static} +Language* HK
+  {static} +Language* EN
+  {static} +Language* CN
+}
+
+"flutter_hotelapp::screen::search::provider::search_provider.dart::Language" o-- "flutter_hotelapp::screen::search::provider::search_provider.dart::Language*"
+
+class "flutter_hotelapp::screen::search::provider::search_provider.dart::Status" {
+  +int* index
+  {static} +List<Status*>* values
+  {static} +Status* Uninitialized
+  {static} +Status* Loading
+  {static} +Status* Loaded
+  {static} +Status* Error
+}
+
+"flutter_hotelapp::screen::search::provider::search_provider.dart::Status" o-- "flutter_hotelapp::screen::search::provider::search_provider.dart::Status*"
+
+class "flutter_hotelapp::screen::search::provider::search_provider.dart::SearchProvider" {
+  -Status* _status
+  -int* _currentPage
+  -bool* _nextPage
+  -List<Result*>* _data
+  -List<Result*>* _displayList
+  +Dio* dio
+  +dynamic displayList
+  +dynamic status
+  +void onQueryChanged()
+  +void clear()
+  +Future<bool*>* fetchData()
+  +Future<bool*>* loadMore()
+  +Future<bool*>* refresh()
+}
+
+"flutter_hotelapp::screen::search::provider::search_provider.dart::SearchProvider" o-- "flutter_hotelapp::screen::search::provider::search_provider.dart::Status*"
+"flutter_hotelapp::screen::search::provider::search_provider.dart::SearchProvider" o-- "dio::src::dio.dart::Dio*"
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "flutter_hotelapp::screen::search::provider::search_provider.dart::SearchProvider"
+
+class "flutter_hotelapp::screen::search::search_screen.dart::SearchScreen" {
+  +_SearchScreenState* createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "flutter_hotelapp::screen::search::search_screen.dart::SearchScreen"
+
+class "flutter_hotelapp::screen::search::search_screen.dart::_SearchScreenState" {
+  +SearchProvider* provider
+  +bool* wantKeepAlive
+  -Widget* _loading()
+  +Widget* build()
+  -Widget* _body()
+}
+
+"flutter_hotelapp::screen::search::search_screen.dart::_SearchScreenState" o-- "flutter_hotelapp::screen::search::provider::search_provider.dart::SearchProvider*"
+"flutter::src::widgets::framework.dart::State" <|-- "flutter_hotelapp::screen::search::search_screen.dart::_SearchScreenState"
+"flutter::src::widgets::automatic_keep_alive.dart::AutomaticKeepAliveClientMixin" <|-- "flutter_hotelapp::screen::search::search_screen.dart::_SearchScreenState"
+
+class "flutter_hotelapp::screen::settings::settings_screen.dart::SettingsScreen" {
+  -dynamic _confirmSignOutDialog()
+  -dynamic _selectThemeDialog()
+  -dynamic _selectLanguageDialog()
+  -Widget* _themeModeOption()
+  -Widget* _languageSelect()
+  -SvgPicture* _appIcon()
+  -Widget* _signoutButton()
+  +Widget* build()
+  -Widget* _body()
+  -String* _getCurrentTheme()
+  -String* _getCurrentLocale()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::settings::settings_screen.dart::SettingsScreen"
+
+class "flutter_hotelapp::screen::view_image::view_image_screen.dart::ViewImageScreen" {
+  +File* image
+  +Widget* build()
+  -Widget* _body()
+}
+
+"flutter_hotelapp::screen::view_image::view_image_screen.dart::ViewImageScreen" o-- "dart::io::File*"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "flutter_hotelapp::screen::view_image::view_image_screen.dart::ViewImageScreen"
+
+
+@enduml

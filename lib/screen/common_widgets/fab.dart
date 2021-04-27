@@ -127,7 +127,7 @@ class FAB extends StatelessWidget {
                 size: 36,
               )
             : IconButton(
-                tooltip: 'Camera',
+                tooltip: AppLocalizations.of(context).camera,
                 icon: SvgPicture.asset(
                   'assets/icons/navbar/camera.svg',
                   color: Colors.white,

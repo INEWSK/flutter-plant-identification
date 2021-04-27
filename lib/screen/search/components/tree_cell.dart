@@ -22,17 +22,21 @@ class TreeCell extends StatelessWidget {
           final ImageType imageType = snapshot.data['imageType'];
           final String image = snapshot.data['image'];
 
-          return Container(
-            // clipBehavior: Clip.antiAlias,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: imageType == ImageType.network
-                    ? ImageUtils.getImageProvider(image)
-                    : ImageUtils.getAssetImage(image),
-                fit: BoxFit.cover,
+          return Hero(
+              child: Container(
+                // clipBehavior: Clip.antiAlias,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: imageType == ImageType.network
+                        ? ImageUtils.getImageProvider(image)
+                        : ImageUtils.getAssetImage(image),
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
-            ),
-          );
+              tag: imageType == ImageType.network
+                  ? data.treeImages.first.treeImage
+                  : 'noPhoto');
         } else {
           return Center(
             child: Padding(

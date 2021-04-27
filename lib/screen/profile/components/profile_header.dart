@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/common/utils/image_utils.dart';
 
@@ -30,13 +31,13 @@ class ProfileHeader extends StatelessWidget {
             ),
           ),
           Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Semantics(
-                  child: GestureDetector(
-                    onTap: press ?? () {},
-                    child: Container(
+            child: Semantics(
+              child: GestureDetector(
+                onTap: press ?? () {},
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
                       margin: const EdgeInsets.only(bottom: 15.0),
                       height: 128.0,
                       width: 128.0,
@@ -53,15 +54,16 @@ class ProfileHeader extends StatelessWidget {
                         ),
                       ),
                     ),
-                  ),
+                    Text(name ?? AppLocalizations.of(context).login,
+                        style: kBodyTextStyle),
+                    SizedBox(height: 10),
+                    Text(
+                      email,
+                      style: kSecondaryBodyTextStyle,
+                    )
+                  ],
                 ),
-                Text(name ?? 'Login', style: kBodyTextStyle),
-                SizedBox(height: 10),
-                Text(
-                  email,
-                  style: kSecondaryBodyTextStyle,
-                )
-              ],
+              ),
             ),
           )
         ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/common/utils/device_utils.dart';
@@ -107,7 +108,6 @@ class _TreeListState extends State<TreeList> {
                 _searchBar(model),
                 Expanded(
                   child: EasyRefresh.custom(
-                    header: DeliveryHeader(),
                     controller: _refreshController,
                     slivers: [
                       SliverList(
@@ -134,6 +134,13 @@ class _TreeListState extends State<TreeList> {
                         );
                       _refreshController.finishLoad();
                     }),
+                    header: DeliveryHeader(enableHapticFeedback: true),
+                    footer: ClassicalFooter(
+                      loadText: AppLocalizations.of(context).loadMoreText,
+                      loadingText: AppLocalizations.of(context).loadingText,
+                      loadReadyText: AppLocalizations.of(context).loadReadyText,
+                      loadedText: AppLocalizations.of(context).loadedText,
+                    ),
                   ),
                 ),
               ],

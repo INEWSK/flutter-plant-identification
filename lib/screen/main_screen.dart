@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/common/utils/device_utils.dart';
+import 'package:flutter_hotelapp/screen/common_widgets/bottom_tab_bar.dart';
 import 'package:flutter_hotelapp/screen/home/provider/home_provider.dart';
 import 'package:flutter_hotelapp/screen/search/provider/search_provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:vibration/vibration.dart';
 
-import 'common_widgets/bottom_nav_bar.dart';
 import 'common_widgets/double_back_exit_app.dart';
 import 'common_widgets/fab.dart';
+import 'common_widgets/speed_dial.dart';
 import 'explore/explore_screen.dart';
 import 'home/home_screen.dart';
 import 'profile/profile_screen.dart';
@@ -19,11 +21,13 @@ class MainScreen extends StatefulWidget {
   State<StatefulWidget> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   final picker = ImagePicker();
   final _pageController = PageController();
   // default selected
   int _currentIndex = 0;
+
+  AnimationController _controller;
 
   // screen list for navigation bar
   var _screens = [
@@ -43,11 +47,16 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: kDefaultDuration * 0.5,
+    );
   }
 
   @override
   void dispose() {
     _pageController?.dispose();
+    _controller?.dispose();
     super.dispose();
   }
 
@@ -91,10 +100,12 @@ class _MainScreenState extends State<MainScreen> {
           child: Scaffold(
             // 防止浮動按鈕隨鍵盤彈起上移
             resizeToAvoidBottomInset: false,
-            floatingActionButton: FAB(),
+            floatingActionButton: SpeedDial(
+              controller: _controller,
+            ),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
-            bottomNavigationBar: BottomNavBar(
+            bottomNavigationBar: BottomTabBar(
               index: _currentIndex,
               onTap: _onTap,
             ),

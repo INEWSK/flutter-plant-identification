@@ -58,7 +58,8 @@ class ApiProvider extends ChangeNotifier {
         final aiResult = response.data.toString();
 
         final String locale = LocaleUtils.getLocale;
-        // 如果 list 爲空, 或是當前儲存得語言和新抓得語言不相同(既用戶轉語言)
+        // 如果 list 爲空 或
+        // 是當前var儲存的locale和新抓得locale不相同(即用戶轉語言)
         if (_listData.isEmpty || _locale != locale) {
           //清空 list
           _listData.clear();
@@ -103,7 +104,7 @@ class ApiProvider extends ChangeNotifier {
     try {
       final response = await dio.get(url,
           options: Options(responseType: ResponseType.plain, headers: {
-            HttpHeaders.acceptLanguageHeader: locale == 'zh' ? 'zh-HK' : 'en-US'
+            HttpHeaders.acceptLanguageHeader: LocaleUtils.getLocale
           }));
       final data = tree.treeDataFromJson(response.data).results;
 

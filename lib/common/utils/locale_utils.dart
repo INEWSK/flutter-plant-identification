@@ -10,13 +10,10 @@ class LocaleUtils {
     final String locale = box.get(Constant.locale);
     switch (locale) {
       case 'zh':
-        print(locale);
         return 'zh-HK';
       case 'en':
-        print(locale);
         return 'en-US';
       default:
-        print(Platform.localeName);
         // 如果系統語言開頭是 zh 則 return 繁體
         if (Platform.localeName.startsWith('zh')) {
           return 'zh-HK';

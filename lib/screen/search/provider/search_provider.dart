@@ -55,7 +55,7 @@ class SearchProvider extends ChangeNotifier {
       notifyListeners();
     }
 
-    final url = '${RestApi.localUrl}/flora/tree/';
+    final url = '${RestApi.localUrl}/flora/tree/?page=$_currentPage';
 
     try {
       final response = await dio.get(url,

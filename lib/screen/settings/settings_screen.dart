@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hotelapp/common/constants/constants.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
+import 'package:flutter_hotelapp/common/utils/locale_utils.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/provider/auth_provider.dart';
 import 'package:flutter_hotelapp/provider/intl_provider.dart';
@@ -83,11 +84,13 @@ class SettingsScreen extends StatelessWidget {
         });
     if (i != null) {
       final String locale = i == 0 ? '' : (i == 1 ? 'zh' : 'en');
+      final String localeName = LocaleUtils.getLocale;
       context.read<IntlProvider>().setLocale(locale);
       Toast.notification(
-          title: i == 1 ? '語言變更成功' : 'Language changed',
-          subtitle:
-              i == 1 ? '部分設定需要重啓 APP 生效' : 'You may researt to take effect');
+          title: localeName == 'zh-HK' ? '語言變更成功' : 'Language changed',
+          subtitle: localeName == 'zh-HK'
+              ? '部分設定需要重啓 APP 生效'
+              : 'You may researt to take effect');
     }
   }
 

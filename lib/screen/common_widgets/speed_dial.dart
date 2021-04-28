@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/common/utils/logger_utils.dart';
@@ -16,7 +17,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-class FAB extends StatelessWidget {
+class SpeedDial extends StatelessWidget {
+  final controller;
+
+  const SpeedDial({Key key, @required this.controller}) : super(key: key);
+
+  static const List<Map<String, dynamic>> items = const [
+    {"icon": Icons.album, "title": "Gallery", "source": ImageSource.gallery},
+    {"icon": Icons.camera_alt, "title": "Camera", "source": ImageSource.camera}
+  ];
+
   void _pickImage(source, BuildContext context) async {
     final _picker = ImagePicker();
 
@@ -117,78 +127,86 @@ class FAB extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ApiProvider>(builder: (_, api, __) {
-      return FloatingActionButton(
-        heroTag: 'cameraButton',
-        elevation: 6.0,
-        child: api.isLoading
-            ? SpinKitFadingCircle(
-                color: Colors.white,
-                size: 36,
-              )
-            : IconButton(
-                tooltip: AppLocalizations.of(context).camera,
-                icon: SvgPicture.asset(
-                  'assets/icons/navbar/camera.svg',
-                  color: Colors.white,
-                ),
-                onPressed: null,
+    return Padding(
+      padding: EdgeInsets.only(bottom: kDefaultPadding * 0.88),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: List.generate(items.length, (int index) {
+          Widget child = Container(
+            height: 70.0,
+            width: 56.0,
+            alignment: FractionalOffset.topCenter,
+            child: ScaleTransition(
+              scale: CurvedAnimation(
+                parent: controller,
+                curve: Interval(0.0, 1.0 - index / items.length / 2.0,
+                    curve: Curves.easeInOut),
               ),
-        // onPressed: () async => this.pushToCamera(context),
-        onPressed: api.isLoading
-            ? null
-            : () async {
-                ImageSource source = await showDialog<ImageSource>(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return SimpleDialog(
-                      // contentPadding: EdgeInsets.all(kDefaultPadding),
-                      title: Text(AppLocalizations.of(context).selectImage),
-                      children: [
-                        _imageSourceOption(
-                          context,
-                          AppLocalizations.of(context).gallery,
-                          Ionicons.ios_albums,
-                          ImageSource.gallery,
-                        ),
-                        _imageSourceOption(
-                          context,
-                          AppLocalizations.of(context).camera,
-                          Ionicons.ios_camera,
-                          ImageSource.camera,
-                        ),
-                      ],
-                    );
-                  },
+              child: FloatingActionButton(
+                heroTag: null,
+                backgroundColor: Theme.of(context).cardColor,
+                mini: true,
+                child: IconButton(
+                  tooltip: items[index]["title"],
+                  icon: Icon(items[index]["icon"]),
+                  onPressed: null,
+                  color: Theme.of(context).accentColor,
+                ),
+                onPressed: () {
+                  _pickImage(items[index]["source"], context);
+                  //點擊收起 menu
+                  controller.reverse();
+                },
+              ),
+            ),
+          );
+          return child;
+        }).toList()
+          ..add(
+            Consumer<ApiProvider>(
+              builder: (_, api, __) {
+                return FloatingActionButton(
+                  heroTag: null,
+                  child: AnimatedBuilder(
+                    animation: controller,
+                    builder: (BuildContext context, Widget child) {
+                      return Transform(
+                        transform:
+                            Matrix4.rotationZ(controller.value * 0.5 * math.pi),
+                        alignment: FractionalOffset.center,
+                        child: api.isLoading
+                            ? SpinKitFadingCircle(
+                                color: Colors.white,
+                                size: 36,
+                              )
+                            : controller.isDismissed
+                                ? IconButton(
+                                    tooltip:
+                                        AppLocalizations.of(context).camera,
+                                    icon: SvgPicture.asset(
+                                      'assets/icons/navbar/camera.svg',
+                                      color: Colors.white,
+                                    ),
+                                    onPressed: null,
+                                  )
+                                : Icon(Icons.close),
+                      );
+                    },
+                  ),
+                  onPressed: api.isLoading
+                      //ai 辨識途中不許用戶點擊事件
+                      ? null
+                      : () async {
+                          if (controller.isDismissed) {
+                            controller.forward();
+                          } else {
+                            controller.reverse();
+                          }
+                        },
                 );
-                switch (source) {
-                  case ImageSource.camera:
-                    _pickImage(ImageSource.camera, context);
-                    break;
-                  case ImageSource.gallery:
-                    _pickImage(ImageSource.gallery, context);
-                    break;
-                }
               },
-      );
-    });
-  }
-
-  Widget _imageSourceOption(
-      BuildContext context, String title, IconData icon, ImageSource source) {
-    return SimpleDialogOption(
-      onPressed: () {
-        Navigator.pop(context, source);
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 6.0),
-        child: Row(
-          children: [
-            Icon(icon),
-            SizedBox(width: 10),
-            Text(title),
-          ],
-        ),
+            ),
+          ),
       ),
     );
   }

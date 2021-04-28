@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class BottomNavBar extends StatelessWidget {
+class BottomTabBar extends StatelessWidget {
   final Function onTap;
   final int index;
 
-  const BottomNavBar({Key key, @required this.onTap, @required this.index})
+  const BottomTabBar({Key key, @required this.onTap, @required this.index})
       : super(key: key);
 
   @override
@@ -46,10 +46,7 @@ class BottomNavBar extends StatelessWidget {
           icon: _buildNavbarIcon(
               src: items[i]['icon'],
               isActive: (index >= 2 ? index + 1 : index) == i),
-          // ignore: deprecated_member_use
-          title: Text(
-            items[i]['title'],
-          ),
+          label: items[i]['title'],
         ),
       ),
     );

@@ -84,13 +84,11 @@ class SettingsScreen extends StatelessWidget {
         });
     if (i != null) {
       final String locale = i == 0 ? '' : (i == 1 ? 'zh' : 'en');
-      final String localeName = LocaleUtils.getLocale;
       context.read<IntlProvider>().setLocale(locale);
       Toast.notification(
-          title: localeName == 'zh-HK' ? '語言變更成功' : 'Language changed',
-          subtitle: localeName == 'zh-HK'
-              ? '部分設定需要重啓 APP 生效'
-              : 'You may researt to take effect');
+        title: '語言設定變更成功 / Language Changed',
+        subtitle: '部分功能重啓生效 / You may restart to take effect',
+      );
     }
   }
 

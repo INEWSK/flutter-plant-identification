@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
+import 'package:flutter_hotelapp/common/utils/device_utils.dart';
 import 'package:flutter_hotelapp/common/utils/logger_utils.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/models/tree_data.dart' as tree;
@@ -16,6 +17,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:vibration/vibration.dart';
 
 class SpeedDial extends StatelessWidget {
   final controller;
@@ -166,6 +168,7 @@ class SpeedDial extends StatelessWidget {
             Consumer<ApiProvider>(
               builder: (_, api, __) {
                 return FloatingActionButton(
+                  elevation: 2,
                   heroTag: null,
                   child: AnimatedBuilder(
                     animation: controller,
@@ -194,13 +197,18 @@ class SpeedDial extends StatelessWidget {
                     },
                   ),
                   onPressed: api.isLoading
-                      //ai 辨識途中不許用戶點擊事件
+                      //ai 辨識途中禁止button點擊
                       ? null
                       : () async {
                           if (controller.isDismissed) {
                             controller.forward();
                           } else {
                             controller.reverse();
+                          }
+                          //震動反饋
+                          if (Device.isMobile &&
+                              await Vibration.hasVibrator()) {
+                            Vibration.vibrate(duration: 10); //0.1s
                           }
                         },
                 );

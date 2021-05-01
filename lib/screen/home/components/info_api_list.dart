@@ -23,49 +23,6 @@ class _InfoApiListState extends State<InfoApiList> {
     _refreshController.dispose();
   }
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Consumer<HomeProvider>(builder: (_, home, __) {
-  //     return EasyRefresh.custom(
-  //       controller: _refreshController,
-  //       slivers: [
-  //         ///most of time we will use listview
-  //         ///for custom load and refresh header and footer
-  //         ///using sliver list
-  //         SliverList(
-  //             delegate:
-  //                 SliverChildBuilderDelegate((BuildContext context, int index) {
-  //           return IntroCard(
-  //             sort: home.list[index].infoType,
-  //             title: home.list[index].title,
-  //             text: home.list[index].content,
-  //             image: "assets/svg/at_home_octe.svg",
-  //           );
-  //         }, childCount: home.list.length)),
-  //       ],
-  //       onRefresh: () async => await home.refresh().then((success) {
-  //         if (!success)
-  //           Toast.error(
-  //             icon: Icons.wifi_lock,
-  //             title: 'Ooops!!',
-  //             subtitle: '外星人切斷了網絡',
-  //           );
-  //         _refreshController.resetLoadState();
-  //       }),
-  //       onLoad: () async => await home.loadMore().then((success) {
-  //         if (!success)
-  //           Toast.error(
-  //             icon: Icons.wifi_lock,
-  //             title: '伺服器遇到神祕阻力',
-  //             subtitle: '加載不可',
-  //           );
-  //         _refreshController.finishLoad();
-  //       }),
-  //       header: DeliveryHeader(),
-  //     );
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Consumer<HomeProvider>(
@@ -86,10 +43,13 @@ class _InfoApiListState extends State<InfoApiList> {
                     verticalOffset: 50.0,
                     child: FadeInAnimation(
                       child: IntroCard(
+                        index: index,
                         sort: home.list[index].infoType,
                         title: home.list[index].title,
                         text: home.list[index].content,
-                        image: "assets/svg/at_home_octe.svg",
+                        image: home.list[index].infoImages.isNotEmpty
+                            ? home.list[index].infoImages.first.infoImage
+                            : null,
                       ),
                     ),
                   ),
@@ -117,10 +77,11 @@ class _InfoApiListState extends State<InfoApiList> {
           }),
           //之後在此自定義文字
           header: ClassicalHeader(
-              refreshText: AppLocalizations.of(context).refreshText,
-              refreshReadyText: AppLocalizations.of(context).refreshReadyText,
-              refreshingText: AppLocalizations.of(context).refreshingText,
-              refreshedText: AppLocalizations.of(context).refreshedText),
+            refreshText: AppLocalizations.of(context).refreshText,
+            refreshReadyText: AppLocalizations.of(context).refreshReadyText,
+            refreshingText: AppLocalizations.of(context).refreshingText,
+            refreshedText: AppLocalizations.of(context).refreshedText,
+          ),
           footer: ClassicalFooter(
             loadText: AppLocalizations.of(context).loadMoreText,
             loadReadyText: AppLocalizations.of(context).loadReadyText,

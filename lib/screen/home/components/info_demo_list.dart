@@ -29,6 +29,7 @@ class InfoDemoList extends StatelessWidget {
                     verticalOffset: 50.0,
                     child: FadeInAnimation(
                       child: IntroCard(
+                        index: index,
                         sort: demoIntroCardData[index]["sort"],
                         title: demoIntroCardData[index]["title"],
                         text: demoIntroCardData[index]["text"],

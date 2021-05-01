@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hotelapp/common/constants/rest_api.dart';
+import 'package:flutter_hotelapp/common/constants/dio_options.dart';
 import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
 import 'package:flutter_hotelapp/common/utils/locale_utils.dart';
 import 'package:flutter_hotelapp/common/utils/logger_utils.dart';
@@ -22,12 +22,7 @@ class ApiProvider extends ChangeNotifier {
   List<tree.Result> _listData = [];
   tree.Result data;
 
-  Dio dio = Dio(BaseOptions(
-    baseUrl: RestApi.localUrl,
-    connectTimeout: 5000, // 5s
-    receiveTimeout: 10000, // 10s
-    responseType: ResponseType.json,
-  ));
+  Dio dio = Dio(jsonOptions);
 
   Future<Map> upload(File file) async {
     //for UI result

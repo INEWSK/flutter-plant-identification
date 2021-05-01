@@ -43,7 +43,7 @@ class SignInScreen extends StatelessWidget {
             SizedBox(height: 20),
             CreateAccountButton(),
             SizedBox(height: 20),
-            SocialAuthButton(),
+            // SocialAuthButton(),
           ],
         ),
       ),

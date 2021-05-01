@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
-import 'package:flutter_hotelapp/common/utils/device_utils.dart';
 import 'package:flutter_hotelapp/screen/common_widgets/bottom_tab_bar.dart';
 import 'package:flutter_hotelapp/screen/home/provider/home_provider.dart';
 import 'package:flutter_hotelapp/screen/search/provider/search_provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:vibration/vibration.dart';
 
 import 'common_widgets/double_back_exit_app.dart';
-import 'common_widgets/fab.dart';
 import 'common_widgets/speed_dial.dart';
 import 'explore/explore_screen.dart';
 import 'home/home_screen.dart';
@@ -77,9 +74,9 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
     _pageController.jumpToPage(newIndex);
 
     //震動反饋
-    if (Device.isMobile && await Vibration.hasVibrator()) {
-      Vibration.vibrate(duration: 10); //0.1s
-    }
+    // if (Device.isMobile && await Vibration.hasVibrator()) {
+    //   Vibration.vibrate(duration: 10); //0.1s
+    // }
   }
 
   void onPageChanged(int index) {

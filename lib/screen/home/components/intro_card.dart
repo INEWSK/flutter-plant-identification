@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
+import 'package:flutter_hotelapp/common/utils/image_utils.dart';
 import 'package:flutter_hotelapp/common/utils/screen_utils.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class IntroCard extends StatelessWidget {
   final String sort, title, text, image;
   final Function press;
+  final int index;
 
   const IntroCard({
     Key key,
@@ -14,6 +15,7 @@ class IntroCard extends StatelessWidget {
     @required this.title,
     @required this.text,
     @required this.image,
+    @required this.index,
     this.press,
   }) : super(key: key);
 
@@ -30,10 +32,10 @@ class IntroCard extends StatelessWidget {
         color: brightness == Brightness.dark ? Colors.black54 : Colors.white,
         boxShadow: [
           BoxShadow(
-            offset: Offset(0.0, .8), // 阴影 x y 轴位置偏移量
-            blurRadius: 1.0, // 陰影模糊範圍
+            offset: Offset(0.8, 1.2), // 阴影 x y 轴位置偏移量
+            blurRadius: 2.0, // 陰影模糊範圍
             spreadRadius: 0.0, // 模糊大小
-            color: Color(0xFF203647).withOpacity(0.2),
+            color: Color(0xFF333333).withOpacity(0.2),
           )
         ],
       ),
@@ -51,12 +53,33 @@ class IntroCard extends StatelessWidget {
 
   Widget _image(BuildContext context) {
     return Positioned(
-      right: 15.0,
-      child: SvgPicture.asset(
-        image,
-        // restricted width
-        width: Screen.width(context) * 0.3, // 30%
-      ),
+      right: 0,
+      child: image == null
+          ? Container(
+              height: 152,
+              width: 152,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+                image: DecorationImage(
+                  image: ImageUtils.getAssetImage(index.isEven
+                      ? 'blubs_fall_planting'
+                      : 'plant_collection'),
+                  //自動填滿並剪裁溢出
+                  fit: BoxFit.cover,
+                ),
+              ),
+            )
+          : Container(
+              height: 152,
+              width: 152,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+                image: DecorationImage(
+                  image: ImageUtils.getImageProvider(image),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
     );
   }
 
@@ -67,7 +90,7 @@ class IntroCard extends StatelessWidget {
         vertical: 16.0,
       ),
       // height: 152, // 該數值決定容器最終大小
-      width: Screen.width(context) * 0.6, // 65% of the container
+      width: Screen.width(context) * 0.56, // 65% of the container
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -109,6 +132,7 @@ class IntroCard extends StatelessWidget {
                 ),
               ),
               maxLines: 2,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
           // content

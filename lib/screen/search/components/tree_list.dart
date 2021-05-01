@@ -52,24 +52,29 @@ class _TreeListState extends State<TreeList> {
     }
   }
 
-  Widget _searchBar(SearchProvider model) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: TextField(
-        focusNode: _focusNode,
-        controller: _textController,
-        decoration: searchInputDecoration.copyWith(
-          contentPadding: const EdgeInsets.all(16.0),
-          hintStyle: kInputTextStyle,
-          suffixIcon: (!_clearButton)
-              ? null
-              : GestureDetector(
-                  child: Icon(Icons.cancel),
-                  onTap: () => _reset(),
-                ),
-        ),
-        onChanged: (query) => model.onQueryChanged(query),
-      ),
+  Widget _searchBar() {
+    return Consumer<SearchProvider>(
+      builder: (_, search, __) {
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TextField(
+            enabled: search.enable,
+            focusNode: _focusNode,
+            controller: _textController,
+            decoration: searchInputDecoration.copyWith(
+              contentPadding: const EdgeInsets.all(16.0),
+              hintStyle: kInputTextStyle,
+              suffixIcon: (!_clearButton)
+                  ? null
+                  : GestureDetector(
+                      child: Icon(Icons.cancel),
+                      onTap: () => _reset(),
+                    ),
+            ),
+            onChanged: (query) => search.onQueryChanged(query),
+          ),
+        );
+      },
     );
   }
 
@@ -105,7 +110,7 @@ class _TreeListState extends State<TreeList> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                _searchBar(model),
+                _searchBar(),
                 Expanded(
                   child: EasyRefresh.custom(
                     controller: _refreshController,

@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hotelapp/common/constants/constants.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_hotelapp/common/utils/local_notification.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +14,6 @@ import 'provider/auth_provider.dart';
 import 'provider/intl_provider.dart';
 import 'provider/theme_provider.dart';
 
-final _notificationsPlugin = FlutterLocalNotificationsPlugin();
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -29,22 +28,10 @@ void main() {
     await Firebase.initializeApp();
     // 打開一個隨時可以使用的盒子, 用作儲存少量數據
     await Hive.openBox(Constant.box);
-
     // initialise local notification plugin
-    var androidInitialize = AndroidInitializationSettings('app_icon');
-    // iOS permission request
-    var iosInitialize = IOSInitializationSettings();
-    var initializationSettings =
-        InitializationSettings(android: androidInitialize, iOS: iosInitialize);
+    await LocalNotification.init();
 
-    await _notificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: (payload) async {
-      if (payload != null) {
-        debugPrint('Notification payload:' + payload);
-      }
-    });
-
-    /// init provider
+    /// provider
     final authProvider = ChangeNotifierProvider(
       create: (_) => AuthProvider(),
     );

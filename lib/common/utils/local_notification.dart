@@ -1,6 +1,24 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+final _notificationsPlugin = FlutterLocalNotificationsPlugin();
+
 class LocalNotification {
+  static Future init() async {
+    // initialise local notification plugin
+    var androidInitialize = AndroidInitializationSettings('app_icon');
+    // iOS permission request
+    var iosInitialize = IOSInitializationSettings();
+    var initializationSettings =
+        InitializationSettings(android: androidInitialize, iOS: iosInitialize);
+
+    await _notificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: (payload) async {
+      if (payload != null) {
+        print('Notification payload:' + payload);
+      }
+    });
+  }
+
   static Future show({int id, String title, String body}) async {
     var notificationPlugin = FlutterLocalNotificationsPlugin();
 

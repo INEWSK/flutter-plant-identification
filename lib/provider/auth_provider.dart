@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_hotelapp/common/constants/constants.dart';
+import 'package:flutter_hotelapp/common/constants/dio_options.dart';
 import 'package:flutter_hotelapp/common/constants/rest_api.dart';
 import 'package:flutter_hotelapp/common/utils/device_utils.dart';
 import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
@@ -23,12 +24,7 @@ class AuthProvider extends ChangeNotifier {
   ImageProvider _image;
   bool _admin = false;
 
-  Dio dio = Dio(
-    BaseOptions(
-      connectTimeout: 10000, // 連接服務器超時時間
-      receiveTimeout: 3000,
-    ),
-  );
+  Dio dio = Dio(jsonOptions);
 
   /// getter
   get status => _status;
@@ -85,8 +81,12 @@ class AuthProvider extends ChangeNotifier {
   /// sign in method
   Future<Map> signIn(String email, String password) async {
     // set the status is authenticating
-    _status = Status.Authenticating;
-    notifyListeners();
+    // 已登入的情況下不會通知用於應對 switch account 時發生錯誤
+    // 目前項目中沒有使用到這個 status
+    if (_status != Status.Authenticated) {
+      _status = Status.Authenticating;
+      notifyListeners();
+    }
 
     final url = '${RestApi.localUrl}/flora/signin/';
 
@@ -127,9 +127,11 @@ class AuthProvider extends ChangeNotifier {
         // 不論密碼錯誤還是賬號不存在.
         // 直接返回信息 UI layer 通知無效電郵或密碼
         result['message'] = 'Invalid Email or Password.';
-        // Listener
-        _status = Status.Unauthenticated;
-        notifyListeners();
+        // 已登入的情況下不會通知用於應對 switch account 時發生錯誤
+        if (_status != Status.Authenticated) {
+          _status = Status.Unauthenticated;
+          notifyListeners();
+        }
 
         return result;
       }
@@ -142,8 +144,10 @@ class AuthProvider extends ChangeNotifier {
       // 返回錯誤信息給 UI layer
       result['message'] = error.messge;
       // LISTENER
-      _status = Status.Unauthenticated;
-      notifyListeners();
+      if (_status != Status.Authenticated) {
+        _status = Status.Unauthenticated;
+        notifyListeners();
+      }
 
       return result;
     }
@@ -264,12 +268,11 @@ class AuthProvider extends ChangeNotifier {
     return token;
   }
 
-  Future<void> getImage() async {
+  Future<void> getImage(ImageSource source) async {
     var box = await Hive.openBox(Constant.authBox);
     final ImagePicker _picker = ImagePicker();
     // getting image
-    final pickedFile =
-        await _picker.getImage(source: ImageSource.gallery, maxWidth: 512);
+    final pickedFile = await _picker.getImage(source: source, maxWidth: 512);
     try {
       // check if an image has been picked
       if (pickedFile != null) {

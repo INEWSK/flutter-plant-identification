@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_hotelapp/common/constants/dio_options.dart';
 import 'package:flutter_hotelapp/common/constants/rest_api.dart';
 import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
 import 'package:flutter_hotelapp/common/utils/locale_utils.dart';
@@ -16,21 +17,17 @@ class SearchProvider extends ChangeNotifier {
 
   int _currentPage = 1;
   bool _nextPage = true;
+  bool _searchEnable = true;
 
   List<tree.Result> _data = [];
   List<tree.Result> _displayList = [];
 
   // dio baseoption preset
-  Dio dio = Dio(
-    BaseOptions(
-      connectTimeout: 5000,
-      receiveTimeout: 10000,
-      responseType: ResponseType.plain,
-    ),
-  );
+  Dio dio = Dio(stringOptions);
 
   get displayList => _displayList;
   get status => _status;
+  bool get enable => _searchEnable;
 
   void onQueryChanged(String query) async {
     //根據query查找data相應的字符再傳進display list
@@ -55,6 +52,11 @@ class SearchProvider extends ChangeNotifier {
       notifyListeners();
     }
 
+    if (_status == Status.Loaded) {
+      _searchEnable = false;
+      notifyListeners();
+    }
+
     final url = '${RestApi.localUrl}/flora/tree/?page=$_currentPage';
 
     try {
@@ -70,8 +72,9 @@ class SearchProvider extends ChangeNotifier {
       _data = data.results;
       _displayList = _data;
 
-      debugPrint('Data Loaded');
+      print('Data Loaded');
       _status = Status.Loaded;
+      _searchEnable = true;
       // 通知 widget 更新
       notifyListeners();
 
@@ -84,8 +87,12 @@ class SearchProvider extends ChangeNotifier {
       //已經加載完成情況下不返回 error status 而不導致跳 error page
       if (_status != Status.Loaded) {
         _status = Status.Error;
+        _searchEnable = true;
         notifyListeners();
       }
+
+      _searchEnable = true;
+      notifyListeners();
 
       return false;
     }
@@ -97,6 +104,10 @@ class SearchProvider extends ChangeNotifier {
       // 已經沒東西可以給了, 直接返回, 什麼都不做
       return true;
     }
+
+    //更新時禁止搜索欄
+    _searchEnable = false;
+    notifyListeners();
 
     _currentPage += 1; // 每次分頁增加
     print(_currentPage);
@@ -116,6 +127,7 @@ class SearchProvider extends ChangeNotifier {
       // 將新 data 加入現有的 list
       _data.addAll(data.results);
       _displayList = _data;
+      _searchEnable = true;
       notifyListeners();
 
       return true;
@@ -125,6 +137,8 @@ class SearchProvider extends ChangeNotifier {
 
       // 既然失敗了就沒有下一頁了
       _nextPage = false;
+      _searchEnable = true;
+      notifyListeners();
 
       return false;
     }

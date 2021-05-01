@@ -399,5 +399,35 @@
     "@MinPasswordValid": {
       "description": "Text for password validator",
       "type": "text"
+    },
+
+    "languageChanged": "Language Changed",
+    "@languageChanged": {
+      "description": "Title for change language",
+      "type": "text"
+    },
+
+    "restartTakeEffect": "You may restart to take effect",
+    "@restartTakeEffect": {
+      "description": "Text for restart app",
+      "type": "text"
+    },
+
+    "loginSuccess": "Login successful",
+    "@loginSuccess": {
+      "description": "Toast text for login success",
+      "type": "text"
+    },
+
+    "pressAvatarToLogin": "Login",
+    "@pressAvatarToLogin": {
+      "description": "Title for profile login button",
+      "type": "text"
+    },
+
+    "changeAvatar": "Change Avatar",
+    "@changeAvatar": {
+      "description": "Text for avatar option dialog title",
+      "type": "text"
     }
 }

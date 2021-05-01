@@ -3,8 +3,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hotelapp/common/utils/logger_utils.dart';
 import 'package:flutter_hotelapp/provider/auth_provider.dart';
 import 'package:flutter_hotelapp/screen/profile/provider/profile_provider.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'components/profile_header.dart';
@@ -29,11 +31,11 @@ class _ProfileScreenState extends State<ProfileScreen>
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('No'),
+              child: Text(AppLocalizations.of(context).no),
             ),
             TextButton(
               onPressed: () => Navigator.pop(context, _launcherUrl()),
-              child: Text('Yes'),
+              child: Text(AppLocalizations.of(context).yes),
             ),
           ],
         );
@@ -47,21 +49,73 @@ class _ProfileScreenState extends State<ProfileScreen>
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Warning'),
-          content: Text('該行爲會傳送命令至伺服器要求進行圖片機器模型訓練, 過程不可逆且會消耗伺服器算力'),
+          title: Row(
+            children: [
+              Icon(Icons.warning),
+              SizedBox(width: 10),
+              Text(AppLocalizations.of(context).warning),
+            ],
+          ),
+          content: Text('該行爲會傳送命令至伺服器要求進行圖片機器模型訓練, 消耗伺服器資源並且過程不可逆'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('No'),
+              child: Text(AppLocalizations.of(context).cancel),
             ),
             TextButton(
               onPressed: () => Navigator.pop(context, api.requestRetrain()),
-              child: Text('Yes'),
+              child: Text(AppLocalizations.of(context).confirm),
             ),
           ],
         );
       },
     );
+  }
+
+  Widget _imageSourceOption(
+      BuildContext context, String title, IconData icon, ImageSource source) {
+    return SimpleDialogOption(
+      onPressed: () {
+        Navigator.pop(context, source);
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6.0),
+        child: Row(
+          children: [
+            Icon(icon),
+            SizedBox(width: 10),
+            Text(title),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future _selectImageSource(AuthProvider user) async {
+    ImageSource source = await showDialog<ImageSource>(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          // contentPadding: EdgeInsets.all(kDefaultPadding),
+          title: Text(AppLocalizations.of(context).changeAvatar),
+          children: [
+            _imageSourceOption(
+              context,
+              AppLocalizations.of(context).gallery,
+              Ionicons.ios_albums,
+              ImageSource.gallery,
+            ),
+            _imageSourceOption(
+              context,
+              AppLocalizations.of(context).camera,
+              Ionicons.ios_camera,
+              ImageSource.camera,
+            ),
+          ],
+        );
+      },
+    );
+    if (source != null) user.getImage(source);
   }
 
   Future<void> _launcherUrl() async {
@@ -105,7 +159,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                   image: user.image,
                   press: () {
                     if (user.status == Status.Authenticated) {
-                      user.getImage();
+                      _selectImageSource(user);
                     } else {
                       Navigator.pushNamed(context, '/signIn');
                     }

@@ -5,6 +5,7 @@ import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/provider/auth_provider.dart';
 import 'package:flutter_hotelapp/screen/auth/widgets/auth_form_field.dart';
 import 'package:flutter_hotelapp/screen/common_widgets/primary_button.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:provider/provider.dart';
 
@@ -53,8 +54,13 @@ class _SignUpFormState extends State<SignUpForm> {
     if (form.validate()) {
       form.save();
 
+      Toast.error(
+        title: '當前不提供註冊功能',
+        subtitle: '請與你的 Department 聯絡',
+        icon: Icons.do_not_disturb_alt,
+      );
+
       /// 返回禁止, hotel 目前不提供注冊
-      Toast.show('目前不提供注冊功能, 請與 Department 聯絡');
       return false;
     }
     return false;

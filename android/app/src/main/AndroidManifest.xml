@@ -23,6 +23,9 @@
     
     <!-- permission options for viration -->
     <uses-permission android:name="android.permission.VIBRATE"/>
+    
+    <!-- permission options for foreground service -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
 
    <application
@@ -72,5 +75,7 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <!-- ForegroundService -->
+        <service android:name="changjoopark.com.flutter_foreground_plugin.FlutterForegroundService"/>
     </application>
 </manifest>

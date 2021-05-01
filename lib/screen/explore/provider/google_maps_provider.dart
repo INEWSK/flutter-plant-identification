@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_hotelapp/common/constants/dio_options.dart';
 import 'package:flutter_hotelapp/common/constants/rest_api.dart';
 import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
 import 'package:flutter_hotelapp/common/utils/locale_utils.dart';
@@ -39,13 +40,7 @@ class GoogleMapsProvider extends ChangeNotifier {
     };
 
     // dio baseoption preset
-    Dio dio = Dio(
-      BaseOptions(
-        connectTimeout: 10000, //10s
-        receiveTimeout: 5000, //5s
-        responseType: ResponseType.plain,
-      ),
-    );
+    Dio dio = Dio(stringOptions);
 
     final String url = '${RestApi.localUrl}/flora/tree';
 

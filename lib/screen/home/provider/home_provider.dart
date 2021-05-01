@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_hotelapp/common/constants/dio_options.dart';
 import 'package:flutter_hotelapp/common/constants/rest_api.dart';
 import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
 import 'package:flutter_hotelapp/common/utils/locale_utils.dart';
@@ -21,14 +22,7 @@ class HomeProvider extends ChangeNotifier {
   List<info.Result> get list => _list;
   bool get haveNext => _nextPage;
 
-  Dio dio = Dio(
-    BaseOptions(
-      connectTimeout: 5000, // 5s
-      receiveTimeout: 10000, // 10s
-      // contentType json 則 response 自動轉化爲 json 對象
-      responseType: ResponseType.plain,
-    ),
-  );
+  Dio dio = Dio(stringOptions);
 
   /// 首次加載
   Future<bool> fetchData() async {

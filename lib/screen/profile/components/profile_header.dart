@@ -31,41 +31,39 @@ class ProfileHeader extends StatelessWidget {
             ),
           ),
           Center(
-            child: Semantics(
-              child: GestureDetector(
-                onTap: press ?? () {},
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 15.0),
-                      height: 128.0,
-                      width: 128.0,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Colors.white,
-                          width: 4.0, // border thickness
-                        ),
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: image ??
-                              ImageUtils.getAssetImage('no_picture_avatar'),
-                        ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                GestureDetector(
+                  onTap: press ?? () {},
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 15.0),
+                    height: 128.0,
+                    width: 128.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.white,
+                        width: 4.0, // border thickness
+                      ),
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: image ??
+                            ImageUtils.getAssetImage('no_picture_avatar'),
                       ),
                     ),
-                    Text(name ?? AppLocalizations.of(context).login,
-                        style: kBodyTextStyle),
-                    SizedBox(height: 10),
-                    Text(
-                      email,
-                      style: kSecondaryBodyTextStyle,
-                    )
-                  ],
+                  ),
                 ),
-              ),
+                Text(name ?? AppLocalizations.of(context).pressAvatarToLogin,
+                    style: kBodyTextStyle),
+                SizedBox(height: 10),
+                Text(
+                  email,
+                  style: kSecondaryBodyTextStyle,
+                )
+              ],
             ),
-          )
+          ),
         ],
       ),
     );

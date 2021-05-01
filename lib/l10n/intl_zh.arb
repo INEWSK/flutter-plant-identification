@@ -65,6 +65,10 @@
     "passwordNoMatch": "輸入的密碼不相符",
     "emailValid": "請輸入有效的電郵地址",
     "passwordValid": "請設定 8 個字元以上的密碼",
-    "minPasswordValid": "密碼必須包含 1 個或以上數字"
-
+    "minPasswordValid": "密碼必須包含 1 個或以上數字",
+    "languageChanged": "語言變更成功",
+    "restartTakeEffect": "部分設定需要重啓 APP 生效",
+    "loginSuccess": "登入成功",
+    "pressAvatarToLogin": "點擊頭像登入",
+    "changeAvatar": "變更頭像"
 }

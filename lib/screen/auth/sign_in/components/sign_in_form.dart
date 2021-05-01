@@ -69,9 +69,10 @@ class _SignInFormState extends State<SignInForm> {
     final bool success = response['success'];
 
     if (success) {
+      Toast.show(AppLocalizations.of(context).loginSuccess);
       Navigator.pop(context);
     } else {
-      Toast.error(title: '不行', subtitle: message);
+      Toast.error(title: 'だめ', subtitle: message);
     }
   }
 

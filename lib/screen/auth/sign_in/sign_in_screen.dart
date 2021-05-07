@@ -4,7 +4,6 @@ import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'components/create_account_button.dart';
 import 'components/or_divider.dart';
 import 'components/sign_in_form.dart';
-import 'components/social_auth_button.dart';
 import '../widgets/auth_background.dart';
 import '../widgets/welcome_text.dart';
 

@@ -87,6 +87,7 @@ class _TreeListState extends State<TreeList> {
           builder: (context) => DetailScreen(
             // 傳進當前 leafcard 的 treedata 給 detail page
             data: model.displayList[index],
+            type: DataType.Tree,
           ),
         ),
       ),
@@ -124,7 +125,7 @@ class _TreeListState extends State<TreeList> {
                         ),
                       ),
                     ],
-                    onRefresh: () async => model.fetchData().then((success) {
+                    onRefresh: () async => model.refresh().then((success) {
                       if (!success) {
                         Toast.error(title: '網絡電波不夠', subtitle: '原地爆炸');
                       }

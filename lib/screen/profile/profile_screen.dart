@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hotelapp/common/utils/logger_utils.dart';
+import 'package:flutter_hotelapp/provider/api_provider.dart';
 import 'package:flutter_hotelapp/provider/auth_provider.dart';
-import 'package:flutter_hotelapp/screen/profile/provider/profile_provider.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
@@ -43,15 +42,14 @@ class _ProfileScreenState extends State<ProfileScreen>
     );
   }
 
-  Future<void> _retrainingDialog(
-      BuildContext context, ProfileProvider api) async {
+  Future<void> _retrainingDialog(BuildContext context, ApiProvider api) async {
     return showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: Row(
             children: [
-              Icon(Icons.warning),
+              Icon(Icons.warning_amber_outlined),
               SizedBox(width: 10),
               Text(AppLocalizations.of(context).warning),
             ],
@@ -73,20 +71,14 @@ class _ProfileScreenState extends State<ProfileScreen>
   }
 
   Widget _imageSourceOption(
-      BuildContext context, String title, IconData icon, ImageSource source) {
+      BuildContext context, String title, ImageSource source) {
     return SimpleDialogOption(
       onPressed: () {
         Navigator.pop(context, source);
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 6.0),
-        child: Row(
-          children: [
-            Icon(icon),
-            SizedBox(width: 10),
-            Text(title),
-          ],
-        ),
+        child: Text(title),
       ),
     );
   }
@@ -102,13 +94,11 @@ class _ProfileScreenState extends State<ProfileScreen>
             _imageSourceOption(
               context,
               AppLocalizations.of(context).gallery,
-              Ionicons.ios_albums,
               ImageSource.gallery,
             ),
             _imageSourceOption(
               context,
               AppLocalizations.of(context).camera,
-              Ionicons.ios_camera,
               ImageSource.camera,
             ),
           ],
@@ -145,86 +135,83 @@ class _ProfileScreenState extends State<ProfileScreen>
   }
 
   Widget _body(BuildContext context) {
-    return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => ProfileProvider())],
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Consumer<AuthProvider>(
-              builder: (_, user, __) {
-                return ProfileHeader(
-                  logged: user.token != null ? true : false,
-                  email: user.email,
-                  name: user.username,
-                  image: user.image,
-                  press: () {
-                    if (user.status == Status.Authenticated) {
-                      _selectImageSource(user);
-                    } else {
-                      Navigator.pushNamed(context, '/signIn');
-                    }
-                  },
-                );
-              },
-            ),
-            SizedBox(height: 10),
-            ListTile(
-              // dense: true,
-              leading: SvgPicture.asset('assets/icons/profile/manual.svg'),
-              title: Text(AppLocalizations.of(context).manual),
-              onTap: () {},
-            ),
-            ListTile(
-              // dense: true,
-              leading: SvgPicture.asset('assets/icons/profile/favorite.svg'),
-              title: Text(AppLocalizations.of(context).favorite),
-              onTap: () {},
-            ),
-            Consumer2(
-              builder: (_, AuthProvider user, ProfileProvider api, __) {
-                if (user.admin == true) {
-                  return ListTile(
-                      leading: api.train
-                          ? Container(
-                              width: 36,
-                              child: SpinKitFadingGrid(
-                                color: Colors.teal,
-                                size: 32,
-                              ),
-                            )
-                          : SvgPicture.asset(
-                              'assets/icons/profile/ai_retraining.svg'),
-                      title: Text(api.train
-                          ? 'Model is Retraining...'
-                          : AppLocalizations.of(context).modelRetraining),
-                      onTap: api.train
-                          ? null
-                          : () => _retrainingDialog(context, api));
-                } else {
-                  return Container();
-                }
-              },
-            ),
-            ListTile(
-              // dense: true,
-              leading: SvgPicture.asset('assets/icons/profile/settings.svg'),
-              title: Text(AppLocalizations.of(context).settings),
-              onTap: () => Navigator.pushNamed(context, '/settings'),
-            ),
-            ListTile(
-              // dense: true,
-              leading: SvgPicture.asset('assets/icons/profile/fqa.svg'),
-              title: Text(AppLocalizations.of(context).fqa),
-              onTap: () => Navigator.pushNamed(context, '/fqa'),
-            ),
-            ListTile(
-              // dense: true,
-              leading: SvgPicture.asset('assets/icons/profile/contact.svg'),
-              title: Text(AppLocalizations.of(context).contactUs),
-              onTap: () async => _toEmailDialog(context),
-            ),
-          ],
-        ),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Consumer<AuthProvider>(
+            builder: (_, user, __) {
+              return ProfileHeader(
+                logged: user.token != null ? true : false,
+                email: user.email,
+                name: user.username,
+                image: user.image,
+                press: () {
+                  if (user.status == Status.Authenticated) {
+                    _selectImageSource(user);
+                  } else {
+                    Navigator.pushNamed(context, '/signIn');
+                  }
+                },
+              );
+            },
+          ),
+          SizedBox(height: 10),
+          ListTile(
+            // dense: true,
+            leading: SvgPicture.asset('assets/icons/profile/manual.svg'),
+            title: Text(AppLocalizations.of(context).manual),
+            onTap: () {},
+          ),
+          ListTile(
+            // dense: true,
+            leading: SvgPicture.asset('assets/icons/profile/favorite.svg'),
+            title: Text(AppLocalizations.of(context).favorite),
+            onTap: () {},
+          ),
+          Consumer2(
+            builder: (_, AuthProvider user, ApiProvider api, __) {
+              if (user.admin == false) {
+                return ListTile(
+                    leading: api.training
+                        ? Container(
+                            width: 36,
+                            child: SpinKitFadingGrid(
+                              color: Colors.teal,
+                              size: 32,
+                            ),
+                          )
+                        : SvgPicture.asset(
+                            'assets/icons/profile/ai_retraining.svg'),
+                    title: Text(api.training
+                        ? 'Model is Retraining...'
+                        : AppLocalizations.of(context).modelRetraining),
+                    onTap: api.training
+                        ? null
+                        : () => _retrainingDialog(context, api));
+              } else {
+                return Container();
+              }
+            },
+          ),
+          ListTile(
+            // dense: true,
+            leading: SvgPicture.asset('assets/icons/profile/settings.svg'),
+            title: Text(AppLocalizations.of(context).settings),
+            onTap: () => Navigator.pushNamed(context, '/settings'),
+          ),
+          ListTile(
+            // dense: true,
+            leading: SvgPicture.asset('assets/icons/profile/fqa.svg'),
+            title: Text(AppLocalizations.of(context).fqa),
+            onTap: () => Navigator.pushNamed(context, '/fqa'),
+          ),
+          ListTile(
+            // dense: true,
+            leading: SvgPicture.asset('assets/icons/profile/contact.svg'),
+            title: Text(AppLocalizations.of(context).contactUs),
+            onTap: () async => _toEmailDialog(context),
+          ),
+        ],
       ),
     );
   }

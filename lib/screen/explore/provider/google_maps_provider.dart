@@ -7,22 +7,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hotelapp/common/constants/dio_options.dart';
-import 'package:flutter_hotelapp/common/constants/rest_api.dart';
 import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
 import 'package:flutter_hotelapp/common/utils/locale_utils.dart';
-import 'package:flutter_hotelapp/models/tree_data.dart' as tree;
+import 'package:flutter_hotelapp/models/tree_locations.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class GoogleMapsProvider extends ChangeNotifier {
   GoogleMapController _mapController;
-  List<tree.Result> _data = [];
+  List<TreeLocation> _data = [];
   List<Marker> _markers = [];
   // marker icon
   BitmapDescriptor _markerIcon;
   bool _isPillVisible = false;
   // data for bottom pill widget and detail page
-  tree.Result _pillData;
+  TreeLocation _pillData;
 
   get mapController => _mapController;
   get markers => _markers;
@@ -30,6 +29,9 @@ class GoogleMapsProvider extends ChangeNotifier {
   get visible => _isPillVisible;
   get data => _data;
   get icon => _markerIcon;
+
+  // dio baseoption preset
+  Dio dio = Dio(stringOptions);
 
   Future<Map> fetchMarkerData() async {
     // for UI result
@@ -39,10 +41,7 @@ class GoogleMapsProvider extends ChangeNotifier {
       'data': List
     };
 
-    // dio baseoption preset
-    Dio dio = Dio(stringOptions);
-
-    final String url = '${RestApi.localUrl}/flora/tree';
+    final String url = '/flora/treelocation/';
 
     try {
       final response = await dio.get(url,
@@ -50,7 +49,7 @@ class GoogleMapsProvider extends ChangeNotifier {
             HttpHeaders.acceptLanguageHeader: LocaleUtils.getLocale
           }));
 
-      final data = tree.treeDataFromJson(response.data).results;
+      final data = treeLocationFromJson(response.data);
 
       result['success'] = true;
       result['message'] = 'Loaded';
@@ -110,7 +109,7 @@ class GoogleMapsProvider extends ChangeNotifier {
     locatePosition();
   }
 
-  void getPillData(tree.Result data) {
+  void getPillData(TreeLocation data) {
     if (_pillData != data) _pillData = data;
     notifyListeners();
   }

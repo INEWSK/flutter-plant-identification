@@ -5,11 +5,16 @@
 
 import 'dart:convert';
 
+import 'package:hive/hive.dart';
+
+part 'tree_data.g.dart';
+
 TreeData treeDataFromJson(String str) => TreeData.fromJson(json.decode(str));
 
 String treeDataToJson(TreeData data) => json.encode(data.toJson());
 
-class TreeData {
+@HiveType(typeId: 0)
+class TreeData extends HiveObject {
   TreeData({
     this.count,
     this.next,
@@ -17,9 +22,13 @@ class TreeData {
     this.results,
   });
 
+  @HiveField(0)
   int count;
+  @HiveField(1)
   dynamic next;
+  @HiveField(2)
   dynamic previous;
+  @HiveField(3)
   List<Result> results;
 
   factory TreeData.fromJson(Map<String, dynamic> json) => TreeData(
@@ -38,7 +47,8 @@ class TreeData {
       };
 }
 
-class Result {
+@HiveType(typeId: 1)
+class Result extends HiveObject {
   Result({
     this.id,
     this.folderName,
@@ -57,27 +67,45 @@ class Result {
     this.fruit,
     this.dateCreated,
     this.treeImages,
-    this.treeLocations,
+    // this.treeLocations,
   });
 
+  @HiveField(0)
   int id;
+  @HiveField(1)
   String folderName;
+  @HiveField(2)
   String scientificName;
+  @HiveField(3)
   String commonName;
+  @HiveField(4)
   String introduction;
+  @HiveField(5)
   String specialFeatures;
+  @HiveField(6)
   String toLearnMore;
+  @HiveField(7)
   String family;
+  @HiveField(8)
   String height;
+  @HiveField(9)
   String natureOfLeaf;
+  @HiveField(10)
   String branch;
+  @HiveField(11)
   String bark;
+  @HiveField(12)
   String leaf;
+  @HiveField(13)
   String flower;
+  @HiveField(14)
   String fruit;
+  @HiveField(15)
   DateTime dateCreated;
+  @HiveField(16)
   List<TreeImage> treeImages;
-  List<TreeLocation> treeLocations;
+  // @HiveField(17)
+  // List<TreeLocation> treeLocations;
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
         id: json["id"],
@@ -98,8 +126,8 @@ class Result {
         dateCreated: DateTime.parse(json["date_created"]),
         treeImages: List<TreeImage>.from(
             json["tree_images"].map((x) => TreeImage.fromJson(x))),
-        treeLocations: List<TreeLocation>.from(
-            json["tree_locations"].map((x) => TreeLocation.fromJson(x))),
+        // treeLocations: List<TreeLocation>.from(
+        //     json["tree_locations"].map((x) => TreeLocation.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -120,12 +148,13 @@ class Result {
         "fruit": fruit,
         "date_created": dateCreated.toIso8601String(),
         "tree_images": List<dynamic>.from(treeImages.map((x) => x.toJson())),
-        "tree_locations":
-            List<dynamic>.from(treeLocations.map((x) => x.toJson())),
+        // "tree_locations":
+        //     List<dynamic>.from(treeLocations.map((x) => x.toJson())),
       };
 }
 
-class TreeImage {
+@HiveType(typeId: 2)
+class TreeImage extends HiveObject {
   TreeImage({
     this.id,
     this.treeImage,
@@ -133,9 +162,13 @@ class TreeImage {
     this.tree,
   });
 
+  @HiveField(0)
   int id;
+  @HiveField(1)
   String treeImage;
+  @HiveField(2)
   DateTime dateCreated;
+  @HiveField(3)
   int tree;
 
   factory TreeImage.fromJson(Map<String, dynamic> json) => TreeImage(
@@ -153,38 +186,44 @@ class TreeImage {
       };
 }
 
-class TreeLocation {
-  TreeLocation({
-    this.id,
-    this.treeImage,
-    this.treeLat,
-    this.treeLong,
-    this.dateCreated,
-    this.tree,
-  });
+// @HiveType(typeId: 3)
+// class TreeLocation extends HiveObject {
+//   TreeLocation({
+//     this.id,
+//     this.treeImage,
+//     this.treeLat,
+//     this.treeLong,
+//     this.dateCreated,
+//     this.tree,
+//   });
+//   @HiveField(0)
+//   int id;
+//   @HiveField(1)
+//   String treeImage;
+//   @HiveField(2)
+//   double treeLat;
+//   @HiveField(3)
+//   double treeLong;
+//   @HiveField(4)
+//   DateTime dateCreated;
+//   @HiveField(5)
+//   int tree;
 
-  int id;
-  String treeImage;
-  double treeLat;
-  double treeLong;
-  DateTime dateCreated;
-  int tree;
+//   factory TreeLocation.fromJson(Map<String, dynamic> json) => TreeLocation(
+//         id: json["id"],
+//         treeImage: json["tree_image"],
+//         treeLat: json["tree_lat"].toDouble(),
+//         treeLong: json["tree_long"].toDouble(),
+//         dateCreated: DateTime.parse(json["date_created"]),
+//         tree: json["tree"],
+//       );
 
-  factory TreeLocation.fromJson(Map<String, dynamic> json) => TreeLocation(
-        id: json["id"],
-        treeImage: json["tree_image"],
-        treeLat: json["tree_lat"].toDouble(),
-        treeLong: json["tree_long"].toDouble(),
-        dateCreated: DateTime.parse(json["date_created"]),
-        tree: json["tree"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "tree_image": treeImage,
-        "tree_lat": treeLat,
-        "tree_long": treeLong,
-        "date_created": dateCreated.toIso8601String(),
-        "tree": tree,
-      };
-}
+//   Map<String, dynamic> toJson() => {
+//         "id": id,
+//         "tree_image": treeImage,
+//         "tree_lat": treeLat,
+//         "tree_long": treeLong,
+//         "date_created": dateCreated.toIso8601String(),
+//         "tree": tree,
+//       };
+// }

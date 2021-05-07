@@ -6,7 +6,7 @@ class Constant {
   static bool isDriverTest = false;
   static bool isUnitTest = false;
 
-  static const String box = 'box';
+  static const String box = 'general';
   static const String authBox = 'authBox';
 
   static const String data = 'data';

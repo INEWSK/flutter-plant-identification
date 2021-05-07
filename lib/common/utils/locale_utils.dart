@@ -5,7 +5,7 @@ import 'package:hive/hive.dart';
 
 class LocaleUtils {
   static String get getLocale {
-    var box = Hive.box('box');
+    var box = Hive.box(Constant.box);
 
     final String locale = box.get(Constant.locale);
     switch (locale) {

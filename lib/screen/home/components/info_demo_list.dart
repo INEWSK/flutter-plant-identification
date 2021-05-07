@@ -14,7 +14,7 @@ class InfoDemoList extends StatelessWidget {
     return Consumer<HomeProvider>(
       builder: (_, home, __) {
         return RefreshIndicator(
-          onRefresh: () async => home.fetchData().then((success) {
+          onRefresh: () async => home.fetchApiData().then((success) {
             if (!success) Toast.error(title: '請檢查網絡狀態');
           }),
           child: AnimationLimiter(
@@ -33,7 +33,7 @@ class InfoDemoList extends StatelessWidget {
                         sort: demoIntroCardData[index]["sort"],
                         title: demoIntroCardData[index]["title"],
                         text: demoIntroCardData[index]["text"],
-                        image: demoIntroCardData[index]["image"],
+                        image: null,
                       ),
                     ),
                   ),

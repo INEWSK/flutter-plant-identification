@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
+import 'package:flutter_hotelapp/provider/api_provider.dart';
 import 'package:flutter_hotelapp/screen/home/components/home_background.dart';
 import 'package:flutter_hotelapp/screen/home/components/info_api_list.dart';
 import 'package:flutter_hotelapp/screen/home/components/info_demo_list.dart';
@@ -26,18 +27,34 @@ class _HomeScreenState extends State<HomeScreen>
     return Stack(
       children: [
         HomeBackground(),
-        Scaffold(
-          appBar: AppBar(
-            title: Text(
-              'Tree Doctor',
-              style: GoogleFonts.balooPaaji(
-                textStyle: TextStyle(color: Color(0xFF0A8270), fontSize: 26.0),
+        Consumer<ApiProvider>(
+          builder: (_, api, __) {
+            return Scaffold(
+              appBar: AppBar(
+                title: Text(
+                  'Tree Doctor',
+                  style: GoogleFonts.balooPaaji(
+                    textStyle:
+                        TextStyle(color: Color(0xFF0A8270), fontSize: 26.0),
+                  ),
+                ),
+                actions: [
+                  api.training
+                      ? Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: SpinKitFadingGrid(
+                            color: Colors.teal,
+                            size: 24,
+                          ),
+                        )
+                      : Container()
+                ],
               ),
-            ),
-          ),
-          body: _body(),
-          backgroundColor:
-              Theme.of(context).scaffoldBackgroundColor.withAlpha(155),
+              body: _body(),
+              backgroundColor:
+                  Theme.of(context).scaffoldBackgroundColor.withAlpha(155),
+            );
+          },
         ),
       ],
     );
@@ -52,14 +69,26 @@ class _HomeScreenState extends State<HomeScreen>
         case Status.Loaded:
           return InfoApiList();
           break;
+        case Status.Hive:
+          return InfoApiList();
         default:
-          home.fetchData().then((success) {
-            if (!success) {
-              Toast.error(
-                title: '加載失敗',
-                subtitle: '網絡發生了小問題, 請稍候刷新重試',
-              );
-            }
+          // 初始化 hive
+          home.initInfoBox().then((_) {
+            home.fetchApiData().then((success) {
+              if (!success) {
+                if (home.status == Status.Hive) {
+                  Toast.error(
+                    title: '連線失敗',
+                    subtitle: '加載本地數據',
+                  );
+                } else {
+                  Toast.error(
+                    title: '加載失敗',
+                    subtitle: '網絡發生了小問題, 請稍候刷新重試',
+                  );
+                }
+              }
+            });
           });
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,

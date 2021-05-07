@@ -6,7 +6,7 @@ import 'package:hive/hive.dart';
 
 class IntlProvider extends ChangeNotifier {
   String defaultLocale = Platform.localeName;
-  var box = Hive.box('box');
+  var box = Hive.box(Constant.box);
 
   Locale get locale {
     final String locale = box.get(Constant.locale);

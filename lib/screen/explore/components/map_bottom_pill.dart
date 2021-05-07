@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/common/utils/image_utils.dart';
-import 'package:flutter_hotelapp/models/tree_data.dart' as treeData;
+import 'package:flutter_hotelapp/models/tree_locations.dart';
 
 class MapBottomPill extends StatelessWidget {
   final bool isVisible;
-  final treeData.Result data;
+  final TreeLocation data;
 
   const MapBottomPill({Key key, this.isVisible, this.data}) : super(key: key);
 

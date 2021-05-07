@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_hotelapp/common/constants/rest_api.dart';
 
+/// 返回json type
 final jsonOptions = BaseOptions(
   baseUrl: RestApi.localUrl,
   connectTimeout: 5000, //5s
@@ -9,6 +10,7 @@ final jsonOptions = BaseOptions(
   responseType: ResponseType.json,
 );
 
+/// 返回 UTF8 string
 final stringOptions = BaseOptions(
   baseUrl: RestApi.localUrl,
   connectTimeout: 5000, //5s

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
-import 'package:flutter_hotelapp/models/tree_data.dart';
+import 'package:flutter_hotelapp/models/tree_locations.dart';
 import 'package:flutter_hotelapp/screen/detail/detail_screen.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -30,16 +30,17 @@ class _GoogleMapsState extends State<GoogleMaps> {
     initGoogleMapsMarker();
   }
 
-  void _setMarker(List<Result> treeData) {
+  void _setMarker(List<TreeLocation> treeData) {
     var map = context.read<GoogleMapsProvider>();
     treeData.forEach((data) {
+      //如果 treedata 有包含 location (座標內容)
       if (data.treeLocations.isNotEmpty) {
-        List<TreeLocation> locations = data.treeLocations;
-        locations.forEach((loc) {
+        List<TreeLocationElement> locations = data.treeLocations;
+        locations.forEach((lct) {
           map.markers.add(
             Marker(
-              zIndex: loc.id.toDouble(),
-              markerId: MarkerId(loc.id.toString()),
+              zIndex: lct.id.toDouble(),
+              markerId: MarkerId(lct.id.toString()),
               onTap: () {
                 map.isShowPill(true);
                 map.getPillData(data);
@@ -53,11 +54,12 @@ class _GoogleMapsState extends State<GoogleMaps> {
                     builder: (context) => DetailScreen(
                       // 傳進當前 leafcard 的 treedata[index] 給 detail page
                       data: data,
+                      type: DataType.GoogleMap,
                     ),
                   ),
                 ),
               ),
-              position: LatLng(loc.treeLat, loc.treeLong),
+              position: LatLng(lct.treeLat, lct.treeLong),
               icon: map.icon,
             ),
           );
@@ -71,7 +73,7 @@ class _GoogleMapsState extends State<GoogleMaps> {
 
     final String message = result['message'];
     final bool success = result['success'];
-    final List<Result> data = result['data'];
+    final List<TreeLocation> data = result['data'];
 
     if (!success) {
       Toast.error(

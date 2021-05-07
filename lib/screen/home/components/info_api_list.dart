@@ -47,8 +47,9 @@ class _InfoApiListState extends State<InfoApiList> {
                         sort: home.list[index].infoType,
                         title: home.list[index].title,
                         text: home.list[index].content,
-                        image: home.list[index].infoImages.isNotEmpty
-                            ? home.list[index].infoImages.first.infoImage
+                        image: home.list[index].infoImages?.isNotEmpty ?? true
+                            ? home.list[index].infoImages?.first?.infoImage ??
+                                null
                             : null,
                       ),
                     ),
@@ -66,15 +67,18 @@ class _InfoApiListState extends State<InfoApiList> {
               );
             _refreshController.resetLoadState();
           }),
-          onLoad: () async => await home.loadMore().then((success) {
-            if (!success)
-              Toast.error(
-                icon: Icons.wifi_lock,
-                title: '伺服器遇到神祕阻力',
-                subtitle: '加載不可',
-              );
-            _refreshController.finishLoad();
-          }),
+          // 本地數據庫沒有加載更多的 function 提供
+          onLoad: home.status == Status.Hive
+              ? null
+              : () async => await home.loadMore().then((success) {
+                    if (!success)
+                      Toast.error(
+                        icon: Icons.wifi_lock,
+                        title: '伺服器遇到神祕阻力',
+                        subtitle: '加載不可',
+                      );
+                    _refreshController.finishLoad();
+                  }),
           //之後在此自定義文字
           header: ClassicalHeader(
             refreshText: AppLocalizations.of(context).refreshText,

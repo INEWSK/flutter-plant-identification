@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_hotelapp/common/constants/dio_options.dart';
-import 'package:flutter_hotelapp/common/constants/rest_api.dart';
 import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
 import 'package:flutter_hotelapp/common/utils/locale_utils.dart';
 import 'package:flutter_hotelapp/common/utils/logger_utils.dart';
@@ -57,7 +56,7 @@ class SearchProvider extends ChangeNotifier {
       notifyListeners();
     }
 
-    final url = '${RestApi.localUrl}/flora/tree/?page=$_currentPage';
+    final url = '/flora/tree/?page=$_currentPage';
 
     try {
       final response = await dio.get(url,
@@ -84,11 +83,9 @@ class SearchProvider extends ChangeNotifier {
       //輸出錯誤到控制台
       LoggerUtils.show(type: Type.Warning, message: error.messge);
 
-      //已經加載完成情況下不返回 error status 而不導致跳 error page
+      //已經加載完成情況下不返回 error status 跳 error page
       if (_status != Status.Loaded) {
         _status = Status.Error;
-        _searchEnable = true;
-        notifyListeners();
       }
 
       _searchEnable = true;
@@ -112,7 +109,7 @@ class SearchProvider extends ChangeNotifier {
     _currentPage += 1; // 每次分頁增加
     print(_currentPage);
 
-    final path = '${RestApi.localUrl}/flora/tree/?page=$_currentPage';
+    final path = '/flora/tree/?page=$_currentPage';
 
     print(path);
 

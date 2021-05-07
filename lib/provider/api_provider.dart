@@ -2,8 +2,11 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hotelapp/common/constants/dio_options.dart';
+import 'package:flutter_hotelapp/common/utils/device_utils.dart';
 import 'package:flutter_hotelapp/common/utils/dio_exceptions.dart';
+import 'package:flutter_hotelapp/common/utils/local_notification.dart';
 import 'package:flutter_hotelapp/common/utils/locale_utils.dart';
 import 'package:flutter_hotelapp/common/utils/logger_utils.dart';
 import 'package:flutter_hotelapp/models/tree_data.dart' as tree;
@@ -20,7 +23,11 @@ class ApiProvider extends ChangeNotifier {
   String _locale;
   bool isLoading = false;
   List<tree.Result> _listData = [];
-  tree.Result data;
+  tree.Result _data;
+  bool _training = false;
+
+  get data => _data;
+  get training => _training;
 
   Dio dio = Dio(jsonOptions);
 
@@ -63,7 +70,7 @@ class ApiProvider extends ChangeNotifier {
 
         // 將 ai 傳回的 response 根據名字查找是否有對應名字的資料
         final keyword = aiResult.toLowerCase();
-        final data = await _test(keyword);
+        final data = await _searchTreeData(keyword);
 
         result['data'] = data;
         result['success'] = true;
@@ -114,18 +121,72 @@ class ApiProvider extends ChangeNotifier {
     }
   }
 
-  Future<tree.Result> _test(String keyword) async {
+  Future<tree.Result> _searchTreeData(String keyword) async {
     //根據 keyword 嘗試查找單個符合的元素
     //如果有多個則拋出 error
     //如果沒有則返回 null
     //因爲不是使用database, 不清楚往後數據量大會否對效能造成影響
-    data = _listData.singleWhere((element) {
+    _data = _listData.singleWhere((element) {
       var title = element.folderName.toLowerCase();
       return title.contains(keyword);
     }, orElse: () => null);
 
-    debugPrint(data != null ? data.commonName : '沒有資料');
+    debugPrint(_data != null ? _data.commonName : '沒有資料');
 
-    return data;
+    return _data;
+  }
+
+  Future<String> requestRetrain() async {
+    if (_training) {
+      return 'Processing';
+    }
+
+    _backgroundService(true);
+
+    _training = true;
+    notifyListeners();
+
+    final result =
+        await Future.delayed(const Duration(seconds: 10), () => 'AI訓練完畢');
+    debugPrint(result);
+
+    _backgroundService(false);
+
+    _training = false;
+    notifyListeners();
+    return result;
+  }
+
+  //A機8.0以上軟件進入後台1分鐘後就會進入閒置狀態, 限制取用
+  //有機會被系統殺死APP釋放內存
+  //自求平安
+  Future<void> _backgroundService(bool on) async {
+    if (Device.isAndroid) {
+      var methodChannel = MethodChannel("com.example.flutter_hotelapp");
+      if (on) {
+        String data = await methodChannel.invokeMethod("startService");
+        debugPrint("Service Status: $data");
+      } else {
+        String data = await methodChannel.invokeMethod("stopService");
+
+        LocalNotification.show(
+          id: 0,
+          title: '伺服器 AI 模型訓練',
+          body: '伺服器已完成圖形訓練',
+        );
+
+        debugPrint("Service Status: $data");
+      }
+    }
+    // ios 只返回 notification
+    if (Device.isIOS) {
+      if (!on) {
+        LocalNotification.show(
+          id: 0,
+          title: '伺服器 AI 模型訓練',
+          body: '伺服器已完成圖形訓練',
+        );
+      }
+    }
   }
 }

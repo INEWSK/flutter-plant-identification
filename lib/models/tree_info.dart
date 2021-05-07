@@ -1,10 +1,15 @@
 import 'dart:convert';
 
+import 'package:hive/hive.dart';
+
+part 'tree_info.g.dart';
+
 TreeInfo treeInfoFromJson(String str) => TreeInfo.fromJson(json.decode(str));
 
 String treeInfoToJson(TreeInfo data) => json.encode(data.toJson());
 
-class TreeInfo {
+@HiveType(typeId: 4)
+class TreeInfo extends HiveObject {
   TreeInfo({
     this.count,
     this.next,
@@ -12,9 +17,13 @@ class TreeInfo {
     this.results,
   });
 
+  @HiveField(0)
   int count;
+  @HiveField(1)
   dynamic next;
+  @HiveField(2)
   dynamic previous;
+  @HiveField(3)
   List<Result> results;
 
   factory TreeInfo.fromJson(Map<String, dynamic> json) => TreeInfo(
@@ -33,7 +42,8 @@ class TreeInfo {
       };
 }
 
-class Result {
+@HiveType(typeId: 5)
+class Result extends HiveObject {
   Result({
     this.infoType,
     this.title,
@@ -42,10 +52,15 @@ class Result {
     this.infoImages,
   });
 
+  @HiveField(0)
   String infoType;
+  @HiveField(1)
   String title;
+  @HiveField(2)
   String content;
+  @HiveField(3)
   DateTime dateCreated;
+  @HiveField(4)
   List<InfoImage> infoImages;
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
@@ -66,17 +81,21 @@ class Result {
       };
 }
 
-class InfoImage {
+@HiveType(typeId: 6)
+class InfoImage extends HiveObject {
   InfoImage({
     this.id,
     this.infoImage,
     this.dateCreated,
     this.info,
   });
-
+  @HiveField(0)
   int id;
+  @HiveField(1)
   String infoImage;
+  @HiveField(2)
   DateTime dateCreated;
+  @HiveField(3)
   int info;
 
   factory InfoImage.fromJson(Map<String, dynamic> json) => InfoImage(

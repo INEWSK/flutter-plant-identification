@@ -5,7 +5,6 @@ import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/provider/auth_provider.dart';
 import 'package:flutter_hotelapp/screen/auth/widgets/auth_form_field.dart';
 import 'package:flutter_hotelapp/screen/common_widgets/primary_button.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:provider/provider.dart';
 

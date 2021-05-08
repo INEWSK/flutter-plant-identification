@@ -2,7 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hotelapp/common/constants/constants.dart';
+import 'package:flutter_hotelapp/common/utils/hive_utils.dart';
 import 'package:flutter_hotelapp/common/utils/local_notification.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +32,8 @@ void main() {
     await Hive.openBox(Constant.box);
     // initialise local notification plugin
     await LocalNotification.init();
+    // register hive custom model adapter
+    await HiveUtils.registerAdapter();
 
     /// provider
     final authProvider = ChangeNotifierProvider(
@@ -57,7 +61,9 @@ void main() {
           apiProvider, // API CALL
           // mlkitProvider, // MLKIT
         ],
-        child: MyApp(),
+        child: Phoenix(
+          child: MyApp(),
+        ),
       ),
     );
 

@@ -6,6 +6,7 @@ import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/provider/auth_provider.dart';
 import 'package:flutter_hotelapp/provider/intl_provider.dart';
 import 'package:flutter_hotelapp/provider/theme_provider.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
@@ -84,10 +85,8 @@ class SettingsScreen extends StatelessWidget {
     if (i != null) {
       final String locale = i == 0 ? '' : (i == 1 ? 'zh' : 'en');
       context.read<IntlProvider>().setLocale(locale);
-      Toast.notification(
-        title: '語言設定變更成功 / Language Changed',
-        subtitle: '部分功能重啓生效 / You may restart to take effect',
-      );
+      // 重建所有 flutter widget 以變更語言
+      Phoenix.rebirth(context);
     }
   }
 

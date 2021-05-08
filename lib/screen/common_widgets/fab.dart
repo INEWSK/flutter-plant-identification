@@ -84,7 +84,7 @@ class FAB extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (BuildContext context) =>
-                            DetailScreen(data: data)),
+                            DetailScreen(data: data, type: DataType.Tree)),
                   );
                 },
                 child: Text('查看更多'))

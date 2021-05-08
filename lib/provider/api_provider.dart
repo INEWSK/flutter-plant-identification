@@ -69,7 +69,7 @@ class ApiProvider extends ChangeNotifier {
         }
 
         // 將 ai 傳回的 response 根據名字查找是否有對應名字的資料
-        final keyword = aiResult.toLowerCase();
+        final String keyword = aiResult.toLowerCase();
         final data = await _searchTreeData(keyword);
 
         result['data'] = data;

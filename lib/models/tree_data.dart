@@ -126,8 +126,6 @@ class Result extends HiveObject {
         dateCreated: DateTime.parse(json["date_created"]),
         treeImages: List<TreeImage>.from(
             json["tree_images"].map((x) => TreeImage.fromJson(x))),
-        // treeLocations: List<TreeLocation>.from(
-        //     json["tree_locations"].map((x) => TreeLocation.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -185,45 +183,3 @@ class TreeImage extends HiveObject {
         "tree": tree,
       };
 }
-
-// @HiveType(typeId: 3)
-// class TreeLocation extends HiveObject {
-//   TreeLocation({
-//     this.id,
-//     this.treeImage,
-//     this.treeLat,
-//     this.treeLong,
-//     this.dateCreated,
-//     this.tree,
-//   });
-//   @HiveField(0)
-//   int id;
-//   @HiveField(1)
-//   String treeImage;
-//   @HiveField(2)
-//   double treeLat;
-//   @HiveField(3)
-//   double treeLong;
-//   @HiveField(4)
-//   DateTime dateCreated;
-//   @HiveField(5)
-//   int tree;
-
-//   factory TreeLocation.fromJson(Map<String, dynamic> json) => TreeLocation(
-//         id: json["id"],
-//         treeImage: json["tree_image"],
-//         treeLat: json["tree_lat"].toDouble(),
-//         treeLong: json["tree_long"].toDouble(),
-//         dateCreated: DateTime.parse(json["date_created"]),
-//         tree: json["tree"],
-//       );
-
-//   Map<String, dynamic> toJson() => {
-//         "id": id,
-//         "tree_image": treeImage,
-//         "tree_lat": treeLat,
-//         "tree_long": treeLong,
-//         "date_created": dateCreated.toIso8601String(),
-//         "tree": tree,
-//       };
-// }

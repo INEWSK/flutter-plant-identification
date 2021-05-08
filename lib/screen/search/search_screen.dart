@@ -54,9 +54,9 @@ class _SearchScreenState extends State<SearchScreen>
         case Status.Error:
           return ErrorPage(
             press: () async {
-              final success = await tree.fetchData();
+              final success = await tree.fetchApiData();
               if (!success) {
-                Toast.error(title: '404 NOT FOUND', subtitle: '原地爆炸');
+                Toast.error(title: '404 NOT FOUND', subtitle: '還是請你喝咖啡');
               }
             },
           );
@@ -64,13 +64,20 @@ class _SearchScreenState extends State<SearchScreen>
         case Status.Loaded:
           return TreeList();
           break;
+        case Status.Hive:
+          return TreeList();
+          break;
         case Status.Loading:
           return brightness == Brightness.light ? ShimmerEffect() : _loading();
           break;
         default:
-          tree.fetchData().then((success) {
+          tree.fetchApiData().then((success) {
             if (!success) {
-              Toast.error(title: '404 NOT FOUND', subtitle: '不行拉');
+              if (tree.status == Status.Hive) {
+                Toast.error(title: '呼叫 API 失敗', subtitle: '加載本地數據');
+              } else {
+                Toast.error(title: 'API 沒有回應, 本地也沒有數據', subtitle: '請你喝咖啡');
+              }
             }
           });
           return brightness == Brightness.light ? ShimmerEffect() : _loading();

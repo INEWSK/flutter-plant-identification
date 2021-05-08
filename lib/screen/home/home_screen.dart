@@ -66,30 +66,30 @@ class _HomeScreenState extends State<HomeScreen>
         case Status.Error:
           return InfoDemoList();
           break;
-        case Status.Loaded:
+        case Status.Network:
           return InfoApiList();
           break;
         case Status.Hive:
           return InfoApiList();
         default:
           // 初始化 hive
-          home.initInfoBox().then((_) {
-            home.fetchApiData().then((success) {
-              if (!success) {
-                if (home.status == Status.Hive) {
-                  Toast.error(
-                    title: '連線失敗',
-                    subtitle: '加載本地數據',
-                  );
-                } else {
-                  Toast.error(
-                    title: '加載失敗',
-                    subtitle: '網絡發生了小問題, 請稍候刷新重試',
-                  );
-                }
+          // home.initInfoBox().then((_) {
+          home.fetchApiData().then((success) {
+            if (!success) {
+              if (home.status == Status.Hive) {
+                Toast.error(
+                  title: '呼叫 API 失敗',
+                  subtitle: '加載本地數據',
+                );
+              } else {
+                Toast.error(
+                  title: 'API 呼叫失敗, 本地沒有數據',
+                  subtitle: '加載 DEMO',
+                );
               }
-            });
+            }
           });
+          // });
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,

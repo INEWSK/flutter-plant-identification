@@ -1,3 +1,6 @@
+import 'package:flutter_hotelapp/models/tree_data.dart' as treeData;
+
+import 'package:flutter_hotelapp/models/tree_info.dart' as treeInfo;
 import 'package:hive/hive.dart';
 
 class HiveUtils {
@@ -28,5 +31,17 @@ class HiveUtils {
     }
 
     return boxList;
+  }
+
+  // register hive custom model adapter
+  static registerAdapter() async {
+    // home page
+    Hive.registerAdapter(treeInfo.TreeInfoAdapter());
+    Hive.registerAdapter(treeInfo.ResultAdapter());
+    Hive.registerAdapter(treeInfo.InfoImageAdapter());
+    // search & ai
+    Hive.registerAdapter(treeData.TreeDataAdapter());
+    Hive.registerAdapter(treeData.ResultAdapter());
+    Hive.registerAdapter(treeData.TreeImageAdapter());
   }
 }

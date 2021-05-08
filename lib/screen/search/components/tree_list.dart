@@ -47,7 +47,7 @@ class _TreeListState extends State<TreeList> {
     if (_textController.text.isNotEmpty) {
       _textController.clear();
       //讀取 provider 內資料, 直接返回 T,不需要去監聽變化
-      context.read<SearchProvider>().clear();
+      context.read<SearchProvider>().clearQuery();
       return;
     }
   }
@@ -131,15 +131,18 @@ class _TreeListState extends State<TreeList> {
                       }
                       _refreshController.resetLoadState();
                     }),
-                    onLoad: () async => await model.loadMore().then((success) {
-                      if (!success)
-                        Toast.error(
-                          icon: Icons.wifi_lock,
-                          title: '伺服器遇到神祕阻力',
-                          subtitle: '加載不可',
-                        );
-                      _refreshController.finishLoad();
-                    }),
+                    onLoad: model.status == Status.Hive
+                        // local data base 沒有加載更多
+                        ? null
+                        : () async => await model.loadMore().then((success) {
+                              if (!success)
+                                Toast.error(
+                                  icon: Icons.wifi_lock,
+                                  title: '伺服器遇到神祕阻力',
+                                  subtitle: '加載不可',
+                                );
+                              _refreshController.finishLoad();
+                            }),
                     header: DeliveryHeader(enableHapticFeedback: true),
                     footer: ClassicalFooter(
                       loadText: AppLocalizations.of(context).loadMoreText,

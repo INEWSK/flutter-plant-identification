@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hotelapp/common/constants/constants.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
+import 'package:flutter_hotelapp/provider/api_provider.dart';
 import 'package:flutter_hotelapp/screen/common_widgets/bottom_tab_bar.dart';
 import 'package:flutter_hotelapp/screen/home/provider/home_provider.dart';
 import 'package:flutter_hotelapp/screen/search/provider/search_provider.dart';
+import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -48,6 +51,11 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       vsync: this,
       duration: kDefaultDuration * 0.5,
     );
+    // 檢查是否有中斷的 task 還未完成
+    var box = Hive.box(Constant.box);
+    if (box.get(Constant.taskId) != null) {
+      context.read<ApiProvider>().browseTaskStatus();
+    }
   }
 
   @override

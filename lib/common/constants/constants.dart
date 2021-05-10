@@ -24,4 +24,6 @@ class Constant {
   static const String theme = 'appTheme';
   static const String locale = 'locale';
   static const String seen = 'isSeen';
+
+  static const String taskId = 'taskId';
 }

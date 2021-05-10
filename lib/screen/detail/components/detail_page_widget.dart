@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/common/utils/image_utils.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -41,7 +42,9 @@ class DetailPageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String noMoreInfo = AppLocalizations.of(context).noMoreInfo;
     var brightness = Theme.of(context).brightness;
+
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
       slivers: [
@@ -62,8 +65,10 @@ class DetailPageWidget extends StatelessWidget {
                   image: DecorationImage(
                     image: treeImage != null
                         ? ImageUtils.getImageProvider(treeImage)
-                        : ImageUtils.getAssetImage('nophoto',
-                            format: ImageFormat.jpg),
+                        : ImageUtils.getAssetImage(
+                            'nophoto',
+                            format: ImageFormat.jpg,
+                          ),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -98,14 +103,14 @@ class DetailPageWidget extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 4.0),
                         child: Text(
-                          'Scientific Name:',
+                          AppLocalizations.of(context).treeScientificName,
                           style: kSubHeadTextStyle,
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 4.0),
                         child: Text(
-                          scientificName ?? '',
+                          scientificName ?? noMoreInfo,
                           style: kBodyTextStyle.copyWith(color: Colors.teal),
                         ),
                       ),
@@ -114,7 +119,7 @@ class DetailPageWidget extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 4.0),
                         child: Text(
-                          'Common Name:',
+                          AppLocalizations.of(context).treeCommonName,
                           style: kSubHeadTextStyle,
                         ),
                       ),
@@ -122,7 +127,7 @@ class DetailPageWidget extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 4.0),
                         decoration: BoxDecoration(color: Colors.lightGreen[50]),
                         child: Text(
-                          commonName,
+                          commonName ?? noMoreInfo,
                           // 解決暗色模式時背景色導致字體看不見問題
                           style: brightness == Brightness.dark
                               ? TextStyle(color: Colors.black)
@@ -132,58 +137,58 @@ class DetailPageWidget extends StatelessWidget {
                     ]),
                   ],
                 ),
-                SizedBox(height: 20),
-                basicIntro != null
+                SizedBox(height: 10),
+                basicIntro != ''
                     ? Text(
                         basicIntro,
                         style: kBodyTextStyle,
-                        maxLines: 4,
+                        maxLines: 5,
                         overflow: TextOverflow.ellipsis,
                       )
                     : SizedBox(),
-                specialFeatures != null
+                specialFeatures != ''
                     ? SectionCell(
                         icon: SvgPicture.asset('assets/icons/sp_features.svg'),
-                        title: 'Special Features',
+                        title: AppLocalizations.of(context).treeSpecialFeatures,
                         content: specialFeatures,
                       )
                     : SizedBox(),
-                learnMore != null
+                learnMore != ''
                     ? SectionCell(
                         icon: SvgPicture.asset('assets/icons/information.svg'),
-                        title: 'To Learn More',
+                        title: AppLocalizations.of(context).treeToLearnMore,
                         content: learnMore,
                       )
                     : SizedBox(),
                 SectionCell(
                   icon: SvgPicture.asset('assets/icons/characteristics.svg'),
-                  title: 'Characteristics',
+                  title: AppLocalizations.of(context).treeCharacteristics,
                 ),
                 CharacteristicTable(
-                  family: cFamily ?? '',
-                  height: cHeight ?? '',
-                  nature: cNatureLeaf ?? '',
-                  branch: cBranch ?? '',
-                  bark: cBark ?? '',
+                  family: cFamily != '' ? cFamily : noMoreInfo,
+                  height: cHeight != '' ? cHeight : noMoreInfo,
+                  nature: cNatureLeaf != '' ? cNatureLeaf : noMoreInfo,
+                  branch: cBranch != '' ? cBranch : noMoreInfo,
+                  bark: cBark != '' ? cBark : noMoreInfo,
                 ),
-                leafIntro != null
+                leafIntro != ''
                     ? SectionCell(
                         icon: SvgPicture.asset('assets/icons/leaf.svg'),
-                        title: 'Leaf',
+                        title: AppLocalizations.of(context).treeLeaf,
                         content: leafIntro,
                       )
                     : SizedBox(),
-                flowerIntro != null
+                flowerIntro != ''
                     ? SectionCell(
                         icon: SvgPicture.asset('assets/icons/flower.svg'),
-                        title: 'Flower',
+                        title: AppLocalizations.of(context).treeFlower,
                         content: flowerIntro,
                       )
                     : SizedBox(),
-                fruitIntro != null
+                fruitIntro != ''
                     ? SectionCell(
                         icon: SvgPicture.asset('assets/icons/fruit.svg'),
-                        title: 'Fruit',
+                        title: AppLocalizations.of(context).treeFruit,
                         content: fruitIntro,
                       )
                     : SizedBox(),
@@ -231,7 +236,7 @@ class CharacteristicTable extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: Text(
-              'Family:',
+              AppLocalizations.of(context).treeTableFamily,
               style: kSubHeadTextStyle,
             ),
           ),
@@ -247,7 +252,7 @@ class CharacteristicTable extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: Text(
-              'Height:',
+              AppLocalizations.of(context).tableHeight,
               style: kSubHeadTextStyle,
             ),
           ),
@@ -266,7 +271,7 @@ class CharacteristicTable extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: Text(
-              'Nature of Leaf:',
+              AppLocalizations.of(context).tableNatureLeaf,
               style: kSubHeadTextStyle,
             ),
           ),
@@ -282,7 +287,7 @@ class CharacteristicTable extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: Text(
-              'Branch:',
+              AppLocalizations.of(context).tableBranch,
               style: kSubHeadTextStyle,
             ),
           ),
@@ -301,7 +306,7 @@ class CharacteristicTable extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: Text(
-              'Bark:',
+              AppLocalizations.of(context).tableBark,
               style: kSubHeadTextStyle,
             ),
           ),

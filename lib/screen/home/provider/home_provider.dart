@@ -62,7 +62,7 @@ class HomeProvider extends ChangeNotifier {
       return true;
     } on DioError catch (e) {
       final error = DioExceptions.fromDioError(e);
-      LoggerUtils.show(message: error.messge, type: Type.Warning);
+      LoggerUtils.show(message: error.messge, messageType: Type.Warning);
 
       try {
         bool exist = await hiveUtils.isExists(boxName: boxName);
@@ -89,7 +89,7 @@ class HomeProvider extends ChangeNotifier {
         return false;
       } catch (e) {
         // 這裏是 hive 原地爆炸才會出現的錯誤
-        LoggerUtils.show(message: e.toString(), type: Type.Warning);
+        LoggerUtils.show(message: e.toString(), messageType: Type.Warning);
 
         if (status == Status.Uninitialized) {
           status = Status.Error;
@@ -103,21 +103,16 @@ class HomeProvider extends ChangeNotifier {
 
   /// 下拉加載更多資料
   Future<bool> loadMore() async {
-    if (!_nextPage) {
-      // 已經沒東西可以給了, 直接返回, 什麼都不做
-      return true;
-    }
+    // 已經沒東西可以給了, 直接返回, 什麼都不做
+    if (!_nextPage) return true;
 
-    _currentPage += 1; // 每次分頁增加
-    print(_currentPage);
+    // _currentPage += 1; // 每次分頁增加
+    final Map<String, dynamic> params = {"page": _currentPage += 1};
 
-    final path = '/flora/info/?page=$_currentPage';
-
-    print(path);
+    final path = '/flora/info/';
 
     try {
-      final response = await dio.get(path);
-
+      final response = await dio.get(path, queryParameters: params);
       final data = treeInfo.treeInfoFromJson(response.data);
 
       // 如果伺服器傳回沒有下一頁
@@ -132,13 +127,12 @@ class HomeProvider extends ChangeNotifier {
 
       // 把新抓到的 data 儲存到 hive
       await hiveUtils.addBoxes(_list, boxName);
-
       notifyListeners();
 
       return true;
     } on DioError catch (e) {
       final error = DioExceptions.fromDioError(e);
-      LoggerUtils.show(message: error.messge, type: Type.WTF);
+      LoggerUtils.show(message: error.messge, messageType: Type.WTF);
 
       // 既然失敗了就沒有下一頁了
       _nextPage = false;

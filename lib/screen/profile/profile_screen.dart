@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hotelapp/common/utils/logger_utils.dart';
+import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/provider/api_provider.dart';
 import 'package:flutter_hotelapp/provider/auth_provider.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
@@ -19,6 +23,8 @@ class _ProfileScreenState extends State<ProfileScreen>
     with AutomaticKeepAliveClientMixin<ProfileScreen> {
   @override
   bool get wantKeepAlive => true;
+
+  Timer timer;
 
   Future<void> _toEmailDialog(BuildContext context) {
     return showDialog(
@@ -61,7 +67,8 @@ class _ProfileScreenState extends State<ProfileScreen>
               child: Text(AppLocalizations.of(context).cancel),
             ),
             TextButton(
-              onPressed: () => Navigator.pop(context, api.requestRetrain()),
+              onPressed: () => Navigator.pop(
+                  context, api.requestRetrain(choice: Choice.Local)),
               child: Text(AppLocalizations.of(context).confirm),
             ),
           ],
@@ -117,13 +124,19 @@ class _ProfileScreenState extends State<ProfileScreen>
     if (await canLaunch(url)) {
       await launch(url);
     } else {
-      LoggerUtils.show(type: Type.Error, message: 'Cloud not Launch $url');
+      LoggerUtils.show(
+          messageType: Type.Error, message: 'Cloud not Launch $url');
     }
   }
 
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -170,24 +183,38 @@ class _ProfileScreenState extends State<ProfileScreen>
           ),
           Consumer2(
             builder: (_, AuthProvider user, ApiProvider api, __) {
-              if (user.admin == false) {
+              // wa幹這樣真的可以嗎? 感覺很蠢而且違反了 OOT 直覺
+              if (api.training == true) {
+                // 如果 training 設置 timer 每 x 秒執行一次 method
+                timer = Timer.periodic(
+                  Duration(seconds: 4),
+                  (_) => api.browseTaskStatus().then(
+                        (result) => Toast.show(result),
+                      ),
+                );
+              } else {
+                // 反之則取消 timer
+                timer?.cancel();
+              }
+              if (user.admin == true) {
                 return ListTile(
-                    leading: api.training
-                        ? Container(
-                            width: 36,
-                            child: SpinKitFadingGrid(
-                              color: Colors.teal,
-                              size: 32,
-                            ),
-                          )
-                        : SvgPicture.asset(
-                            'assets/icons/profile/ai_retraining.svg'),
-                    title: Text(api.training
-                        ? 'Model is Retraining...'
-                        : AppLocalizations.of(context).modelRetraining),
-                    onTap: api.training
-                        ? null
-                        : () => _retrainingDialog(context, api));
+                  leading: api.training
+                      ? Container(
+                          width: 36,
+                          child: SpinKitFadingGrid(
+                            color: Colors.teal,
+                            size: 32,
+                          ),
+                        )
+                      : SvgPicture.asset(
+                          'assets/icons/profile/ai_retraining.svg'),
+                  title: Text(api.training
+                      ? 'Model is Retraining...'
+                      : AppLocalizations.of(context).modelRetraining),
+                  onTap: api.training
+                      ? null
+                      : () => _retrainingDialog(context, api),
+                );
               } else {
                 return Container();
               }

@@ -10,6 +10,7 @@ class HiveUtils {
     return length != 0;
   }
 
+  /// add list item into the box
   addBoxes<T>(List<T> items, String boxName) async {
     print("adding boxes");
     final openBox = await Hive.openBox(boxName);
@@ -19,6 +20,7 @@ class HiveUtils {
     }
   }
 
+  // get item from box
   getBoxes<T>(String boxName) async {
     List<T> boxList = [];
 
@@ -33,7 +35,14 @@ class HiveUtils {
     return boxList;
   }
 
-  // register hive custom model adapter
+  closeBoxes<T>(String boxName) async {
+    final openBox = await Hive.openBox(boxName);
+
+    await openBox.compact();
+    await openBox.close();
+  }
+
+  /// register hive custom model adapter
   static registerAdapter() async {
     // home page
     Hive.registerAdapter(treeInfo.TreeInfoAdapter());

@@ -34,7 +34,6 @@ const InputDecoration otpInputDecoration = InputDecoration(
 const InputDecoration searchInputDecoration = InputDecoration(
   contentPadding: EdgeInsets.all(10),
   prefixIcon: Icon(Icons.search),
-  hintText: 'Search...',
   border: InputBorder.none,
 );
 

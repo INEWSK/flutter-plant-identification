@@ -49,7 +49,7 @@ class SpeedDial extends StatelessWidget {
         debugPrint('FILE PATH: 無文件被選擇');
       }
     } catch (e) {
-      LoggerUtils.show(type: Type.Error, message: e.toString());
+      LoggerUtils.show(messageType: Type.Error, message: e.toString());
       Toast.error(title: '錯誤', subtitle: '沒有權限打開相冊');
     }
   }
@@ -89,7 +89,7 @@ class SpeedDial extends StatelessWidget {
         title: (_) => Text('AI 預測結果', style: kBodyTextStyle),
         subtitle: (_) => Text(result),
         // 沒有傳回 data 或 data 爲 null 不顯示 '查看更多' 標題
-        trailing: (cancel) => data != null
+        trailing: (_) => data != null
             ? TextButton(
                 onPressed: () {
                   Navigator.push(
@@ -115,11 +115,6 @@ class SpeedDial extends StatelessWidget {
             style: kBodyTextStyle.copyWith(color: Colors.white)),
         subtitle: (_) => Text(result,
             style: kSecondaryBodyTextStyle.copyWith(color: Colors.white54)),
-        trailing: (_) => Text(
-          '嘗試 ML Kit?',
-          style: TextStyle(color: Colors.white70),
-        ),
-        onTap: () => Navigator.pushNamed(context, '/labor'),
         backgroundColor: Colors.redAccent,
         duration: Duration(seconds: 7),
         crossPage: false,

@@ -429,5 +429,89 @@
     "@changeAvatar": {
       "description": "Text for avatar option dialog title",
       "type": "text"
+    },
+
+    "noMoreInfo": "No more information available",
+    "@noMoreInfo": {
+      "description": "Text for no more information",
+      "type": "text"
+    },
+
+    "treeScientificName": "Scientific Name",
+    "@treeScientificName": {
+      "description": "Title for detail page",
+      "type": "text"
+    },
+
+    "treeCommonName": "Common Name",
+    "@treeCommonName": {
+      "description": "Title for detail page",
+      "type": "text"
+    },
+
+    "treeSpecialFeatures": "Special Features",
+    "@treeSpecialFeatures": {
+      "description": "Title for detail page",
+      "type": "text"
+    },
+
+    "treeToLearnMore": "To Learn More",
+    "@treeToLearnMore": {
+      "description": "Title for detail page",
+      "type": "text"
+    },
+
+    "treeCharacteristics": "Characteristics",
+    "@treeCharacteristics": {
+      "description": "Title for detail page",
+      "type": "text"
+    },
+
+    "treeTableFamily": "Family",
+    "@treeTableFamily": {
+      "description": "Title for detail page table",
+      "type": "text"
+    },
+
+    "tableHeight": "Height",
+    "@tableHeight": {
+      "description": "Title for detail page table",
+      "type": "text"
+    },
+
+    "tableNatureLeaf": "Nature of Leaf",
+    "@tableNatureLeaf": {
+      "description": "Title for detail page table",
+      "type": "text"
+    },
+
+    "tableBranch": "Branch",
+    "@tableBranch": {
+      "description": "Title for detail page table",
+      "type": "text"
+    },
+
+    "tableBark": "Bark",
+    "@tableBark": {
+      "description": "Title for detail page table",
+      "type": "text"
+    },
+
+    "treeLeaf": "Leaf",
+    "@treeLeaf": {
+      "description": "Title for detail page",
+      "type": "text"
+    },
+
+    "treeFlower": "Flower",
+    "@treeFlower": {
+      "description": "Title for detail page",
+      "type": "text"
+    },
+
+    "treeFruit": "Fruit",
+    "@fruit": {
+      "description": "Title for detail page",
+      "type": "text"
     }
 }

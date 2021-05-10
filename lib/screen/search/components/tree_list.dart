@@ -63,6 +63,7 @@ class _TreeListState extends State<TreeList> {
             controller: _textController,
             decoration: searchInputDecoration.copyWith(
               contentPadding: const EdgeInsets.all(16.0),
+              hintText: AppLocalizations.of(context).search,
               hintStyle: kInputTextStyle,
               suffixIcon: (!_clearButton)
                   ? null

@@ -31,19 +31,19 @@ class _GoogleMapsState extends State<GoogleMaps> {
   }
 
   void _setMarker(List<TreeLocation> treeData) {
-    var map = context.read<GoogleMapsProvider>();
+    var maps = context.read<GoogleMapsProvider>();
     treeData.forEach((data) {
       //如果 treedata 有包含 location (座標內容)
       if (data.treeLocations.isNotEmpty) {
         List<TreeLocationElement> locations = data.treeLocations;
         locations.forEach((lct) {
-          map.markers.add(
+          maps.markers.add(
             Marker(
               zIndex: lct.id.toDouble(),
               markerId: MarkerId(lct.id.toString()),
               onTap: () {
-                map.isShowPill(true);
-                map.getPillData(data);
+                maps.isShowPill(true);
+                maps.getPillData(data);
               },
               infoWindow: InfoWindow(
                 title: data.commonName,
@@ -60,7 +60,7 @@ class _GoogleMapsState extends State<GoogleMaps> {
                 ),
               ),
               position: LatLng(lct.treeLat, lct.treeLong),
-              icon: map.icon,
+              icon: maps.icon,
             ),
           );
         });
@@ -98,7 +98,7 @@ class _GoogleMapsState extends State<GoogleMaps> {
               markers: Set.from(map.markers),
               initialCameraPosition:
                   CameraPosition(target: _hongKong, zoom: 12.0),
-              onTap: (LatLng loc) {
+              onTap: (_) {
                 map.isShowPill(false);
               },
             ),

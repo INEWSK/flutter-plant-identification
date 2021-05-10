@@ -37,7 +37,7 @@ class FAB extends StatelessWidget {
         debugPrint('FILE PATH: 無文件被選擇');
       }
     } catch (e) {
-      LoggerUtils.show(type: Type.Error, message: e.toString());
+      LoggerUtils.show(messageType: Type.Error, message: e.toString());
       Toast.error(title: '錯誤', subtitle: '沒有權限打開相冊');
     }
   }

@@ -3,13 +3,13 @@ import 'package:logger/logger.dart';
 enum Type { Verbose, Debug, Info, Warning, Error, WTF }
 
 class LoggerUtils {
-  static void show({Type type = Type.Verbose, String message}) {
+  static void show({Type messageType = Type.Verbose, String message}) {
     var logger = Logger();
     if (message == null) {
       return;
     }
 
-    switch (type) {
+    switch (messageType) {
       case Type.Debug:
         logger.d(message);
         break;

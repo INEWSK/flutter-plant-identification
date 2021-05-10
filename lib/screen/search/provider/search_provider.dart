@@ -92,7 +92,7 @@ class SearchProvider extends ChangeNotifier {
       return true;
     } on DioError catch (e) {
       final error = DioExceptions.fromDioError(e);
-      LoggerUtils.show(type: Type.Warning, message: error.messge);
+      LoggerUtils.show(messageType: Type.Warning, message: error.messge);
 
       // 如果在 loaded status 意味着 user 曾經成功加載過 api data
       // 直接 return 保持現有 data 狀態
@@ -120,7 +120,7 @@ class SearchProvider extends ChangeNotifier {
           return false;
         } catch (e) {
           // 這裏是 hive 原地爆炸才會出現的錯誤
-          LoggerUtils.show(message: e.toString(), type: Type.Warning);
+          LoggerUtils.show(message: e.toString(), messageType: Type.Warning);
 
           if (_status != Status.Loaded) {
             _status = Status.Error;
@@ -177,7 +177,7 @@ class SearchProvider extends ChangeNotifier {
       return true;
     } on DioError catch (e) {
       final error = DioExceptions.fromDioError(e);
-      LoggerUtils.show(message: error.messge, type: Type.WTF);
+      LoggerUtils.show(message: error.messge, messageType: Type.WTF);
 
       // 既然失敗了就沒有下一頁了
       _nextPage = false;

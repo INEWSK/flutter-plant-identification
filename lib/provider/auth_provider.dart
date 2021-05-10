@@ -304,12 +304,15 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
+  /// 在APP目錄創建以及獲取用戶個人文件夾
+  /// 用於儲存用戶資料, 如用戶頭像
   Future<String> getUserFolder() async {
     // get app doc folder
     final appDirectory = await getApplicationDocumentsDirectory();
     // create user folder for saving their picture
-    // 文件夾以用戶的token命名
-    final userFolder = Directory('${appDirectory.path}/$_token');
+    // 文件夾以用戶的token前 8 個字符命名
+    final folderName = _token.substring(0, 8);
+    final userFolder = Directory('${appDirectory.path}/$folderName');
     // if folder already exists
     if (await userFolder.exists()) {
       debugPrint('用戶文件夾' + userFolder.path);
@@ -317,14 +320,14 @@ class AuthProvider extends ChangeNotifier {
     } else {
       // if not exists, create new one
       final newUserFolder = await userFolder.create(recursive: true);
-      debugPrint('創建新的用戶文件夾\n' + '路徑: ' + newUserFolder.path);
+      debugPrint('創建用戶文件夾\n' + '路徑: ' + newUserFolder.path);
       return newUserFolder.path;
     }
   }
 
   /// sign out method
   void signOut([bool tokenExpired = false]) async {
-    //重置 variable
+    // reset status
     _status = Status.Unauthenticated;
     _token = null;
     _username = null;

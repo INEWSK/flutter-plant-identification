@@ -38,13 +38,13 @@ class _ExploreScreenState extends State<ExploreScreen>
         googleMapProvider,
       ],
       child: Consumer2(
-        builder: (_, PermissionProvider permit, GoogleMapsProvider gMap, __) {
+        builder: (_, PermissionProvider permit, GoogleMapsProvider maps, __) {
           switch (permit.status) {
             case Status.Forbidden:
               return PermitErrorPage(press: permit.requestPermission);
               break;
             case Status.Permitted:
-              gMap.initMarkerIcon();
+              maps.initMarkerIcon();
               return GoogleMaps();
               break;
             default:

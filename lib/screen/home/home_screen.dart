@@ -83,8 +83,8 @@ class _HomeScreenState extends State<HomeScreen>
                 );
               } else {
                 Toast.error(
-                  title: 'API 呼叫失敗, 本地沒有數據',
-                  subtitle: '加載 DEMO',
+                  title: 'API 呼叫失敗, 本地也沒有數據',
+                  subtitle: '加載 DEMO CARD',
                 );
               }
             }

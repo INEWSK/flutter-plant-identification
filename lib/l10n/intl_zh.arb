@@ -70,5 +70,19 @@
     "restartTakeEffect": "部分設定需要重啓 APP 生效",
     "loginSuccess": "登入成功",
     "pressAvatarToLogin": "點擊頭像登入",
-    "changeAvatar": "變更頭像"
+    "changeAvatar": "變更頭像",
+    "noMoreInfo": "沒有更多資料",
+    "treeScientificName": "學名",
+    "treeCommonName": "別名",
+    "treeSpecialFeatures": "特別功能",
+    "treeToLearnMore": "關於我",
+    "treeCharacteristics": "特徵",
+    "treeTableFamily": "家族",
+    "tableHeight": "高度",
+    "tableNatureLeaf": "性質",
+    "tableBranch": "分支",
+    "tableBark": "樹皮",
+    "treeLeaf": "葉子",
+    "treeFlower": "花朵",
+    "treeFruit": "果實"
 }

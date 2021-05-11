@@ -59,7 +59,7 @@ class _SearchScreenState extends State<SearchScreen>
               if (!success) {
                 Toast.error(
                   title: AppLocalizations.of(context).callApiFailed,
-                  subtitle: AppLocalizations.of(context).buyCoffee,
+                  subtitle: AppLocalizations.of(context).stillBuyCoffee,
                 );
               }
             },
@@ -85,7 +85,7 @@ class _SearchScreenState extends State<SearchScreen>
               } else {
                 Toast.error(
                   title: AppLocalizations.of(context).noApiAndNoLocalData,
-                  subtitle: AppLocalizations.of(context).stillBuyCoffee,
+                  subtitle: AppLocalizations.of(context).buyCoffee,
                 );
               }
             }

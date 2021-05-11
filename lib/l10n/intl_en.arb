@@ -611,7 +611,7 @@
       "type": "text"
     },
 
-    "noApiAndNoLocalData": "Failed to call API & NO local data",
+    "noApiAndNoLocalData": "Failed to call API & No local data",
     "@noApiAndNoLocalData": {
       "description": "Error text message for notification",
       "type": "text"

@@ -63,7 +63,7 @@ class _InfoApiListState extends State<InfoApiList> {
               Toast.error(
                 icon: Icons.wifi_lock,
                 title: 'Ooops!!',
-                subtitle: '外星人切斷了網絡',
+                subtitle: AppLocalizations.of(context).alienCutNetwork,
               );
             _refreshController.resetLoadState();
           }),
@@ -74,8 +74,8 @@ class _InfoApiListState extends State<InfoApiList> {
                     if (!success)
                       Toast.error(
                         icon: Icons.wifi_lock,
-                        title: '伺服器遇到神祕阻力',
-                        subtitle: '加載不可',
+                        title: AppLocalizations.of(context).callApiFailed,
+                        subtitle: AppLocalizations.of(context).loadDataFailed,
                       );
                     _refreshController.finishLoad();
                   }),

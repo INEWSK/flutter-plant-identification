@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
 
 class FQAScreen extends StatelessWidget {
@@ -6,11 +7,11 @@ class FQAScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: _body(),
+      body: _body(context),
     );
   }
 
-  Widget _body() {
+  Widget _body(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -20,7 +21,7 @@ class FQAScreen extends StatelessWidget {
             vertical: kDefaultPadding / 2,
           ),
           child: Text(
-            'Dear Tree Doctor user, our FAQ section can help you find the answer you want faster',
+            AppLocalizations.of(context).faqText,
           ),
         ),
         QuestionCell(

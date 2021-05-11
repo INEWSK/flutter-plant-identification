@@ -47,8 +47,14 @@
       "type": "text"
     },
 
-    "modelRetraining": "Model Retraining",
+    "modelRetraining": "Retrain AI model",
     "@modelRetraining": {
+      "description": "Profile page item title for model retraining",
+      "type": "text"
+    },
+
+    "retrainingModel": "Retraining AI model in progress",
+    "@retrainingModel": {
       "description": "Profile page item title for model retraining",
       "type": "text"
     },
@@ -233,8 +239,8 @@
       "type": "text"
     },
 
-    "textAgree": "By Signing up you agree to our",
-    "@textAgree": {
+    "agreeText": "By Signing up you agree to our",
+    "@agreeText": {
       "description": "Text for agree terms",
       "type": "text"
     },
@@ -512,6 +518,150 @@
     "treeFruit": "Fruit",
     "@fruit": {
       "description": "Title for detail page",
+      "type": "text"
+    },
+
+    "faqText": "Dear user, our FAQ section can help you find the answer that you want faster",
+    "@faqText": {
+      "description": "Title for FAQ page",
+      "type": "text"
+    },
+
+    "signInText": "Enter your Email address and Password for Sign In ;)",
+    "@signInText": {
+      "description": "Long text for login page",
+      "type": "text"
+    },
+
+    "createAccountText": "Create Account",
+    "@createAccountText": {
+      "description": "Text for create account",
+      "type": "text"
+    },
+
+    "signUpText": "Enter your Email and Password for sign up",
+    "@signUpText": {
+      "description": "Long text for sign up",
+      "type": "text"
+    },
+
+    "forgotText": "Enter your email address and we will sent you a reset instructions",
+    "@forgotText": {
+      "description": "Long text for forgot password page",
+      "type": "text"
+    },
+
+    "modelUpdated": "Model updated",
+    "@modelUpdated": {
+      "description": "Text for model retraining toast message",
+      "type": "text"
+    },
+
+    "modelUpdateFailed": "Fail to retrain model",
+    "@modelUpdateFailed": {
+      "description": "Text for model retraining toast message",
+      "type": "text"
+    },
+
+    "modelUpdatedText": "Successful to update model",
+    "@modelUpdatedText": {
+      "description": "Long text for model retraining toast message",
+      "type": "text"
+    },
+
+    "modelUpdateFailedText": "Due to lower accuracy or higher loss than the old one",
+    "@modelUpdateFailedText": {
+      "description": "Long text for model retraining toast message",
+      "type": "text"
+    },
+
+    "modelRetrainWarningText": "This action sends commands to the server to request training model, are you sure?",
+    "@modelRetrainWarningText": {
+      "description": "Long text for dialog warning message",
+      "type": "text"
+    },
+
+    "googleDrive": "Google Drive",
+    "@googleDrive": {
+      "description": "Title for google drive",
+      "type": "text"
+    },
+
+    "local": "Local",
+    "@local": {
+      "description": "Title for local",
+      "type": "text"
+    },
+
+    "contactUsText": "This will open an external APP to send emails to contact us",
+    "@contactUsText": {
+      "description": "Text for dialog contact us message",
+      "type": "text"
+    },
+
+    "dataLoading": "Loading data...",
+    "@dataLoading": {
+      "description": "Text for loading screen message",
+      "type": "text"
+    },
+
+    "callApiFailed": "Failed to call API",
+    "@callApiFailed": {
+      "description": "Error text message for notification",
+      "type": "text"
+    },
+
+    "noApiAndNoLocalData": "Failed to call API & NO local data",
+    "@noApiAndNoLocalData": {
+      "description": "Error text message for notification",
+      "type": "text"
+    },
+
+    "loadLocalData": "Loading local data",
+    "@loadLocalData": {
+      "description": "Text message for notification",
+      "type": "text"
+    },
+
+    "loadDemoData": "Loading demo data",
+    "@loadDemoData": {
+      "description": "Text message for notification",
+      "type": "text"
+    },
+
+    "buyCoffee": "Buy you a coffee",
+    "@buyCoffee": {
+      "description": "Error text message for notification",
+      "type": "text"
+    },
+
+    "stillBuyCoffee": "Buy you a coffee again",
+    "@stillBuyCoffee": {
+      "description": "Error text message for notification",
+      "type": "text"
+    },
+
+    "networkUnavailable": "Network not available",
+    "@networkUnavailable": {
+      "description": "Error text message for notification",
+      "type": "text"
+    },
+
+    "alienCutNetwork": "Aliens cut off the network",
+    "@alienCutNetwork": {
+      "description": "Error text message for notification",
+      "type": "text"
+    },
+
+    "loadDataFailed": "Failed to load data",
+    "@loadDataFailed": {
+      "description": "Error text message for loading data",
+      "type": "text"
+    },
+
+    "loadCoordinateFailed": "Failed to load coordinate",
+    "@loadCoordinateFailed": {
+      "description": "Error text message for loading data",
       "type": "text"
     }
 }

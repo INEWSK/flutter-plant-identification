@@ -35,8 +35,7 @@ class ForgotScreen extends StatelessWidget {
             children: [
               WelcomeText(
                 title: AppLocalizations.of(context).forgotPassword,
-                text:
-                    'Enter your email address and we will \nsent you a reset instructions.',
+                text: AppLocalizations.of(context).forgotText,
               ),
               SizedBox(height: 20),
               ForgotForm(),

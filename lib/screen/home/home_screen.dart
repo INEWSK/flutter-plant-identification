@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/provider/api_provider.dart';
 import 'package:flutter_hotelapp/screen/home/components/home_background.dart';
@@ -21,6 +24,43 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   bool get wantKeepAlive => true;
 
+  Timer _timer;
+
+  @override
+  void dispose() {
+    super.dispose();
+    _timer?.cancel();
+  }
+
+  void _broswerTaskStatus(ApiProvider api) {
+    // 如果 training 設置 timer 每 x 秒執行一次 method
+    _timer = Timer.periodic(
+      Duration(minutes: 1),
+      (_) => api.browseTaskStatus().then(
+        (result) async {
+          final done = result['done'];
+          final success = result['success'];
+          if (done) {
+            if (success) {
+              Toast.notification(
+                // icon: Icons.done,
+                title: AppLocalizations.of(context).modelUpdated,
+                subtitle: AppLocalizations.of(context).modelUpdatedText,
+                duration: 15,
+              );
+            } else {
+              Toast.error(
+                title: AppLocalizations.of(context).modelUpdateFailed,
+                subtitle: AppLocalizations.of(context).modelUpdateFailedText,
+                duration: 15,
+              );
+            }
+          }
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -29,6 +69,12 @@ class _HomeScreenState extends State<HomeScreen>
         HomeBackground(),
         Consumer<ApiProvider>(
           builder: (_, api, __) {
+            if (api.training == true) {
+              _broswerTaskStatus(api);
+            } else {
+              // 反之則取消 timer
+              _timer?.cancel();
+            }
             return Scaffold(
               appBar: AppBar(
                 title: Text(
@@ -72,24 +118,22 @@ class _HomeScreenState extends State<HomeScreen>
         case Status.Hive:
           return InfoApiList();
         default:
-          // 初始化 hive
-          // home.initInfoBox().then((_) {
           home.fetchApiData().then((success) {
             if (!success) {
               if (home.status == Status.Hive) {
                 Toast.error(
-                  title: '呼叫 API 失敗',
-                  subtitle: '加載本地數據',
+                  title: AppLocalizations.of(context).callApiFailed,
+                  subtitle: AppLocalizations.of(context).loadLocalData,
                 );
               } else {
                 Toast.error(
-                  title: 'API 呼叫失敗, 本地也沒有數據',
-                  subtitle: '加載 DEMO CARD',
+                  title: AppLocalizations.of(context).noApiAndNoLocalData,
+                  subtitle: AppLocalizations.of(context).loadDemoData,
                 );
               }
             }
           });
-          // });
+          // loading widget
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,

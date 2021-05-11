@@ -12,6 +12,7 @@ String treeLocationToJson(List<TreeLocation> data) =>
 
 class TreeLocation {
   TreeLocation({
+    this.folderName,
     this.scientificName,
     this.commonName,
     this.introduction,
@@ -29,6 +30,7 @@ class TreeLocation {
     this.treeLocations,
   });
 
+  String folderName;
   String scientificName;
   String commonName;
   String introduction;
@@ -46,6 +48,7 @@ class TreeLocation {
   List<TreeLocationElement> treeLocations;
 
   factory TreeLocation.fromJson(Map<String, dynamic> json) => TreeLocation(
+        folderName: json["folder_name"],
         scientificName: json["scientific_name"],
         commonName: json["common_name"],
         introduction: json["introduction"],
@@ -65,6 +68,7 @@ class TreeLocation {
       );
 
   Map<String, dynamic> toJson() => {
+        "folder_name": folderName,
         "scientific_name": scientificName,
         "common_name": commonName,
         "introduction": introduction,
@@ -105,8 +109,8 @@ class TreeLocationElement {
       TreeLocationElement(
         id: json["id"],
         treeImage: json["tree_image"],
-        treeLat: json["tree_lat"].toDouble(),
-        treeLong: json["tree_long"].toDouble(),
+        treeLat: json["tree_lat"],
+        treeLong: json["tree_long"],
         dateCreated: DateTime.parse(json["date_created"]),
         tree: json["tree"],
       );
@@ -119,18 +123,4 @@ class TreeLocationElement {
         "date_created": dateCreated.toIso8601String(),
         "tree": tree,
       };
-}
-
-class EnumValues<T> {
-  Map<String, T> map;
-  Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    if (reverseMap == null) {
-      reverseMap = map.map((k, v) => new MapEntry(v, k));
-    }
-    return reverseMap;
-  }
 }

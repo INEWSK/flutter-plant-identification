@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +32,7 @@ class _SearchScreenState extends State<SearchScreen>
           children: [
             SpinKitWave(color: Colors.teal, size: 50),
             SizedBox(height: 40),
-            Text('正在加載數據')
+            Text(AppLocalizations.of(context).dataLoading)
           ],
         ),
       ),
@@ -56,7 +57,10 @@ class _SearchScreenState extends State<SearchScreen>
             press: () async {
               final success = await tree.fetchApiData();
               if (!success) {
-                Toast.error(title: '404 NOT FOUND', subtitle: '還是請你喝咖啡');
+                Toast.error(
+                  title: AppLocalizations.of(context).callApiFailed,
+                  subtitle: AppLocalizations.of(context).buyCoffee,
+                );
               }
             },
           );
@@ -74,9 +78,15 @@ class _SearchScreenState extends State<SearchScreen>
           tree.fetchApiData().then((success) {
             if (!success) {
               if (tree.status == Status.Hive) {
-                Toast.error(title: '呼叫 API 失敗', subtitle: '加載本地數據');
+                Toast.error(
+                  title: AppLocalizations.of(context).callApiFailed,
+                  subtitle: AppLocalizations.of(context).loadLocalData,
+                );
               } else {
-                Toast.error(title: 'API 沒有回應, 本地也沒有數據', subtitle: '請你喝咖啡');
+                Toast.error(
+                  title: AppLocalizations.of(context).noApiAndNoLocalData,
+                  subtitle: AppLocalizations.of(context).stillBuyCoffee,
+                );
               }
             }
           });

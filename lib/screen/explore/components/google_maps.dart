@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/models/tree_locations.dart';
 import 'package:flutter_hotelapp/screen/detail/detail_screen.dart';
@@ -71,13 +71,16 @@ class _GoogleMapsState extends State<GoogleMaps> {
   void initGoogleMapsMarker() async {
     final result = await context.read<GoogleMapsProvider>().fetchMarkerData();
 
-    final String message = result['message'];
+    // final String message = result['message'];
     final bool success = result['success'];
     final List<TreeLocation> data = result['data'];
 
     if (!success) {
       Toast.error(
-          icon: Icons.wrong_location, title: '加載座標失敗', subtitle: message);
+        icon: Icons.wrong_location,
+        title: AppLocalizations.of(context).loadCoordinateFailed,
+        subtitle: AppLocalizations.of(context).callApiFailed,
+      );
     } else {
       _setMarker(data);
     }

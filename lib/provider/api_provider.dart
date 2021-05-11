@@ -12,6 +12,7 @@ import 'package:flutter_hotelapp/common/utils/local_notification.dart';
 import 'package:flutter_hotelapp/common/utils/locale_utils.dart';
 import 'package:flutter_hotelapp/common/utils/logger_utils.dart';
 import 'package:flutter_hotelapp/models/tree_data.dart' as tree;
+import 'package:flutter_hotelapp/models/tree_locations.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive/hive.dart';
 
@@ -25,8 +26,8 @@ class ApiProvider extends ChangeNotifier {
 
   String _locale;
   bool isLoading = false;
-  List<tree.Result> _listData = [];
-  tree.Result _data;
+  List<TreeLocation> _listData = [];
+  TreeLocation _data;
   bool _training = false;
 
   get data => _data;
@@ -100,18 +101,19 @@ class ApiProvider extends ChangeNotifier {
   Future<bool> _fetchTreeData() async {
     LoggerUtils.show(message: 'TREE DATA 空, 從 API 抓取資料');
 
-    final url = '/flora/tree/';
+    final url = '/flora/tree-location/';
 
     final String locale = LocaleUtils.getLocale;
     // 儲存當前語言, 用作下次對比 data 是否對應目前手機語言
     _locale = locale;
 
     try {
+      // 用 treelocation 是因爲這條api可以call所有tree data
       final response = await dio.get(url,
-          options: Options(responseType: ResponseType.plain, headers: {
-            HttpHeaders.acceptLanguageHeader: LocaleUtils.getLocale
-          }));
-      final data = tree.treeDataFromJson(response.data).results;
+          options: Options(
+              responseType: ResponseType.plain,
+              headers: {HttpHeaders.acceptLanguageHeader: locale}));
+      final data = treeLocationFromJson(response.data);
 
       _listData = data;
 
@@ -120,11 +122,12 @@ class ApiProvider extends ChangeNotifier {
       final error = DioExceptions.fromDioError(e);
       //輸出錯誤到控制台
       LoggerUtils.show(messageType: Type.Warning, message: error.messge);
+
       return false;
     }
   }
 
-  Future<tree.Result> _matchTreeData(String keyword) async {
+  Future<TreeLocation> _matchTreeData(String keyword) async {
     //根據 keyword 嘗試查找單個符合的元素
     //如果有多個則拋出 error
     //如果沒有則返回 null
@@ -139,7 +142,7 @@ class ApiProvider extends ChangeNotifier {
     return _data;
   }
 
-  Future requestRetrain({Choice choice = Choice.Local}) async {
+  Future<bool> requestRetrain({Choice choice = Choice.Local}) async {
     /// 目前伺服器思路只要沒有給 taskid 就會當成 retraining 請求
     /// 反之有 taskid 則忽視 choice, 返回 task 的 status
     final formData = FormData.fromMap({
@@ -172,25 +175,37 @@ class ApiProvider extends ChangeNotifier {
         _training = true;
         notifyListeners();
       }
+
+      return true;
     } on DioError catch (e) {
       final error = DioExceptions.fromDioError(e);
       LoggerUtils.show(message: error.messge, messageType: Type.WTF);
+
+      return false;
     }
   }
 
   /// Task Status: false, Updated, failed
   /// 詢問伺服器當前執行的 task id 任務進度
-  Future<String> browseTaskStatus() async {
+  Future<Map<String, dynamic>> browseTaskStatus() async {
     var box = Hive.box(Constant.box);
     final String taskId = box.get(Constant.taskId);
 
     //一般作用於在 model retraining 的時候(意外)退出了 app
     // 當再次進入 app 時候檢查 box 是否有儲存 taskId
     //如有則會再呼叫一次 method 並將 training set true
-    //以令設置在 profile screen 的 timer 重複呼叫該method 檢查 task status
+    //以令設置的 timer 重複呼叫該method 檢查 task status
     if (!_training) {
       _training = true;
     }
+
+    // done: 伺服器是否完成 retraining
+    // success: retraining 結果是否優於上一個模型結果
+    // message: 回傳給 UI 的信息
+    Map<String, dynamic> result = {
+      'done': false,
+      'success': false,
+    };
 
     final formData = FormData.fromMap({
       'choice': 'none',
@@ -203,12 +218,18 @@ class ApiProvider extends ChangeNotifier {
 
       final Map<String, dynamic> jsonResponse = response.data;
 
-      // false (processing)
+      // server return false (still processing)
       if (response.statusCode == 208) {
         if (jsonResponse.containsKey('Task Status')) {
-          bool taskStatus = jsonResponse['Task Status'];
-          debugPrint('Task Status: ${taskStatus.toString()}');
-          return '我在執行 method 檢查 Task Status \n伺服器結果爲 ${taskStatus.toString()}';
+          String taskStatus = jsonResponse['Task Status'].toString();
+          debugPrint('Task Status: $taskStatus');
+
+          result = {
+            'done': false,
+            'succees': false,
+          };
+
+          return result;
         }
       }
 
@@ -216,27 +237,42 @@ class ApiProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         if (jsonResponse.containsKey('Task Status')) {
           String taskStatus = jsonResponse['Task Status'];
+          bool success = false;
 
-          debugPrint('Task Status: ${taskStatus.toString()}');
+          if (taskStatus == 'Updated') success = true;
+          if (taskStatus == 'Failed') success = false;
+
+          debugPrint('Task Status: $taskStatus');
+
           //如果 task 完成清空持久化 taskid
           await box.delete(Constant.taskId);
+
+          result = {
+            'done': true,
+            'success': success,
+          };
 
           _backgroundService(false);
           _training = false;
           notifyListeners();
 
-          return '伺服器傳回 200 狀態, 結果爲 $taskStatus';
+          return result;
         }
       } else {
         //什麼?! 正常傳回200狀態彈沒有給task status
-        //想想就不可能
+        //#不可能
         print(response.data);
       }
-      return '不好意思, 發生爆炸了';
+      return result;
     } on DioError catch (e) {
       final error = DioExceptions.fromDioError(e);
-      print(error.messge);
-      return '不好意思, 發生爆炸了';
+      debugPrint(error.messge);
+
+      _backgroundService(false);
+      _training = false;
+      notifyListeners();
+
+      return result;
     }
   }
 

@@ -16,7 +16,7 @@ class Toast {
     );
   }
 
-  static void notification({String title, String subtitle}) {
+  static void notification({String title, String subtitle, int duration = 5}) {
     if (title == null) {
       return;
     }
@@ -26,7 +26,7 @@ class Toast {
       titleStyle: kBodyTextStyle.copyWith(color: Colors.white),
       subTitleStyle: kSecondaryBodyTextStyle.copyWith(color: Colors.white54),
       backgroundColor: const Color(0xFF303030),
-      duration: Duration(seconds: 4),
+      duration: Duration(seconds: duration),
       hideCloseButton: true,
       onlyOne: true,
       crossPage: false,
@@ -34,7 +34,10 @@ class Toast {
   }
 
   static void error(
-      {String title, String subtitle, IconData icon = Icons.error}) {
+      {String title,
+      String subtitle,
+      IconData icon = Icons.error,
+      int duration = 6}) {
     if (title == null) {
       return;
     }
@@ -52,7 +55,7 @@ class Toast {
             )
           : null,
       backgroundColor: Colors.redAccent,
-      duration: Duration(seconds: 5),
+      duration: Duration(seconds: duration),
       onlyOne: true,
       crossPage: false,
     );

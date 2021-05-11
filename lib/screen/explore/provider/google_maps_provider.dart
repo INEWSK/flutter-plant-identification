@@ -35,13 +35,9 @@ class GoogleMapsProvider extends ChangeNotifier {
 
   Future<Map> fetchMarkerData() async {
     // for UI result
-    Map<String, dynamic> result = {
-      'success': false,
-      'message': 'Unknow error',
-      'data': List
-    };
+    Map<String, dynamic> result = {'success': false, 'data': List};
 
-    final String url = '/flora/treelocation/';
+    final String url = '/flora/tree-location/';
 
     try {
       final response = await dio.get(url,
@@ -52,7 +48,6 @@ class GoogleMapsProvider extends ChangeNotifier {
       final data = treeLocationFromJson(response.data);
 
       result['success'] = true;
-      result['message'] = 'Loaded';
       result['data'] = data;
 
       // 通知 widget 拿到了 data 進行刷新以設置 marker
@@ -62,8 +57,8 @@ class GoogleMapsProvider extends ChangeNotifier {
       return result;
     } on DioError catch (e) {
       var error = DioExceptions.fromDioError(e);
+      print(error.messge);
 
-      result['message'] = error.messge;
       result['data'] = null;
 
       return result;

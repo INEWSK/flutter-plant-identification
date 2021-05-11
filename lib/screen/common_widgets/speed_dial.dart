@@ -9,6 +9,7 @@ import 'package:flutter_hotelapp/common/utils/device_utils.dart';
 import 'package:flutter_hotelapp/common/utils/logger_utils.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/models/tree_data.dart' as tree;
+import 'package:flutter_hotelapp/models/tree_locations.dart';
 import 'package:flutter_hotelapp/provider/api_provider.dart';
 import 'package:flutter_hotelapp/screen/detail/detail_screen.dart';
 import 'package:flutter_hotelapp/screen/view_image/view_image_screen.dart';
@@ -80,7 +81,8 @@ class SpeedDial extends StatelessWidget {
     final String result = response['result'];
 
     if (success) {
-      final tree.Result data = response['data'];
+      // 用 treelocation 是因爲這條api可以call所有tree data
+      final TreeLocation data = response['data'];
       BotToast.showNotification(
         leading: (cancel) => IconButton(
           icon: Icon(Ionicons.ios_rose, color: Colors.redAccent),
@@ -96,7 +98,7 @@ class SpeedDial extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (BuildContext context) =>
-                            DetailScreen(data: data, type: DataType.Tree)),
+                            DetailScreen(data: data, type: DataType.GoogleMap)),
                   );
                 },
                 child: Text('查看更多'))

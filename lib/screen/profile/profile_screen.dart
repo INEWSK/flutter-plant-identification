@@ -6,7 +6,6 @@ import 'package:flutter_hotelapp/common/utils/logger_utils.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/provider/api_provider.dart';
 import 'package:flutter_hotelapp/provider/auth_provider.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
@@ -24,15 +23,13 @@ class _ProfileScreenState extends State<ProfileScreen>
   @override
   bool get wantKeepAlive => true;
 
-  Timer timer;
-
   Future<void> _toEmailDialog(BuildContext context) {
     return showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: Text(AppLocalizations.of(context).contactUs),
-          content: Text('This will lead you to the email application'),
+          content: Text(AppLocalizations.of(context).contactUsText),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
@@ -60,7 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen>
               Text(AppLocalizations.of(context).warning),
             ],
           ),
-          content: Text('該行爲會傳送命令至伺服器要求進行圖片機器模型訓練, 消耗伺服器資源並且過程不可逆'),
+          content: Text(AppLocalizations.of(context).modelRetrainWarningText),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
@@ -68,7 +65,10 @@ class _ProfileScreenState extends State<ProfileScreen>
             ),
             TextButton(
               onPressed: () => Navigator.pop(
-                  context, api.requestRetrain(choice: Choice.Local)),
+                  context,
+                  api.requestRetrain(choice: Choice.Local).then((success) {
+                    if (!success) Toast.error(title: '呼叫 API 失敗');
+                  })),
               child: Text(AppLocalizations.of(context).confirm),
             ),
           ],
@@ -130,16 +130,6 @@ class _ProfileScreenState extends State<ProfileScreen>
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
@@ -183,19 +173,6 @@ class _ProfileScreenState extends State<ProfileScreen>
           ),
           Consumer2(
             builder: (_, AuthProvider user, ApiProvider api, __) {
-              // wa幹這樣真的可以嗎? 感覺很蠢而且違反了 OOT 直覺
-              if (api.training == true) {
-                // 如果 training 設置 timer 每 x 秒執行一次 method
-                timer = Timer.periodic(
-                  Duration(seconds: 4),
-                  (_) => api.browseTaskStatus().then(
-                        (result) => Toast.show(result),
-                      ),
-                );
-              } else {
-                // 反之則取消 timer
-                timer?.cancel();
-              }
               if (user.admin == true) {
                 return ListTile(
                   leading: api.training
@@ -208,9 +185,11 @@ class _ProfileScreenState extends State<ProfileScreen>
                         )
                       : SvgPicture.asset(
                           'assets/icons/profile/ai_retraining.svg'),
-                  title: Text(api.training
-                      ? 'Model is Retraining...'
-                      : AppLocalizations.of(context).modelRetraining),
+                  title: Text(
+                    api.training
+                        ? AppLocalizations.of(context).retrainingModel
+                        : AppLocalizations.of(context).modelRetraining,
+                  ),
                   onTap: api.training
                       ? null
                       : () => _retrainingDialog(context, api),

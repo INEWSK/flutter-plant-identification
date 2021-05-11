@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/screen/auth/widgets/auth_background.dart';
 import 'package:flutter_hotelapp/screen/auth/widgets/welcome_text.dart';
@@ -18,13 +19,13 @@ class SignUpScreen extends StatelessWidget {
           appBar: AppBar(
             backgroundColor: Colors.transparent,
           ),
-          body: _body(),
+          body: _body(context),
         ),
       ],
     );
   }
 
-  Widget _body() {
+  Widget _body(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
@@ -32,9 +33,10 @@ class SignUpScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             WelcomeText(
-              title: 'Create Account',
-              text: 'Enter your Email and Password for sign up.',
+              title: AppLocalizations.of(context).createAccountText,
+              text: AppLocalizations.of(context).signUpText,
             ),
+            SizedBox(height: 10),
             SignUpForm(),
             SizedBox(height: 20),
             SignInButton(),

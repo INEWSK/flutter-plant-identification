@@ -9,7 +9,7 @@ class AgreementButton extends StatelessWidget {
       child: Text.rich(
         TextSpan(
           style: Theme.of(context).textTheme.button.copyWith(fontSize: 12.0),
-          text: AppLocalizations.of(context).textAgree + ' ',
+          text: AppLocalizations.of(context).agreeText + ' ',
           children: [
             TextSpan(
               text: AppLocalizations.of(context).terms,

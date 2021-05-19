@@ -39,7 +39,7 @@ class SearchProvider extends ChangeNotifier {
   void onQueryChanged(String query) async {
     //根據query查找data相應的字符再傳進display list
     _displayList = _data.where((element) {
-      var title = element.folderName.toLowerCase();
+      var title = element.scientificName.toLowerCase();
       return title.contains(query);
     }).toList();
 
@@ -153,7 +153,10 @@ class SearchProvider extends ChangeNotifier {
     final path = '/flora/tree/?page=$_currentPage';
 
     try {
-      final response = await dio.get(path);
+      final response = await dio.get(path,
+          options: Options(headers: {
+            HttpHeaders.acceptLanguageHeader: LocaleUtils.getLocale
+          }));
 
       final data = tree.treeDataFromJson(response.data);
 

@@ -21,7 +21,8 @@ class _GoogleMapsState extends State<GoogleMaps> {
   @override
   void dispose() {
     super.dispose();
-    context.read<GoogleMapsProvider>().dispose();
+    // buggggggggggg here
+    // context.read<GoogleMapsProvider>().dispose();
   }
 
   @override

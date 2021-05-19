@@ -6,6 +6,7 @@ import 'package:flutter_hotelapp/common/utils/logger_utils.dart';
 import 'package:flutter_hotelapp/common/utils/toast_utils.dart';
 import 'package:flutter_hotelapp/provider/api_provider.dart';
 import 'package:flutter_hotelapp/provider/auth_provider.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
@@ -45,14 +46,16 @@ class _ProfileScreenState extends State<ProfileScreen>
     );
   }
 
-  Future<void> _retrainingDialog(BuildContext context, ApiProvider api) async {
-    return showDialog(
+  Future<void> _confirmRetrainingDialog(BuildContext context) async {
+    final api = context.read<ApiProvider>();
+
+    int choice = await showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: Row(
             children: [
-              Icon(Icons.warning_amber_outlined),
+              Icon(FontAwesome.warning),
               SizedBox(width: 10),
               Text(AppLocalizations.of(context).warning),
             ],
@@ -60,21 +63,29 @@ class _ProfileScreenState extends State<ProfileScreen>
           content: Text(AppLocalizations.of(context).modelRetrainWarningText),
           actions: [
             TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text(AppLocalizations.of(context).cancel),
+              onPressed: () => Navigator.pop(context, 0),
+              child: Text(AppLocalizations.of(context).local),
             ),
             TextButton(
-              onPressed: () => Navigator.pop(
-                  context,
-                  api.requestRetrain(choice: Choice.Local).then((success) {
-                    if (!success) Toast.error(title: '呼叫 API 失敗');
-                  })),
-              child: Text(AppLocalizations.of(context).confirm),
+              onPressed: () => Navigator.pop(context, 1),
+              child: Text(AppLocalizations.of(context).googleDrive),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(AppLocalizations.of(context).cancel),
             ),
           ],
         );
       },
     );
+    if (choice != null) {
+      final Choice selectedChoice =
+          choice == 0 ? Choice.Local : Choice.GoogleDrive;
+      api.requestRetrain(choice: selectedChoice).then((startTrain) {
+        if (!startTrain)
+          Toast.error(title: AppLocalizations.of(context).callApiFailed);
+      });
+    }
   }
 
   Widget _imageSourceOption(
@@ -159,18 +170,18 @@ class _ProfileScreenState extends State<ProfileScreen>
             },
           ),
           SizedBox(height: 10),
-          ListTile(
-            // dense: true,
-            leading: SvgPicture.asset('assets/icons/profile/manual.svg'),
-            title: Text(AppLocalizations.of(context).manual),
-            onTap: () {},
-          ),
-          ListTile(
-            // dense: true,
-            leading: SvgPicture.asset('assets/icons/profile/favorite.svg'),
-            title: Text(AppLocalizations.of(context).favorite),
-            onTap: () {},
-          ),
+          // ListTile(
+          //   // dense: true,
+          //   leading: SvgPicture.asset('assets/icons/profile/manual.svg'),
+          //   title: Text(AppLocalizations.of(context).manual),
+          //   onTap: () {},
+          // ),
+          // ListTile(
+          //   // dense: true,
+          //   leading: SvgPicture.asset('assets/icons/profile/favorite.svg'),
+          //   title: Text(AppLocalizations.of(context).favorite),
+          //   onTap: () {},
+          // ),
           Consumer2(
             builder: (_, AuthProvider user, ApiProvider api, __) {
               if (user.admin == true) {
@@ -192,7 +203,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                   ),
                   onTap: api.training
                       ? null
-                      : () => _retrainingDialog(context, api),
+                      : () => _confirmRetrainingDialog(context),
                 );
               } else {
                 return Container();

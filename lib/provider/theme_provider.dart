@@ -20,15 +20,15 @@ class ThemeProvider extends ChangeNotifier {
     }
   }
 
-  // 持久化主題設置
   void setTheme(ThemeMode themeMode) async {
+    // 持久化主題設置
     box.put(Constant.theme, themeMode.value);
     log(themeMode.value);
     // themeMode已改變 通知widget更新
     notifyListeners();
   }
 
-  /// 讀取 theme 設置記錄, 如果沒有記錄則默認跟隨系統主題
+  /// 讀取 theme 記錄, 如果沒有記錄則默認跟隨系統主題
   ThemeMode getThemeMode() {
     final String theme = box.get(Constant.theme);
     switch (theme) {

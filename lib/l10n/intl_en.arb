@@ -663,5 +663,17 @@
     "@loadCoordinateFailed": {
       "description": "Error text message for loading data",
       "type": "text"
+    },
+
+    "signOutSuccess": "Sign out successful",
+    "@signOutSuccess": {
+      "description": "Toast message for sign out",
+      "type": "text"
+    },
+
+    "confirmSignOutText": "Do you want to sign out with this account?",
+    "@confirmSignOutText": {
+      "description": "Text message for sign out confirm",
+      "type": "text"
     }
 }

@@ -18,7 +18,7 @@ class SettingsScreen extends StatelessWidget {
         builder: (context) {
           return AlertDialog(
             title: Text(AppLocalizations.of(context).logout),
-            content: Text('Do you want to sign out with this account?'),
+            content: Text(AppLocalizations.of(context).confirmSignOutText),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
@@ -37,7 +37,7 @@ class SettingsScreen extends StatelessWidget {
       authProvider.signOut();
 
       Navigator.of(context).pop(
-        Toast.show('Sign Out Successful'),
+        Toast.show(AppLocalizations.of(context).signOutSuccess),
       );
     }
   }

@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen>
   void _broswerTaskStatus(ApiProvider api) {
     // 如果 training 設置 timer 每 x 秒執行一次 method
     _timer = Timer.periodic(
-      Duration(minutes: 1),
+      Duration(seconds: 30),
       (_) => api.browseTaskStatus().then(
         (result) async {
           final done = result['done'];
@@ -78,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen>
             return Scaffold(
               appBar: AppBar(
                 title: Text(
-                  'Tree Doctor',
+                  'Flora',
                   style: GoogleFonts.balooPaaji(
                     textStyle:
                         TextStyle(color: Color(0xFF0A8270), fontSize: 26.0),

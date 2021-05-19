@@ -112,7 +112,13 @@ class HomeProvider extends ChangeNotifier {
     final path = '/flora/info/';
 
     try {
-      final response = await dio.get(path, queryParameters: params);
+      final response = await dio.get(
+        path,
+        queryParameters: params,
+        options: Options(
+          headers: {HttpHeaders.acceptLanguageHeader: LocaleUtils.getLocale},
+        ),
+      );
       final data = treeInfo.treeInfoFromJson(response.data);
 
       // 如果伺服器傳回沒有下一頁

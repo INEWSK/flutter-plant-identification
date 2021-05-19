@@ -108,7 +108,7 @@ class ApiProvider extends ChangeNotifier {
     _locale = locale;
 
     try {
-      // 用 treelocation 是因爲這條api可以call所有tree data
+      // 用 treelocation 是因爲這條api可以獲取所有tree data
       final response = await dio.get(url,
           options: Options(
               responseType: ResponseType.plain,
@@ -120,7 +120,6 @@ class ApiProvider extends ChangeNotifier {
       return true;
     } on DioError catch (e) {
       final error = DioExceptions.fromDioError(e);
-      //輸出錯誤到控制台
       LoggerUtils.show(messageType: Type.Warning, message: error.messge);
 
       return false;
@@ -239,8 +238,9 @@ class ApiProvider extends ChangeNotifier {
           String taskStatus = jsonResponse['Task Status'];
           bool success = false;
 
+          //如果伺服器傳回 updated(成功更新模型) 則 true
+          //其他 status 如 failed 或 error 則 false (default value)
           if (taskStatus == 'Updated') success = true;
-          if (taskStatus == 'Failed') success = false;
 
           debugPrint('Task Status: $taskStatus');
 
@@ -265,19 +265,20 @@ class ApiProvider extends ChangeNotifier {
       }
       return result;
     } on DioError catch (e) {
+      // 如果手機玩玩下斷左, keep running
       final error = DioExceptions.fromDioError(e);
       debugPrint(error.messge);
 
-      _backgroundService(false);
-      _training = false;
-      notifyListeners();
+      // _backgroundService(true);
+      // _training = true;
+      // notifyListeners();
 
       return result;
     }
   }
 
   ///Android 8.0以上軟件進入後台1分鐘後就會進入閒置狀態, 限制取用
-  ///有機會被系統殺死APP釋放內存
+  ///啓動背景服務
   Future<void> _backgroundService(bool on) async {
     if (Device.isAndroid) {
       var methodChannel = MethodChannel("com.example.flutter_hotelapp");

@@ -2,12 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hotelapp/common/styles/styles.dart';
 import 'package:flutter_hotelapp/common/utils/image_utils.dart';
 import 'package:flutter_hotelapp/models/tree_locations.dart';
+import 'package:flutter_hotelapp/screen/detail/detail_screen.dart';
 
 class MapBottomPill extends StatelessWidget {
   final bool isVisible;
   final TreeLocation data;
 
-  const MapBottomPill({Key key, this.isVisible, this.data}) : super(key: key);
+  const MapBottomPill({
+    Key key,
+    this.isVisible,
+    this.data,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +24,13 @@ class MapBottomPill extends StatelessWidget {
       curve: Curves.easeInExpo,
       child: Card(
         child: ListTile(
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) =>
+                  DetailScreen(data: data, type: DataType.GoogleMap),
+            ),
+          ),
           leading: CircleAvatar(
             child: _image(),
             backgroundColor: Colors.transparent,

@@ -51,11 +51,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
       vsync: this,
       duration: kDefaultDuration * 0.5,
     );
-    // 檢查是否有中斷的 model retraining task 還未完成
-    var box = Hive.box(Constant.box);
-    if (box.get(Constant.taskId) != null) {
-      context.read<ApiProvider>().browseTaskStatus();
-    }
+    _checkTaskStatus();
   }
 
   @override
@@ -127,5 +123,13 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
         ),
       ),
     );
+  }
+
+  /// 檢查是否有中斷的 model retraining task 還未完成
+  void _checkTaskStatus() async {
+    var box = Hive.box(Constant.box);
+    if (box.get(Constant.taskId) != null) {
+      context.read<ApiProvider>().browseTaskStatus();
+    }
   }
 }

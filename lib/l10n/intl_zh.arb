@@ -109,5 +109,8 @@
     "networkUnavailable": "網絡不可用",
     "alienCutNetwork": "外星人切斷了網絡",
     "loadDataFailed": "加載數據失敗",
-    "loadCoordinateFailed": "加載植物座標失敗"
+    "loadCoordinateFailed": "加載植物座標失敗",
+    "signOutSuccess": "登出成功",
+    "confirmSignOutText": "要登出這個帳號嗎?"
+
 }

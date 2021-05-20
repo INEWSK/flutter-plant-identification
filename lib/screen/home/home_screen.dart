@@ -78,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen>
             return Scaffold(
               appBar: AppBar(
                 title: Text(
-                  'Flora',
+                  'Tree Doctor',
                   style: GoogleFonts.balooPaaji(
                     textStyle:
                         TextStyle(color: Color(0xFF0A8270), fontSize: 26.0),

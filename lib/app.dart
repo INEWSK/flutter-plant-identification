@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         builder: (_, ThemeProvider themer, AuthProvider user,
             IntlProvider localer, __) {
           return MaterialApp(
-            // debugShowCheckedModeBanner: false, // top-right debug flag
+            debugShowCheckedModeBanner: false, // top-right debug flag
             theme: theme ?? lightTheme(context),
             darkTheme: darkTheme(context),
             themeMode: themer.getThemeMode(),
